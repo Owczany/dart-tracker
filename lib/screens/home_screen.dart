@@ -1,3 +1,4 @@
+import 'package:darttracker/views/widgets/dart_board/dartboard.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      body: Column(
+      body: const Column(
         children: [
           // Zlicz punkty
           Center(
@@ -34,8 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
           // Zobacz hisotrię
           Center(
             child: Text('Zobacz historię'),
-          )
-          // Zlicz punkty
+          ),
+
+          Dartboard(),
+
         ],
       ),
     );
