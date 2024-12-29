@@ -14,28 +14,29 @@ class GameScreen extends StatelessWidget {
         title: Padding(
           padding: const EdgeInsets.all(16),
           child: Text(
-            'Runda $roundNumber',
+            'Round $roundNumber',
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
         centerTitle: true,
       ),
+      
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 0, left: 16, right: 16, bottom: 16),
+            padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 0),
             child: Text(
               playerName,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
-          //const SizedBox(height: 16.0),
+          
           const Expanded(
             child: Center(
               child: Dartboard(),
             ),
           ),
+
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: Row(
@@ -50,7 +51,7 @@ class GameScreen extends StatelessWidget {
                     foregroundColor: Colors.black,
                     minimumSize: Size(150, 50),
                   ),
-                  child: Text('Cofnij'),
+                  child: Text('Back'),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -61,7 +62,7 @@ class GameScreen extends StatelessWidget {
                     foregroundColor: Colors.black,
                     minimumSize: Size(150, 50),
                   ),
-                  child: Text('Potwierdź'),
+                  child: Text('Confirm'),
                 ),
               ],
             ),
