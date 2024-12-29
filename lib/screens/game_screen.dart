@@ -49,9 +49,13 @@ class GameScreen extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,    //dorobić kolorki
                     foregroundColor: Colors.black,
-                    minimumSize: Size(150, 50),
+                    
+                    minimumSize: Size(150, 70),
                   ),
-                  child: Text('Back'),
+                  child: const Text(
+                    "Back",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  )
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -60,9 +64,12 @@ class GameScreen extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,  //tu też
                     foregroundColor: Colors.black,
-                    minimumSize: Size(150, 50),
+                    minimumSize: Size(150, 70),
                   ),
-                  child: Text('Confirm'),
+                  child: const Text(
+                    "Confirm",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  )
                 ),
               ],
             ),

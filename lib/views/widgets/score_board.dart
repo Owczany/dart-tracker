@@ -40,6 +40,7 @@ class ScoreBoard extends StatelessWidget {
   }
 
   List<DataRow> _buildRows() {
+    //normalne wyświetlanie wyników
     if (!endOfGame) {
       return players.map((player) {
         List<DataCell> cells = [
@@ -66,11 +67,11 @@ class ScoreBoard extends StatelessWidget {
         // Sprawdzenie, czy gracz jest jednym z trzech najlepszych
         Color? rowColor;
         if (sortedPlayers.indexOf(player) == 0) {
-          rowColor = Colors.amberAccent.withValues(); // Złoty kolor dla najlepszego
+          rowColor = Colors.amberAccent.withValues(alpha: 0.9); // Złoty kolor dla najlepszego
         } else if (sortedPlayers.indexOf(player) == 1) {
-          rowColor = const Color.fromARGB(255, 192, 192, 192).withValues(); // Srebrny kolor dla drugiego
+          rowColor = const Color.fromRGBO(192, 192, 192, 0.9); // Srebrny kolor dla drugiego
         } else if (sortedPlayers.indexOf(player) == 2) {
-          rowColor = const Color.fromARGB(255, 205, 127, 50).withValues(); // Brązowy kolor dla trzeciego
+          rowColor = const Color.fromRGBO(205, 127, 50, 0.9); // Brązowy kolor dla trzeciego
         }
 
         return DataRow(
