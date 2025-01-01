@@ -1,5 +1,7 @@
 import 'package:darttracker/views/widgets/dart_board/dartboard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,12 +24,14 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      body: const Column(
+      body: Column(
         children: [
           // Zlicz punkty
           Center(
             child: Text('Zlicz punkty'),
           ),
+
+          Center(child: Text(AppLocalizations.of(context)!.dartboard),),
 
           // Stwórz party
           Center(child: Text('Stwórz party')),
