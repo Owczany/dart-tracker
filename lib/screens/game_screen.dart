@@ -1,11 +1,31 @@
+/* to do:
+ *  dodać obsługę motywów kolorystycznych
+ *  dodać zaznaczanie rzutów na tarczy;
+ *  dodać logikę powtarzania wprowadzania wyników rzucania;
+ *  dodać dopisywanie punkty odpowiedniemu graczowi;
+ *  dodać przekierowanie do EndGameScreen, jeśli gracz właśnie wygrał - wtedy nie większać numeru gracza;
+*/
+/*dane testowe:
+players: [
+        Player(name: 'Gracz 1', scores: [1, 2, 3]),
+        Player(name: 'Gracz 2', scores: [4, 5, 6]),
+        Player(name: 'Gracz 3', scores: [7, 8, 9]),
+        Player(name: 'Gracz 4', scores: [10, 11, 12]),
+
+      ], playerNumber: 3, roundNumber: 5
+*/
+
+import 'package:darttracker/models/player.dart';
+import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:darttracker/views/widgets/dart_board/dartboard.dart';
 import 'package:flutter/material.dart';
 
 class GameScreen extends StatelessWidget {
-  final String playerName;
+  final List<Player> players;
+  final int playerNumber;
   final int roundNumber;
 
-  GameScreen({required this.playerName, required this.roundNumber});
+  GameScreen({required this.players, this.playerNumber = 0, this.roundNumber = 1});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +46,7 @@ class GameScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 0),
             child: Text(
-              playerName,
+              players[playerNumber].name,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
@@ -44,7 +64,7 @@ class GameScreen extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Tu dodać logikę cofania
+                    // Tu dodać logikę powtarzania wprowadzania wyników rzucania
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,    //dorobić kolorki
@@ -59,7 +79,20 @@ class GameScreen extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Tu dodać logikę potwierdzania
+                    // Dopisać punkty odpowiedniemu graczowi
+                    Navigator.pushReplacement(
+                      context,
+                      //dodać przekierowanie do EndGameScreen, jeśli gracz właśnie wygrał - wtedy nie większać numeru gracza
+
+                      //przekierowanie do ScoreBoardScreen ze zmienionym graczem i rundą
+                      MaterialPageRoute(
+                        builder: (context) => ScoreBoardScreen(
+                          players: players,
+                          playerNumber: (playerNumber == players.length - 1) ? 0 : playerNumber + 1,
+                          roundNumber: (playerNumber == players.length - 1) ? roundNumber + 1 : roundNumber,
+                        ),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,  //tu też

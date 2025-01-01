@@ -10,7 +10,7 @@ class ScoreBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double rowHeight = 52.0;
-    final double tableHeight = rowHeight * (players.length + 1);
+    final double tableHeight = rowHeight * (players.length + 1) + 4;  //ramka ma 2 piksele, więc trza tu dodać 4 
     return Padding(
       padding: const EdgeInsets.all(30.0), // Dodanie odstępów od krawędzi ekranu
       child: SingleChildScrollView(
@@ -23,6 +23,8 @@ class ScoreBoard extends StatelessWidget {
           child: DataTable(
             columns: _buildColumns(),
             rows: _buildRows(),
+            dataRowHeight: rowHeight,
+            headingRowHeight: rowHeight,
           ),
         )
       ),
