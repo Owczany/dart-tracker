@@ -1,10 +1,6 @@
-/* to do:
- *  dodać obsługę motywów kolorystycznych
- *  dodać zaznaczanie rzutów na tarczy;
- *  dodać logikę powtarzania wprowadzania wyników rzucania;
- *  dodać dopisywanie punkty odpowiedniemu graczowi;
- *  dodać przekierowanie do EndGameScreen, jeśli gracz właśnie wygrał - wtedy nie większać numeru gracza;
-*/
+// TODO: dodać obsługę motywów kolorystycznych
+// TODO: dodać zaznaczanie rzutów na tarczy;
+
 /*dane testowe:
 players: [
         Player(name: 'Gracz 1', scores: [1, 2, 3]),
@@ -15,94 +11,114 @@ players: [
       ], playerNumber: 3, roundNumber: 5
 */
 
+import 'package:darttracker/components/own_button.dart';
 import 'package:darttracker/models/player.dart';
 import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:darttracker/views/widgets/dart_board/dartboard.dart';
+import 'package:darttracker/views/widgets/dart_board/touch_points_painter.dart';
 import 'package:flutter/material.dart';
 
-class GameScreen extends StatelessWidget {
+/// To jest ekran gry, gdzie gracz wklepuje swoje rzuty
+class GameScreen extends StatefulWidget {
   final List<Player> players;
   final int playerNumber;
   final int roundNumber;
 
-  GameScreen({required this.players, this.playerNumber = 0, this.roundNumber = 1});
+  const GameScreen({super.key, required this.players, this.playerNumber = 0, this.roundNumber = 1});
+
+  @override
+  _GameScreenState createState() => _GameScreenState();
+}
+
+class _GameScreenState extends State<GameScreen> {
+  final List<Offset> points = []; // Przechowuje współrzędne dotknięcia
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(      //kolor tła zrobić wg motywu (ciemny/jasny)
+    return Scaffold(
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsets.all(16),
           child: Text(
-            'Round $roundNumber',
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            'Round ${widget.roundNumber}',
+            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
         centerTitle: true,
       ),
-      
       body: Column(
         children: [
+          // Nazwa gracza
           Padding(
             padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 0),
             child: Text(
-              players[playerNumber].name,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              widget.players[widget.playerNumber].name,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
-          
-          const Expanded(
-            child: Center(
-              child: Dartboard(),
-            ),
-          ),
+          Expanded(
+            child: Stack(
+              children: [
+                const Dartboard(),
 
+                //zczytywanie kliknięć
+                //FIXME: Przy najechaniu myszką na jeden z przycisków na dole ekranu uruchania się objekt TouchPointsPainter chuj wie czemu
+                //FIXME: Dodatkowo chyba program nie ogarnia dużej ilości punktów
+                //FIXME: No i skalowanie tu siada, punkty pojawiają się nie tam, gdzie się kliknie
+                GestureDetector(
+                  onTapDown: (details) {
+                    // Przekształcenie globalnych współrzędnych na lokalne - okazuje się że nie trzeba tak robić
+                    //final RenderBox box = context.findRenderObject() as RenderBox;
+                    setState(() {
+                      points.add(/*box.globalToLocal*/(details.localPosition));
+                    });
+                  },
+                  child: CustomPaint(
+                    painter: TouchPointsPainter(touchPositions: points),
+                    child: Container(), //potrzebny, żeby był znany rozmiar obszaru do klikania
+                  ),
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton(
+
+                //przycisk usunięcia ostatniego rzutu
+                OwnButton(
+                  text: 'Cancel',
                   onPressed: () {
-                    // Tu dodać logikę powtarzania wprowadzania wyników rzucania
+                    setState(() {
+                      if (points.isNotEmpty) {
+                        points.removeLast(); // Usuwa ostatni punkt
+                      }
+                    });
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,    //dorobić kolorki
-                    foregroundColor: Colors.black,
-                    
-                    minimumSize: Size(150, 70),
-                  ),
-                  child: const Text(
-                    "Back",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  )
+                  color: Colors.red,
+                  minimumSize: const Size(150, 50),
                 ),
-                ElevatedButton(
+
+                // nawigacja do tabelki wyników
+                OwnButton(
+                  text: 'Confirm',
                   onPressed: () {
-                    // Dopisać punkty odpowiedniemu graczowi
+                    //TODO Dopisać punkty odpowiedniemu graczowi
                     Navigator.pushReplacement(
                       context,
-                      //dodać przekierowanie do EndGameScreen, jeśli gracz właśnie wygrał - wtedy nie większać numeru gracza
-
-                      //przekierowanie do ScoreBoardScreen ze zmienionym graczem i rundą
                       MaterialPageRoute(
                         builder: (context) => ScoreBoardScreen(
-                          players: players,
-                          playerNumber: (playerNumber == players.length - 1) ? 0 : playerNumber + 1,
-                          roundNumber: (playerNumber == players.length - 1) ? roundNumber + 1 : roundNumber,
+                          players: widget.players,
+                          playerNumber: (widget.playerNumber == widget.players.length - 1) ? 0 : widget.playerNumber + 1,
+                          roundNumber: (widget.playerNumber == widget.players.length - 1) ? widget.roundNumber + 1 : widget.roundNumber,
                         ),
                       ),
                     );
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,  //tu też
-                    foregroundColor: Colors.black,
-                    minimumSize: Size(150, 70),
-                  ),
-                  child: const Text(
-                    "Confirm",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  )
+                  color: Colors.green,
+                  minimumSize: const Size(150, 50),
                 ),
               ],
             ),

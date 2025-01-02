@@ -1,27 +1,24 @@
-/* To do:
- * dodać obsługę motywów kolorystycznych
- * logika przycisku zapisu gry do pamięci
- * logika przycisku nowej szybkiej gry
-*/
+// TODO: dodać obsługę motywów kolorystycznych
 
+import 'package:darttracker/components/own_button.dart';
 import 'package:darttracker/models/player.dart';
 import 'package:darttracker/screens/home_screen.dart';
 import 'package:darttracker/views/widgets/score_board.dart';
 import 'package:flutter/material.dart';
 
+/// To jest ekran końca gry
 class EndGameScreen extends StatelessWidget {
   final List<Player> players;
   final int playerNumber;
   final int roundNumber;
 
-  EndGameScreen({required this.players, required this.playerNumber, required this.roundNumber});
+  const EndGameScreen({super.key, required this.players, required this.playerNumber, required this.roundNumber});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${players[playerNumber].name} is Winning!'), //dodam tu wygranego, jak ustalimy strukturę danych do przekazywania graczy, 
-        //już widać, że sortowanie graczy trzeba wynieść poza score_board
+        title: Text('${players[playerNumber].name} is Winning!'),
         centerTitle: true,
       ),
       body: Stack(
@@ -42,14 +39,8 @@ class EndGameScreen extends StatelessWidget {
                   children: [
 
                     //przycisk powrotu do HomeScreen
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 50), // Szerokość na cały ekran, wysokość 50
-                        backgroundColor: Colors.red,
-                        foregroundColor: Colors.black,
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
-                        textStyle: TextStyle(fontSize: 20),
-                      ),
+                    OwnButton(
+                      text: 'Back to Main Menu',
                       onPressed: () {
                         //przekierowanie do HomeScreen
                         Navigator.pushReplacement(
@@ -57,45 +48,27 @@ class EndGameScreen extends StatelessWidget {
                           MaterialPageRoute(builder: (context) => HomeScreen()),
                         );
                       },
-                      child: Center(
-                        child: Text('Back to Main Menu'),
-                      ),
+                      color: Colors.red,
                     ),
-                    SizedBox(height: 16), // Odstęp między przyciskami
+                    const SizedBox(height: 16), // Odstęp między przyciskami
 
                     //przycisk zapisu gry do pamięci
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 50), // Szerokość na cały ekran, wysokość 50
-                        backgroundColor: Colors.orange,
-                        foregroundColor: Colors.black,
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
-                        textStyle: TextStyle(fontSize: 20),
-                      ),
+                    OwnButton(
+                      text: 'Save a Game',
                       onPressed: () {
-                        // tu zapisanie gry
+                        //TODO: tu dorobić zapisanie gry
                       },
-                      child: Center(
-                        child: Text('Save a Game'),
-                      ),
+                      color: Colors.orange,
                     ),
-                    SizedBox(height: 16), // Odstęp między przyciskami
+                    const SizedBox(height: 16), // Odstęp między przyciskami
 
                     //przycisk nowej szybkiej gry 
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 50), // Szerokość na cały ekran, wysokość 50
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.black,
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
-                        textStyle: TextStyle(fontSize: 20),
-                      ),
+                    OwnButton(
+                      text: 'Quick Start',
                       onPressed: () {
-                        // tu szybki start
+                        //TODO: tu zrobić szybki start
                       },
-                      child: Center(
-                        child: Text('Quick Start'),
-                      ),
+                      color: Colors.green,
                     ),
                   ],
                 ),

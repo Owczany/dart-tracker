@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:darttracker/models/player.dart';
 
+/// Wyświetlanie tabelki wyników
 class ScoreBoard extends StatelessWidget {
   final List<Player> players;
   final bool endOfGame;  //endOfGame: true - kolorowanie i sortowanie wygranych po ostatniej rundzie
 
-  ScoreBoard({required this.players, this.endOfGame = false});
+  ScoreBoard({super.key, required this.players, this.endOfGame = false});
 
   @override
   Widget build(BuildContext context) {
