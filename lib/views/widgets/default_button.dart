@@ -1,0 +1,25 @@
+import 'package:flutter/material.dart';
+
+class DefaultButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String text;
+
+  const DefaultButton({required this.onPressed, required this.text, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        textStyle: const TextStyle(fontSize: 20),
+        minimumSize: const Size(200, 60),
+        backgroundColor: theme.colorScheme.primary,
+        foregroundColor: theme.colorScheme.onPrimary,
+      ),
+      child: Text(text),
+    );
+  }
+}

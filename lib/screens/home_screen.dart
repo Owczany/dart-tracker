@@ -3,6 +3,7 @@ import 'package:darttracker/views/widgets/dart_board/dartboard.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../views/theme_notifier.dart';
+import '../views/widgets/default_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -38,43 +39,25 @@ class _HomeScreenState extends State<HomeScreen> {
             const Dartboard(),
             const SizedBox(height: 30),
             Center(
-              child: ElevatedButton(
+              child: DefaultButton(
                 onPressed: () {
                   showNewGameDialog(context);
                 },
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: const TextStyle(fontSize: 20),
-                  minimumSize: const Size(200, 60),
-                ),
-                child: const Text('New Game'),
+                text: 'New Game',
               ),
             ),
             const SizedBox(height: 10),
             Center(
-              child: ElevatedButton(
+              child: DefaultButton(
                 onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: const TextStyle(fontSize: 20),
-                  minimumSize: const Size(200, 60),
-                ),
-                child: const Text('Game History'),
+                text: 'Game History',
               ),
             ),
             const SizedBox(height: 10),
             Center(
-              child: ElevatedButton(
+              child: DefaultButton(
                 onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: const TextStyle(fontSize: 20),
-                  minimumSize: const Size(200, 60),
-                ),
-                child: const Text('Darts Rules'),
+                text: 'Darts Rules',
               ),
             ),
           ],

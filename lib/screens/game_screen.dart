@@ -25,11 +25,14 @@ class GameScreen extends StatelessWidget {
   final int playerNumber;
   final int roundNumber;
 
-  GameScreen({required this.players, this.playerNumber = 0, this.roundNumber = 1});
+  GameScreen(
+      {required this.players, this.playerNumber = 0, this.roundNumber = 1});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(      //kolor tła zrobić wg motywu (ciemny/jasny)
+    final theme = Theme.of(context);
+    return Scaffold(
+      //kolor tła zrobić wg motywu (ciemny/jasny)
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsets.all(16),
@@ -39,75 +42,81 @@ class GameScreen extends StatelessWidget {
           ),
         ),
         centerTitle: true,
+        backgroundColor: theme.appBarTheme.backgroundColor,
       ),
-      
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 0),
-            child: Text(
-              players[playerNumber].name,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-          ),
-          
-          const Expanded(
-            child: Center(
-              child: Dartboard(),
-            ),
-          ),
 
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // Tu dodać logikę powtarzania wprowadzania wyników rzucania
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,    //dorobić kolorki
-                    foregroundColor: Colors.black,
-                    
-                    minimumSize: Size(150, 70),
-                  ),
-                  child: const Text(
-                    "Back",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  )
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Dopisać punkty odpowiedniemu graczowi
-                    Navigator.pushReplacement(
-                      context,
-                      //dodać przekierowanie do EndGameScreen, jeśli gracz właśnie wygrał - wtedy nie większać numeru gracza
-
-                      //przekierowanie do ScoreBoardScreen ze zmienionym graczem i rundą
-                      MaterialPageRoute(
-                        builder: (context) => ScoreBoardScreen(
-                          players: players,
-                          playerNumber: (playerNumber == players.length - 1) ? 0 : playerNumber + 1,
-                          roundNumber: (playerNumber == players.length - 1) ? roundNumber + 1 : roundNumber,
-                        ),
+      body: Container(
+        color: theme.scaffoldBackgroundColor,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: 16, left: 16, right: 16, bottom: 0),
+              child: Text(
+                players[playerNumber].name,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Expanded(
+              child: Center(
+                child: Dartboard(),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        // Tu dodać logikę powtarzania wprowadzania wyników rzucania
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: theme.colorScheme.error,
+                        foregroundColor: theme.colorScheme.onError,
+                        minimumSize: Size(150, 70),
                       ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,  //tu też
-                    foregroundColor: Colors.black,
-                    minimumSize: Size(150, 70),
-                  ),
-                  child: const Text(
-                    "Confirm",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  )
-                ),
-              ],
+                      child: const Text(
+                        "Back",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      )),
+                  ElevatedButton(
+                      onPressed: () {
+                        // Dopisać punkty odpowiedniemu graczowi
+                        Navigator.pushReplacement(
+                          context,
+                          //dodać przekierowanie do EndGameScreen, jeśli gracz właśnie wygrał - wtedy nie większać numeru gracza
+
+                          //przekierowanie do ScoreBoardScreen ze zmienionym graczem i rundą
+                          MaterialPageRoute(
+                            builder: (context) => ScoreBoardScreen(
+                              players: players,
+                              playerNumber: (playerNumber == players.length - 1)
+                                  ? 0
+                                  : playerNumber + 1,
+                              roundNumber: (playerNumber == players.length - 1)
+                                  ? roundNumber + 1
+                                  : roundNumber,
+                            ),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: theme.colorScheme.secondary, //tu też
+                        foregroundColor: theme.colorScheme.onSecondary,
+                        minimumSize: Size(150, 70),
+                      ),
+                      child: const Text(
+                        "Confirm",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      )),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
