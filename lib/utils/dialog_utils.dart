@@ -1,4 +1,8 @@
+import 'package:darttracker/screens/score_board_screen.dart';
+import 'package:darttracker/views/widgets/score_board.dart';
 import 'package:flutter/material.dart';
+
+import '../models/player.dart';
 
 class NewGameDialog extends StatefulWidget {
   const NewGameDialog({super.key});
@@ -12,6 +16,7 @@ class NewGameDialogState extends State<NewGameDialog> {
   final List<FocusNode> _focusNodes = [];
   final List<bool> _isReadOnly = [];
   final List<bool> _isEditing = [];
+  final List<Player> _players = [];
   bool _isAnyEditing = false;
 
   @override
@@ -36,6 +41,9 @@ class NewGameDialogState extends State<NewGameDialog> {
 
   void _addNewWidget() {
     setState(() {
+      if (_controllers.isNotEmpty && _controllers.last.text.isNotEmpty) {
+        _players.add(Player(name: _controllers.last.text, scores: [0, 0, 0]));
+      }
       _controllers.add(TextEditingController());
       _focusNodes.add(FocusNode());
       _isReadOnly.add(false);
@@ -59,6 +67,9 @@ class NewGameDialogState extends State<NewGameDialog> {
       _focusNodes.removeAt(index);
       _isReadOnly.removeAt(index);
       _isEditing.removeAt(index);
+      if (index < _players.length) {
+        _players.removeAt(index);
+      }
       _isAnyEditing = _isEditing.contains(true);
     });
   }
@@ -74,6 +85,15 @@ class NewGameDialogState extends State<NewGameDialog> {
 
   void _saveWidget(int index) {
     setState(() {
+      if (_controllers[index].text.isNotEmpty) {
+        if (index < _players.length) {
+          _players[index] =
+              Player(name: _controllers[index].text, scores: [0, 0, 0]);
+        } else {
+          _players
+              .add(Player(name: _controllers[index].text, scores: [0, 0, 0]));
+        }
+      }
       _isReadOnly[index] = true;
       _isEditing[index] = false;
       _isAnyEditing = false;
@@ -86,9 +106,7 @@ class NewGameDialogState extends State<NewGameDialog> {
   }
 
   bool _isFirstFieldSaved() {
-    return _controllers.isNotEmpty &&
-        _controllers.first.text.isNotEmpty &&
-        _isReadOnly.first;
+    return _players.isNotEmpty && _players.first.name.isNotEmpty;
   }
 
   bool _canStartGame() {
@@ -97,10 +115,9 @@ class NewGameDialogState extends State<NewGameDialog> {
   }
 
   void _startGame() {
-    if (_controllers.isNotEmpty && _controllers.last.text.isEmpty) {
-      _removeWidget(_controllers.length - 1);
-    }
-    Navigator.of(context).pop();
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => ScoreBoardScreen(
+            players: _players, playerNumber: 0, roundNumber: 1)));
   }
 
   @override

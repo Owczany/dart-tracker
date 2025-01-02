@@ -21,7 +21,7 @@ class App extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
             theme: themeNotifier.currentTheme,
-            home: const HomeScreen(),
+            home: const HomeScreen()
           );
         },
       ),
