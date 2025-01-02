@@ -1,5 +1,4 @@
 import 'package:darttracker/screens/score_board_screen.dart';
-import 'package:darttracker/views/widgets/score_board.dart';
 import 'package:flutter/material.dart';
 
 import '../models/player.dart';
