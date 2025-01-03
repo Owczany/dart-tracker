@@ -14,8 +14,9 @@ class EndGameScreen extends StatelessWidget {
   final int playerNumber;
   final int roundNumber;
 
-  EndGameScreen(
-      {required this.players,
+  const EndGameScreen(
+      {super.key,
+      required this.players,
       required this.playerNumber,
       required this.roundNumber});
 
@@ -50,60 +51,60 @@ class EndGameScreen extends StatelessWidget {
                       //przycisk powrotu do HomeScreen
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: Size(double.infinity,
+                          minimumSize: const Size(double.infinity,
                               50), // Szerokość na cały ekran, wysokość 50
                           backgroundColor: Colors.red,
                           foregroundColor: Colors.black,
-                          padding: EdgeInsets.symmetric(vertical: 16.0),
-                          textStyle: TextStyle(fontSize: 20),
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          textStyle: const TextStyle(fontSize: 20),
                         ),
                         onPressed: () {
                           //przekierowanie do HomeScreen
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HomeScreen()),
+                                builder: (context) => const HomeScreen()),
                           );
                         },
-                        child: Center(
+                        child: const Center(
                           child: Text('Back to Main Menu'),
                         ),
                       ),
-                      SizedBox(height: 16), // Odstęp między przyciskami
+                      const SizedBox(height: 16), // Odstęp między przyciskami
 
                       //przycisk zapisu gry do pamięci
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: Size(double.infinity,
+                          minimumSize: const Size(double.infinity,
                               50), // Szerokość na cały ekran, wysokość 50
                           backgroundColor: Colors.orange,
                           foregroundColor: Colors.black,
-                          padding: EdgeInsets.symmetric(vertical: 16.0),
-                          textStyle: TextStyle(fontSize: 20),
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          textStyle: const TextStyle(fontSize: 20),
                         ),
                         onPressed: () {
                           // tu zapisanie gry
                         },
-                        child: Center(
+                        child: const Center(
                           child: Text('Save a Game'),
                         ),
                       ),
-                      SizedBox(height: 16), // Odstęp między przyciskami
+                      const SizedBox(height: 16), // Odstęp między przyciskami
 
                       //przycisk nowej szybkiej gry
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: Size(double.infinity,
+                          minimumSize: const Size(double.infinity,
                               50), // Szerokość na cały ekran, wysokość 50
                           backgroundColor: Colors.green,
                           foregroundColor: Colors.black,
-                          padding: EdgeInsets.symmetric(vertical: 16.0),
-                          textStyle: TextStyle(fontSize: 20),
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          textStyle: const TextStyle(fontSize: 20),
                         ),
                         onPressed: () {
                           // tu szybki start
                         },
-                        child: Center(
+                        child: const Center(
                           child: Text('Quick Start'),
                         ),
                       ),

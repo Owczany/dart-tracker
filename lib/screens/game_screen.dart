@@ -25,8 +25,8 @@ class GameScreen extends StatelessWidget {
   final int playerNumber;
   final int roundNumber;
 
-  GameScreen(
-      {required this.players, this.playerNumber = 0, this.roundNumber = 1});
+  const GameScreen(
+      {super.key, required this.players, this.playerNumber = 0, this.roundNumber = 1});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class GameScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Text(
             'Round $roundNumber',
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
         centerTitle: true,
@@ -54,7 +54,7 @@ class GameScreen extends StatelessWidget {
                   top: 16, left: 16, right: 16, bottom: 0),
               child: Text(
                 players[playerNumber].name,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),
             const Expanded(
@@ -74,7 +74,7 @@ class GameScreen extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: theme.colorScheme.error,
                         foregroundColor: theme.colorScheme.onError,
-                        minimumSize: Size(150, 70),
+                        minimumSize: const Size(150, 70),
                       ),
                       child: const Text(
                         "Back",
@@ -105,7 +105,7 @@ class GameScreen extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: theme.colorScheme.secondary, //tu też
                         foregroundColor: theme.colorScheme.onSecondary,
-                        minimumSize: Size(150, 70),
+                        minimumSize: const Size(150, 70),
                       ),
                       child: const Text(
                         "Confirm",

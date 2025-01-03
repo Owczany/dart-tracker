@@ -12,8 +12,8 @@ class ScoreBoardScreen extends StatelessWidget {
   final int playerNumber;
   final int roundNumber;
 
-  ScoreBoardScreen(
-      {required this.players,
+  const ScoreBoardScreen(
+      {super.key, required this.players,
       required this.playerNumber,
       required this.roundNumber});
 
@@ -22,7 +22,7 @@ class ScoreBoardScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text('Scores after each round'),
+          title: const Text('Scores after each round'),
           centerTitle: true,
           backgroundColor: theme.appBarTheme.backgroundColor,
         ),
@@ -42,11 +42,11 @@ class ScoreBoardScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 70),
+                        minimumSize: const Size(double.infinity, 70),
                         backgroundColor: theme.colorScheme.primary,
                         foregroundColor: theme.colorScheme.onPrimary,
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
-                        textStyle: TextStyle(fontSize: 20),
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        textStyle: const TextStyle(fontSize: 20),
                       ),
                       onPressed: () {
                         //przekierowanie spowrotem do game_screen
@@ -63,7 +63,7 @@ class ScoreBoardScreen extends StatelessWidget {
                       child: Center(
                           child: Text(
                         'Now player ${players[playerNumber].name}',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       )),
                     ),
