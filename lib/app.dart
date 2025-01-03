@@ -16,9 +16,9 @@ class App extends StatelessWidget {
         builder: (context, themeNotifier, child) {
           return MaterialApp(
               debugShowCheckedModeBanner: false,
-              title: 'Flutter Demo',
+              title: 'Darts Tracker',
               localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: const [Locale('pl'), Locale('en')],
+              supportedLocales: AppLocalizations.supportedLocales,
               theme: themeNotifier.currentTheme,
               home: const HomeScreen());
         },
