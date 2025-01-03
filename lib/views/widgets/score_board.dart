@@ -6,7 +6,7 @@ class ScoreBoard extends StatelessWidget {
   final List<Player> players;
   final bool endOfGame;  //endOfGame: true - kolorowanie i sortowanie wygranych po ostatniej rundzie
 
-  ScoreBoard({super.key, required this.players, this.endOfGame = false});
+  const ScoreBoard({super.key, required this.players, this.endOfGame = false});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class ScoreBoard extends StatelessWidget {
 
   List<DataColumn> _buildColumns() {
     List<DataColumn> columns = [
-      DataColumn(label: Text('Player')),
+      const DataColumn(label: Text('Player')),
     ];
     for (int i = 0; i < players[0].scores.length; i++) {
       columns.add(DataColumn(label: Text('Round ${i + 1}')));

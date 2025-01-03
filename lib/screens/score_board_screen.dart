@@ -19,7 +19,7 @@ class ScoreBoardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Scores after each round'),
+        title: const Text('Scores after each round'),
         centerTitle: true,
       ),
       body: Stack(

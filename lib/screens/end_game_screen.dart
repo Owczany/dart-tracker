@@ -45,7 +45,7 @@ class EndGameScreen extends StatelessWidget {
                         //przekierowanie do HomeScreen
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                          MaterialPageRoute(builder: (context) => const HomeScreen()),
                         );
                       },
                       color: Colors.red,
