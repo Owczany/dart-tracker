@@ -1,0 +1,22 @@
+{
+    "helloWorld": "Hello World!",
+    "@helloWorld": {
+        "description": "The conventional newborn programmer greeting"
+    },
+
+    "hello": "Hello {name}",
+    "@hello": {
+        "description": "Say hi to someone",
+        "placeholders": {
+            "name": {
+                "type": "String",
+                "example": "Piotr"
+            }
+        }
+    },
+
+    "dartboard": "Dartboard",
+    "@dartboard": {
+        "description": "Dartboard"
+    }
+}
