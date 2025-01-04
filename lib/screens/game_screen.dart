@@ -17,7 +17,7 @@ players: [
 
 import 'package:darttracker/models/player.dart';
 import 'package:darttracker/screens/score_board_screen.dart';
-import 'package:darttracker/views/widgets/dart_board/dartboard.dart';
+import 'package:darttracker/widgets/adapters/dartboard.dart';
 import 'package:flutter/material.dart';
 
 class GameScreen extends StatelessWidget {

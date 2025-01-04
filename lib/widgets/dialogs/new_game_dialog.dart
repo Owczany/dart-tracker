@@ -2,7 +2,6 @@ import 'package:darttracker/models/player_field.dart';
 import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../models/player.dart';
 
 class NewGameDialog extends StatefulWidget {
   const NewGameDialog({super.key});

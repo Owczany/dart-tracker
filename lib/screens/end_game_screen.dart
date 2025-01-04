@@ -6,7 +6,7 @@
 
 import 'package:darttracker/models/player.dart';
 import 'package:darttracker/screens/home_screen.dart';
-import 'package:darttracker/views/widgets/score_board.dart';
+import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:flutter/material.dart';
 
 class EndGameScreen extends StatelessWidget {

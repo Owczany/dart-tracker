@@ -1,9 +1,9 @@
-import 'package:darttracker/utils/dialog_utils.dart';
-import 'package:darttracker/views/widgets/dart_board/dartboard.dart';
+import 'package:darttracker/widgets/dialogs/new_game_dialog.dart';
+import 'package:darttracker/widgets/adapters/dartboard.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../views/theme_notifier.dart';
-import '../views/widgets/default_button.dart';
+import '../themes/theme_notifier.dart';
+import '../widgets/components/default_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
