@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'color_palette.dart';
+import 'light_theme.dart';
+import 'dark_theme.dart';
 
 class ThemeNotifier extends ChangeNotifier {
   ThemeData _currentTheme = LightTheme.themeData;
