@@ -1,3 +1,4 @@
+import 'package:darttracker/models/player_field.dart';
 import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -11,112 +12,94 @@ class NewGameDialog extends StatefulWidget {
 }
 
 class NewGameDialogState extends State<NewGameDialog> {
-  final List<TextEditingController> _controllers = [];
-  final List<FocusNode> _focusNodes = [];
-  final List<bool> _isReadOnly = [];
-  final List<bool> _isEditing = [];
-  final List<Player> _players = [];
+  final List<PlayerField> _playerFields = [];
   bool _isAnyEditing = false;
 
   @override
   void initState() {
     super.initState();
-    _controllers.add(TextEditingController());
-    _focusNodes.add(FocusNode());
-    _isReadOnly.add(false);
-    _isEditing.add(false);
+    _playerFields.add(PlayerField(
+      controller: TextEditingController(),
+      focusNode: FocusNode(),
+    ));
   }
 
   @override
   void dispose() {
-    for (var controller in _controllers) {
-      controller.dispose();
-    }
-    for (var focusNode in _focusNodes) {
-      focusNode.dispose();
+    for (var playerField in _playerFields) {
+      playerField.dispose();
     }
     super.dispose();
   }
 
   void _addNewWidget() {
     setState(() {
-      if (_controllers.isNotEmpty && _controllers.last.text.isNotEmpty) {
-        _players.add(Player(name: _controllers.last.text, scores: [0, 0, 0]));
+      if (_playerFields.isNotEmpty &&
+          _playerFields.last.controller.text.isNotEmpty) {
+        _playerFields.last.save();
       }
-      _controllers.add(TextEditingController());
-      _focusNodes.add(FocusNode());
-      _isReadOnly.add(false);
-      _isEditing.add(false);
-      if (_controllers.length > 1) {
-        _isReadOnly[_controllers.length - 2] = true;
+      _playerFields.add(PlayerField(
+        controller: TextEditingController(),
+        focusNode: FocusNode(),
+      ));
+      if (_playerFields.length > 1) {
+        _playerFields[_playerFields.length - 2].isReadOnly = true;
       }
     });
     Future.delayed(const Duration(milliseconds: 100), () {
       if (mounted) {
-        FocusScope.of(context).requestFocus(_focusNodes.last);
+        FocusScope.of(context).requestFocus(_playerFields.last.focusNode);
       }
     });
   }
 
   void _removeWidget(int index) {
     setState(() {
-      _controllers[index].dispose();
-      _focusNodes[index].dispose();
-      _controllers.removeAt(index);
-      _focusNodes.removeAt(index);
-      _isReadOnly.removeAt(index);
-      _isEditing.removeAt(index);
-      if (index < _players.length) {
-        _players.removeAt(index);
-      }
-      _isAnyEditing = _isEditing.contains(true);
+      _playerFields[index].dispose();
+      _playerFields.removeAt(index);
+      _isAnyEditing = _playerFields.any((field) => field.isEditing);
     });
   }
 
   void _editWidget(int index) {
     setState(() {
-      _isReadOnly[index] = false;
-      _isEditing[index] = true;
+      _playerFields[index].edit();
       _isAnyEditing = true;
-      FocusScope.of(context).requestFocus(_focusNodes[index]);
+      FocusScope.of(context).requestFocus(_playerFields[index].focusNode);
     });
   }
 
   void _saveWidget(int index) {
     setState(() {
-      if (_controllers[index].text.isNotEmpty) {
-        if (index < _players.length) {
-          _players[index] =
-              Player(name: _controllers[index].text, scores: [0, 0, 0]);
-        } else {
-          _players
-              .add(Player(name: _controllers[index].text, scores: [0, 0, 0]));
-        }
-      }
-      _isReadOnly[index] = true;
-      _isEditing[index] = false;
+      _playerFields[index].save();
       _isAnyEditing = false;
-      FocusScope.of(context).requestFocus(_focusNodes.last);
+      FocusScope.of(context).requestFocus(_playerFields.last.focusNode);
     });
   }
 
   bool _isLastFieldEmpty() {
-    return _controllers.isNotEmpty && _controllers.last.text.isEmpty;
+    return _playerFields.isNotEmpty &&
+        _playerFields.last.controller.text.isEmpty;
   }
 
   bool _isFirstFieldSaved() {
-    return _players.isNotEmpty && _players.first.name.isNotEmpty;
+    return _playerFields.isNotEmpty && _playerFields.first.player != null;
   }
 
   bool _canStartGame() {
     return _isFirstFieldSaved() &&
-        (_controllers.length == 1 || _isLastFieldEmpty());
+        (_playerFields.length == 1 || _isLastFieldEmpty());
   }
 
   void _startGame() {
     Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => ScoreBoardScreen(
-            players: _players, playerNumber: 0, roundNumber: 1)));
+            players: _playerFields
+                .where((field) => field.player != null)
+                .map((field) => field.player!)
+                .toList(),
+            playerNumber: 0,
+            roundNumber: 1)));
   }
 
   @override
@@ -128,19 +111,18 @@ class NewGameDialogState extends State<NewGameDialog> {
         children: <Widget>[
           const Text('Enter player names:'),
           const SizedBox(height: 10),
-          ..._controllers.asMap().entries.map((entry) {
+          ..._playerFields.asMap().entries.map((entry) {
             int index = entry.key;
-            TextEditingController controller = entry.value;
-            FocusNode focusNode = _focusNodes[index];
+            PlayerField playerField = entry.value;
             return Row(
               children: [
                 Expanded(
                   child: TextField(
-                    controller: controller,
-                    focusNode: focusNode,
-                    readOnly: _isReadOnly[index] ||
-                        (_isAnyEditing && !_isEditing[index]),
-                    enabled: !_isAnyEditing || _isEditing[index],
+                    controller: playerField.controller,
+                    focusNode: playerField.focusNode,
+                    readOnly: playerField.isReadOnly ||
+                        (_isAnyEditing && !playerField.isEditing),
+                    enabled: !_isAnyEditing || playerField.isEditing,
                     decoration: InputDecoration(
                       labelText: 'Player ${index + 1}',
                     ),
@@ -150,26 +132,26 @@ class NewGameDialogState extends State<NewGameDialog> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(_isEditing[index]
+                  icon: Icon(playerField.isEditing
                       ? Icons.check
-                      : (index == _controllers.length - 1
+                      : (index == _playerFields.length - 1
                           ? Icons.add
                           : Icons.edit)),
-                  onPressed: _isAnyEditing && !_isEditing[index] ||
-                          (index == _controllers.length - 1 &&
-                              controller.text.isEmpty)
+                  onPressed: _isAnyEditing && !playerField.isEditing ||
+                          (index == _playerFields.length - 1 &&
+                              playerField.controller.text.isEmpty)
                       ? null
                       : () {
-                          if (_isEditing[index]) {
+                          if (playerField.isEditing) {
                             _saveWidget(index);
-                          } else if (index == _controllers.length - 1) {
+                          } else if (index == _playerFields.length - 1) {
                             _addNewWidget();
                           } else {
                             _editWidget(index);
                           }
                         },
                 ),
-                if (index != _controllers.length - 1)
+                if (index != _playerFields.length - 1)
                   IconButton(
                     icon: const Icon(Icons.remove),
                     onPressed:
