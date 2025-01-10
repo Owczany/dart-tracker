@@ -1,7 +1,7 @@
 import 'package:darttracker/models/player_field.dart';
+import 'package:darttracker/models/match.dart';
 import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:flutter/material.dart';
-
 
 class NewGameDialog extends StatefulWidget {
   const NewGameDialog({super.key});
@@ -91,14 +91,14 @@ class NewGameDialogState extends State<NewGameDialog> {
   }
 
   void _startGame() {
+    final match = Match(
+      players: _playerFields
+          .where((field) => field.player != null)
+          .map((field) => field.player!)
+          .toList(),
+    );
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => ScoreBoardScreen(
-            players: _playerFields
-                .where((field) => field.player != null)
-                .map((field) => field.player!)
-                .toList(),
-            playerNumber: 0,
-            roundNumber: 1)));
+        builder: (context) => ScoreBoardScreen(match: match)));
   }
 
   @override
