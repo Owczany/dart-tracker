@@ -25,36 +25,41 @@ class ScoreBoardScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Scores after each round'),
         centerTitle: true,
+        backgroundColor: theme.appBarTheme.backgroundColor,
       ),
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              Expanded(
-                //tabelka wyników
-                child: Center(
-                  child: ScoreBoard(players: players),
+      body: Container (
+        color: theme.scaffoldBackgroundColor,
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                Expanded(
+                  //tabelka wyników
+                  child: Center(
+                    child: ScoreBoard(players: players),
+                  ),
                 ),
-              ),
 
-              //przycisk przejścia do następnej tury
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: OwnButton(
-                  text: 'Next player: ${players[playerNumber].name}',
-                  onPressed: () {
-                    //przekierowanie spowrotem do game_screen
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => GameScreen(players: players, playerNumber: playerNumber, roundNumber : roundNumber)),
-                    );
-                  },
-                  color: Colors.green,
+                //przycisk przejścia do następnej tury
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: OwnButton(
+                    text: 'Next player: ${players[playerNumber].name}',
+                    onPressed: () {
+                      //przekierowanie spowrotem do game_screen
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => GameScreen(players: players, playerNumber: playerNumber, roundNumber : roundNumber)),
+                      );
+                    },
+                    color: theme.colorScheme.primary,
+                    textColor: theme.colorScheme.onPrimary,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ]
+              ],
+            ),
+          ]
+        )
       )
     );
   }

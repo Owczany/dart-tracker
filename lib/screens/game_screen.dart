@@ -115,6 +115,7 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Padding(
@@ -127,185 +128,194 @@ class _GameScreenState extends State<GameScreen> {
         centerTitle: true,
         backgroundColor: theme.appBarTheme.backgroundColor,
       ),
-      body: Column(
-        children: [
-          // Nazwa gracza
-          Padding(
-            padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 0),
-            child: Text(
-              players[playerNumber].name,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-          ),
-
-          if (!boardVersion)
-            // Dodanie pól tekstowych, można wpisać tylko liczby
+      body: Container (
+        color: theme.scaffoldBackgroundColor,
+        child: Column(
+          children: [
+            // Nazwa gracza
             Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 0),
+              child: Text(
+                players[playerNumber].name,
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+            ),
+
+            if (!boardVersion)
+              // Dodanie pól tekstowych, można wpisać tylko liczby
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: OwnOnlyNumberTextFirld(controller: _controller1, text: 'Throw 1'),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: OwnOnlyNumberTextFirld(controller: _controller2, text: 'Throw 2'),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: OwnOnlyNumberTextFirld(controller: _controller3, text: 'Throw 3'),
+                    ),
+                  ],
+                ),
+              ),
+
+            Expanded(
+              child: Stack(
                 children: [
-                  Expanded(
-                    child: OwnOnlyNumberTextFirld(controller: _controller1, text: 'Throw 1'),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: OwnOnlyNumberTextFirld(controller: _controller2, text: 'Throw 2'),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: OwnOnlyNumberTextFirld(controller: _controller3, text: 'Throw 3'),
-                  ),
+                  Dartboard(key : dartboardKey),
+                  if (boardVersion)
+                    //zczytywanie kliknięć
+                    GestureDetector(
+                      onTapDown: (details) {
+                        //final RenderBox box = dartboardKey.currentContext!.findRenderObject() as RenderBox;
+
+                        //ograniczenie na max 3 rzuty
+                        if (throws.length == 3) {
+                          showSnackBar(context, "You have only 3 darts!");
+                        } else {
+                          // Przekształcenie globalnych współrzędnych na lokalne
+                          setState(() {
+                            throws.add(/*box.globalToLocal*/(details.localPosition));
+                          });
+                        }
+                      },
+                      child: CustomPaint(
+                        painter: TouchPointsPainter(touchPositions: throws),
+                        child: Container(), //potrzebny, żeby był znany rozmiar obszaru do klikania
+                      ),
+                    ),
                 ],
               ),
             ),
 
-          Expanded(
-            child: Stack(
-              children: [
-                Dartboard(key : dartboardKey),
-                if (boardVersion)
-                  //zczytywanie kliknięć
-                  GestureDetector(
-                    onTapDown: (details) {
-                      //final RenderBox box = dartboardKey.currentContext!.findRenderObject() as RenderBox;
 
-                      //ograniczenie na max 3 rzuty
-                      if (throws.length == 3) {
-                        showSnackBar(context, "You have only 3 darts!");
-                      } else {
-                        // Przekształcenie globalnych współrzędnych na lokalne
-                        setState(() {
-                          throws.add(/*box.globalToLocal*/(details.localPosition));
-                        });
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+
+                  //przycisk usunięcia ostatniego rzutu
+                  OwnButton(
+                    text: 'Cancel',
+                    onPressed: () {
+                      if (throws.isNotEmpty) {
+                        throws.removeLast();
                       }
                     },
-                    child: CustomPaint(
-                      painter: TouchPointsPainter(touchPositions: throws),
-                      child: Container(), //potrzebny, żeby był znany rozmiar obszaru do klikania
-                    ),
+                    color: theme.colorScheme.error,
+                    textColor: theme.colorScheme.onError,
+                    minimumSize: const Size(150, 70),
                   ),
-              ],
-            ),
-          ),
 
+                  // nawigacja do tabelki wyników
+                  OwnButton(
+                    text: 'Confirm',
+                    onPressed: () {
 
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-
-                //przycisk usunięcia ostatniego rzutu
-                OwnButton(
-                  text: 'Cancel',
-                  onPressed: () {
-                    if (throws.isNotEmpty) {
-                      throws.removeLast();
-                    }
-                  },
-                  color: Colors.red,
-                  minimumSize: const Size(150, 50),
-                ),
-
-                // nawigacja do tabelki wyników
-                OwnButton(
-                  text: 'Confirm',
-                  onPressed: () {
-
-                    //dodanie kolejnej runduy do list wyników
-                    if (players[0].scores.length < roundNumber) {
-                      for (var player in players) {
-                        player.scores.add(0);
-                      }
-                    }
-
-                    //TODO: zrobić ładniej
-                    
-                    List<int> points = [];
-
-                    if (boardVersion) {
-                      if (throws.length != 3) {
-                        showSnackBar(context, "Mark 3 throws");
-                      } else {
-                        for (Offset throw_ in throws) {
-                          points.add(calculateThrow(throw_));
+                      //dodanie kolejnej runduy do list wyników
+                      if (players[0].scores.length < roundNumber) {
+                        for (var player in players) {
+                          player.scores.add(0);
                         }
                       }
-                    } else {
-                      int? throw1 = int.tryParse(_controller1.text);
-                      int? throw2 = int.tryParse(_controller2.text);
-                      int? throw3 = int.tryParse(_controller3.text);
 
-                      //sprawdzenie, czy wpisano tylko liczby
-                      if (throw1 == null || throw2 == null || throw3 == null) {
-                        showSnackBar(context, "Type all numbers");
-                      } else {
-                        points.add(throw1);
-                        points.add(throw2);
-                        points.add(throw3);
-                      }
-                    }
-                    
-                    //sprawdzenie, czy ilość rzutów się zgadza
-                    if (points.length == 3) {
-                    
-                      //ustalanie punktacji obecnego gracza
-                      int score = 0;
-                      roundNumber == 1 
-                        ? score = gameScore - (points[0] + points[1] + points[2])
-                        : score = players[playerNumber].scores[roundNumber - 2] - (points[0] + points[1] + points[2]);
+                      //TODO: zrobić ładniej
                       
-                      players[playerNumber].scores[roundNumber - 1] = score;
+                      List<int> points = [];
 
-                      if (players[playerNumber].scores[roundNumber - 1] <= 0) {
-                        players[playerNumber].scores[roundNumber - 1] = 0;
-                        
-                        //ustalanie punktacji pozostałych graczy przy wygranej obecnego gracza
-                        if (roundNumber == 1){
-                          for (int i = playerNumber + 1; i < players.length; i ++) {
-                            players[i].scores[roundNumber - 1] = gameScore;
-                          }
+                      if (boardVersion) {
+                        if (throws.length != 3) {
+                          showSnackBar(context, "Mark 3 throws");
                         } else {
-                          for (int i = playerNumber + 1; i < players.length; i ++) {
-                            players[i].scores[roundNumber - 1] = players[i].scores[roundNumber - 2];
+                          for (Offset throw_ in throws) {
+                            points.add(calculateThrow(throw_));
                           }
                         }
+                      } else {
+                        int? throw1 = int.tryParse(_controller1.text);
+                        int? throw2 = int.tryParse(_controller2.text);
+                        int? throw3 = int.tryParse(_controller3.text);
 
-                        //odpowiednie przekierowanie jeśli już ktoś wygrał (wtedy jego wynik w ostatniej rundzie to 0)
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EndGameScreen(
-                              players: players,
-                              playerNumber: playerNumber,
-                              roundNumber: roundNumber,
-                            ),
-                          ),
-                        );
+                        //sprawdzenie, czy wpisano tylko liczby
+                        if (throw1 == null || throw2 == null || throw3 == null) {
+                          showSnackBar(context, "Type all numbers");
+                        } else {
+                          points.add(throw1);
+                          points.add(throw2);
+                          points.add(throw3);
+                        }
                       }
-                      else {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ScoreBoardScreen(
-                              players: players,
-                              playerNumber: (playerNumber == players.length - 1) ? 0 : playerNumber + 1,
-                              roundNumber: (playerNumber == players.length - 1) ? roundNumber + 1 : roundNumber,
+                      
+                      //sprawdzenie, czy ilość rzutów się zgadza
+                      if (points.length == 3) {
+                      
+                        //ustalanie punktacji obecnego gracza
+                        int score = 0;
+                        roundNumber == 1 
+                          ? score = gameScore - (points[0] + points[1] + points[2])
+                          : score = players[playerNumber].scores[roundNumber - 2] - (points[0] + points[1] + points[2]);
+                        
+                        players[playerNumber].scores[roundNumber - 1] = score;
+
+                        if (players[playerNumber].scores[roundNumber - 1] <= 0) {
+                          players[playerNumber].scores[roundNumber - 1] = 0;
+                          
+                          //ustalanie punktacji pozostałych graczy przy wygranej obecnego gracza
+                          if (roundNumber == 1){
+                            for (int i = playerNumber + 1; i < players.length; i ++) {
+                              players[i].scores[roundNumber - 1] = gameScore;
+                            }
+                          } else {
+                            for (int i = playerNumber + 1; i < players.length; i ++) {
+                              players[i].scores[roundNumber - 1] = players[i].scores[roundNumber - 2];
+                            }
+                          }
+
+                          //odpowiednie przekierowanie jeśli już ktoś wygrał (wtedy jego wynik w ostatniej rundzie to 0)
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EndGameScreen(
+                                players: players,
+                                playerNumber: playerNumber,
+                                roundNumber: roundNumber,
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        }
+                        else {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ScoreBoardScreen(
+                                players: players,
+                                playerNumber: (playerNumber == players.length - 1) 
+                                  ? 0 
+                                  : playerNumber + 1,
+                                roundNumber: (playerNumber == players.length - 1) 
+                                  ? roundNumber + 1 
+                                    : roundNumber,
+                              ),
+                            ),
+                          );
+                        }
                       }
-                    }
-                  },
-                  color: Colors.green,
-                  minimumSize: const Size(150, 50),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
+                    },
+                    color: theme.colorScheme.secondary,
+                    textColor: theme.colorScheme.onSecondary,
+                    minimumSize: const Size(150, 70),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      )
     );
   }
 }

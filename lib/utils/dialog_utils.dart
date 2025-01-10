@@ -41,7 +41,7 @@ class NewGameDialogState extends State<NewGameDialog> {
   void _addNewWidget() {
     setState(() {
       if (_controllers.isNotEmpty && _controllers.last.text.isNotEmpty) {
-        _players.add(Player(name: _controllers.last.text, scores: [0, 0, 0]));
+        _players.add(Player(name: _controllers.last.text, scores: [0]));
       }
       _controllers.add(TextEditingController());
       _focusNodes.add(FocusNode());
@@ -87,10 +87,10 @@ class NewGameDialogState extends State<NewGameDialog> {
       if (_controllers[index].text.isNotEmpty) {
         if (index < _players.length) {
           _players[index] =
-              Player(name: _controllers[index].text, scores: [0, 0, 0]);
+              Player(name: _controllers[index].text, scores: [0]);
         } else {
           _players
-              .add(Player(name: _controllers[index].text, scores: [0, 0, 0]));
+              .add(Player(name: _controllers[index].text, scores: [0]));
         }
       }
       _isReadOnly[index] = true;
