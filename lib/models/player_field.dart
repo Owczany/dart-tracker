@@ -23,7 +23,7 @@ class PlayerField {
 
   void save() {
     if (controller.text.isNotEmpty) {
-      player = Player(name: controller.text, scores: [0, 0, 0]);
+      player = Player(name: controller.text);
     }
     isReadOnly = true;
     isEditing = false;

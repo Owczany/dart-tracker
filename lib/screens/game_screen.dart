@@ -12,7 +12,6 @@ class GameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      //kolor tła zrobić wg motywu (ciemny/jasny)
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsets.all(16),
@@ -64,26 +63,16 @@ class GameScreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // Dopisać punkty odpowiedniemu graczowi
+                      match.updatePlayerScore(
+                          match.playerNumber, 50); // Przykładowy wynik
+                      match.nextPlayer();
                       Navigator.pushReplacement(
                         context,
                         //dodać przekierowanie do EndGameScreen, jeśli gracz właśnie wygrał - wtedy nie większać numeru gracza
 
                         //przekierowanie do ScoreBoardScreen ze zmienionym graczem i rundą
                         MaterialPageRoute(
-                          builder: (context) => ScoreBoardScreen(
-                            match: Match(
-                              players: match.players,
-                              playerNumber: (match.playerNumber ==
-                                      match.players.length - 1)
-                                  ? 0
-                                  : match.playerNumber + 1,
-                              roundNumber: (match.playerNumber ==
-                                      match.players.length - 1)
-                                  ? match.roundNumber + 1
-                                  : match.roundNumber,
-                            ),
-                          ),
+                          builder: (context) => ScoreBoardScreen(match: match),
                         ),
                       );
                     },

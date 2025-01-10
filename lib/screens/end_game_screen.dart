@@ -1,33 +1,19 @@
-/* To do:
- * dodać obsługę motywów kolorystycznych
- * logika przycisku zapisu gry do pamięci
- * logika przycisku nowej szybkiej gry
-*/
-
-import 'package:darttracker/models/player.dart';
+import 'package:darttracker/models/match.dart';
 import 'package:darttracker/screens/home_screen.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:flutter/material.dart';
 
 class EndGameScreen extends StatelessWidget {
-  final List<Player> players;
-  final int playerNumber;
-  final int roundNumber;
+  final Match match;
 
-  const EndGameScreen(
-      {super.key,
-      required this.players,
-      required this.playerNumber,
-      required this.roundNumber});
+  const EndGameScreen({super.key, required this.match});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            '${players[playerNumber].name} is Winning!'), //dodam tu wygranego, jak ustalimy strukturę danych do przekazywania graczy,
-        //już widać, że sortowanie graczy trzeba wynieść poza score_board
+        title: Text('${match.players[match.playerNumber].name} is Winning!'),
         centerTitle: true,
         backgroundColor: theme.appBarTheme.backgroundColor,
       ),
@@ -40,7 +26,7 @@ class EndGameScreen extends StatelessWidget {
                 Expanded(
                   //tabelka wyników
                   child: Center(
-                    child: ScoreBoard(players: players, endOfGame: true),
+                    child: ScoreBoard(match: match, endOfGame: true),
                   ),
                 ),
                 Padding(

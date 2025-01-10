@@ -3,7 +3,6 @@ import 'package:darttracker/screens/game_screen.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:flutter/material.dart';
 
-
 class ScoreBoardScreen extends StatelessWidget {
   final Match match;
 
@@ -27,7 +26,7 @@ class ScoreBoardScreen extends StatelessWidget {
                 Expanded(
                   //tabelka wyników
                   child: Center(
-                    child: ScoreBoard(players: match.players),
+                    child: ScoreBoard(match: match),
                   ),
                 ),
                 Padding(
