@@ -1,4 +1,4 @@
-import 'package:darttracker/models/match.dart';
+import 'package:darttracker/components/own_button.dart';
 import 'package:darttracker/screens/game_screen.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class ScoreBoardScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: theme.appBarTheme.backgroundColor,
       ),
-      body: Container(
+      body: Container (
         color: theme.scaffoldBackgroundColor,
         child: Stack(
           children: [
@@ -29,42 +29,28 @@ class ScoreBoardScreen extends StatelessWidget {
                     child: ScoreBoard(match: match),
                   ),
                 ),
+
+                //przycisk przejścia do następnej tury
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 70),
-                      backgroundColor: theme.colorScheme.primary,
-                      foregroundColor: theme.colorScheme.onPrimary,
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      textStyle: const TextStyle(fontSize: 20),
-                    ),
+                  child: OwnButton(
+                    text: 'Next player: ${match.players[match.playerNumber].name}',
                     onPressed: () {
                       //przekierowanie spowrotem do game_screen
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => GameScreen(match: match),
-                        ),
+                        MaterialPageRoute(builder: (context) => GameScreen(match: match)),
                       );
                     },
-                    //wyświetlanie nazwy zastępnego gracza na przycisku
-                    child: Center(
-                      child: Text(
-                        'Now player ${match.players[match.playerNumber].name}',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                    color: theme.colorScheme.primary,
+                    textColor: theme.colorScheme.onPrimary,
                   ),
                 ),
               ],
             ),
-          ],
-        ),
-      ),
+          ]
+        )
+      )
     );
   }
 }

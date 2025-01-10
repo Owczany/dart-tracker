@@ -18,6 +18,7 @@ class App extends StatelessWidget {
               title: 'Darts Tracker',
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('pl'), //! Ustawione na razie na sztywno do testów
               theme: themeNotifier.currentTheme,
               home: const HomeScreen());
         },

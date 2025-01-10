@@ -1,22 +1,40 @@
 {
-    "helloWorld": "Hello World!",
-    "@helloWorld": {
-        "description": "The conventional newborn programmer greeting"
+    "@@locale": "en",
+
+    "appTitle": "Darts Tracker",
+    "@appTitle": {
+        "description": "Name of the app"
     },
 
-    "hello": "Hello {name}",
-    "@hello": {
-        "description": "Say hi to someone",
-        "placeholders": {
-            "name": {
-                "type": "String",
-                "example": "Piotr"
-            }
-        }
+    "newGame": "New Game",
+    "@newGame": {
+        "description": "Button text to start game"
     },
 
-    "dartboard": "Dartboard",
-    "@dartboard": {
-        "description": "Dartboard"
+    "history": "History",
+    "@history": {
+        "description": "",
+        "comment": "Nie mam pomysłu"
+    },
+
+    "dartRules": "Dart Rules",
+    "@dartRules": {
+        "description": "Text shown on a button"
+    },
+
+    "cancel": "Cancel",
+    "@cancel": {
+        "description": "Doesn't need to explain"
+    },
+
+    "save": "Save",
+    "@save": {
+        "description": ""
+    },
+
+    "confirm": "Confirm",
+    "@confirm": {
+        "description": ""
     }
+
 }

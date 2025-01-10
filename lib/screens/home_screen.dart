@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../themes/theme_notifier.dart';
 import '../widgets/components/default_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -43,21 +44,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   showNewGameDialog(context);
                 },
-                text: 'New Game',
+                text: AppLocalizations.of(context)!.newGame,
               ),
             ),
             const SizedBox(height: 10),
             Center(
               child: DefaultButton(
                 onPressed: () {},
-                text: 'Game History',
+                text: AppLocalizations.of(context)!.history,
               ),
             ),
             const SizedBox(height: 10),
             Center(
               child: DefaultButton(
                 onPressed: () {},
-                text: 'Darts Rules',
+                text: AppLocalizations.of(context)!.dartRules,
               ),
             ),
           ],

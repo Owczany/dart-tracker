@@ -1,4 +1,6 @@
 import 'package:darttracker/models/match.dart';
+import 'package:darttracker/components/own_button.dart';
+import 'package:darttracker/models/player.dart';
 import 'package:darttracker/screens/home_screen.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:flutter/material.dart';
@@ -77,26 +79,41 @@ class EndGameScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16), // Odstęp między przyciskami
 
-                      //przycisk nowej szybkiej gry
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity,
-                              50), // Szerokość na cały ekran, wysokość 50
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.black,
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          textStyle: const TextStyle(fontSize: 20),
-                        ),
-                        onPressed: () {
-                          // tu szybki start
-                        },
-                        child: const Center(
-                          child: Text('Quick Start'),
-                        ),
-                      ),
-                    ],
-                  ),
+                    //przycisk powrotu do HomeScreen
+                    OwnButton(
+                      text: 'Back to Main Menu',
+                      onPressed: () {
+                        //przekierowanie do HomeScreen
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const HomeScreen()),
+                        );
+                      },
+                      color: Colors.red,
+                    ),
+                    const SizedBox(height: 16), // Odstęp między przyciskami
+
+                    //przycisk zapisu gry do pamięci
+                    OwnButton(
+                      text: 'Save a Game',
+                      onPressed: () {
+                        //TODO: tu dorobić zapisanie gry
+                      },
+                      color: Colors.orange,
+                    ),
+                    const SizedBox(height: 16), // Odstęp między przyciskami
+
+                    //przycisk nowej szybkiej gry
+                    OwnButton(
+                      text: 'Quick Start',
+                      onPressed: () {
+                        //TODO: tu zrobić szybki start
+                      },
+                      color: Colors.green,
+                    ),
+                  ],
                 ),
+                )
               ],
             ),
           ],
