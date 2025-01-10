@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class OwnOnlyNumberTextFirld extends StatelessWidget {
+class OwnOnlyNumberTextField extends StatelessWidget {
   final controller;
   final String text;
 
-  OwnOnlyNumberTextFirld ({
+  OwnOnlyNumberTextField ({
     super.key,
     required this.controller,
     required this.text

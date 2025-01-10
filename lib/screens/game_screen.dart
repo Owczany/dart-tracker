@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:darttracker/models/match.dart';
 import 'package:darttracker/widgets/components/own_button.dart';
-import 'package:darttracker/widgets/components/own_only_number_text_firld.dart';
+import 'package:darttracker/widgets/components/own_only_number_text_field.dart';
 import 'package:darttracker/screens/end_game_screen.dart';
 import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:flutter/material.dart';
@@ -144,17 +144,17 @@ class GameScreenState extends State<GameScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                        child: OwnOnlyNumberTextFirld(
+                        child: OwnOnlyNumberTextField(
                             controller: _controller1, text: 'Throw 1'),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
-                        child: OwnOnlyNumberTextFirld(
+                        child: OwnOnlyNumberTextField(
                             controller: _controller2, text: 'Throw 2'),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
-                        child: OwnOnlyNumberTextFirld(
+                        child: OwnOnlyNumberTextField(
                             controller: _controller3, text: 'Throw 3'),
                       ),
                     ],
