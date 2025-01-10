@@ -3,5 +3,5 @@ class Player {
   //final List<int> scores;
   List<int> scores;
 
-  Player({required this.name, required this.scores});
+  Player({required this.name}) : scores = [];
 }

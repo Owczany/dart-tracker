@@ -1,22 +1,13 @@
-// TODO: dodać obsługę motywów kolorystycznych
-
-
-import 'package:darttracker/components/own_button.dart';
-import 'package:darttracker/models/player.dart';
+import 'package:darttracker/widgets/components/own_button.dart';
 import 'package:darttracker/screens/game_screen.dart';
-import 'package:darttracker/views/widgets/score_board.dart';
+import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:flutter/material.dart';
+import 'package:darttracker/models/match.dart';
 
-/// To jest ekran wyników po każdej rundzie
 class ScoreBoardScreen extends StatelessWidget {
-  final List<Player> players;
-  final int playerNumber;
-  final int roundNumber;
+  final Match match;
 
-  const ScoreBoardScreen(
-      {super.key, required this.players,
-      required this.playerNumber,
-      required this.roundNumber});
+  const ScoreBoardScreen({super.key, required this.match});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +27,7 @@ class ScoreBoardScreen extends StatelessWidget {
                 Expanded(
                   //tabelka wyników
                   child: Center(
-                    child: ScoreBoard(players: players),
+                    child: ScoreBoard(match: match),
                   ),
                 ),
 
@@ -44,12 +35,12 @@ class ScoreBoardScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: OwnButton(
-                    text: 'Next player: ${players[playerNumber].name}',
+                    text: 'Next player: ${match.players[match.playerNumber].name}',
                     onPressed: () {
                       //przekierowanie spowrotem do game_screen
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => GameScreen(players: players, playerNumber: playerNumber, roundNumber : roundNumber)),
+                        MaterialPageRoute(builder: (context) => GameScreen(match: match)),
                       );
                     },
                     color: theme.colorScheme.primary,

@@ -1,8 +1,5 @@
 import 'package:darttracker/screens/home_screen.dart';
-import 'package:darttracker/views/theme_notifier.dart';
-import 'package:darttracker/models/player.dart';
-import 'package:darttracker/screens/game_screen.dart';
-//import 'package:darttracker/views/widgets/score_board.dart';
+import 'package:darttracker/themes/theme_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
