@@ -1,6 +1,5 @@
 import 'package:darttracker/models/match.dart';
-import 'package:darttracker/components/own_button.dart';
-import 'package:darttracker/models/player.dart';
+import 'package:darttracker/widgets/components/own_button.dart';
 import 'package:darttracker/screens/home_screen.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:flutter/material.dart';
@@ -36,49 +35,6 @@ class EndGameScreen extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      //przycisk powrotu do HomeScreen
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity,
-                              50), // Szerokość na cały ekran, wysokość 50
-                          backgroundColor: Colors.red,
-                          foregroundColor: Colors.black,
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          textStyle: const TextStyle(fontSize: 20),
-                        ),
-                        onPressed: () {
-                          //przekierowanie do HomeScreen
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomeScreen()),
-                          );
-                        },
-                        child: const Center(
-                          child: Text('Back to Main Menu'),
-                        ),
-                      ),
-                      const SizedBox(height: 16), // Odstęp między przyciskami
-
-                      //przycisk zapisu gry do pamięci
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity,
-                              50), // Szerokość na cały ekran, wysokość 50
-                          backgroundColor: Colors.orange,
-                          foregroundColor: Colors.black,
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          textStyle: const TextStyle(fontSize: 20),
-                        ),
-                        onPressed: () {
-                          // tu zapisanie gry
-                        },
-                        child: const Center(
-                          child: Text('Save a Game'),
-                        ),
-                      ),
-                      const SizedBox(height: 16), // Odstęp między przyciskami
-
                     //przycisk powrotu do HomeScreen
                     OwnButton(
                       text: 'Back to Main Menu',

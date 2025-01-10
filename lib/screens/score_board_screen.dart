@@ -1,7 +1,8 @@
-import 'package:darttracker/components/own_button.dart';
+import 'package:darttracker/widgets/components/own_button.dart';
 import 'package:darttracker/screens/game_screen.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:flutter/material.dart';
+import 'package:darttracker/models/match.dart';
 
 class ScoreBoardScreen extends StatelessWidget {
   final Match match;
