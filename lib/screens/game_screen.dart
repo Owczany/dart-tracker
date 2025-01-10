@@ -1,26 +1,14 @@
 // TODO: dodać obsługę motywów kolorystycznych
-// TODO: dodać zaznaczanie rzutów na tarczy;
-
-/*dane testowe:
-players: [
-        Player(name: 'Gracz 1', scores: [1, 2, 3]),
-        Player(name: 'Gracz 2', scores: [4, 5, 6]),
-        Player(name: 'Gracz 3', scores: [7, 8, 9]),
-        Player(name: 'Gracz 4', scores: [10, 11, 12]),
-
-      ], playerNumber: 3, roundNumber: 5
-*/
-
 import 'dart:math';
 
 import 'package:darttracker/components/own_button.dart';
+import 'package:darttracker/components/own_only_number_text_firld.dart';
 import 'package:darttracker/models/player.dart';
 import 'package:darttracker/screens/end_game_screen.dart';
 import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:darttracker/views/widgets/dart_board/dartboard.dart';
 import 'package:darttracker/views/widgets/dart_board/touch_points_painter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 /// To jest ekran gry, gdzie gracz wklepuje swoje rzuty
 class GameScreen extends StatefulWidget {
@@ -35,17 +23,16 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
+  //TODO: przenieść to do ustawień
+  final bool boardVersion = true; // true - dotykowa, false - wpisywanie ręczne
+  final int gameScore = 501;
+
   late List<Player> players;
   late int playerNumber;
   late int roundNumber;
   final List<Offset> throws = []; // Przechowuje współrzędne rzutu
-  //TODO: w ustawieniach dać wybór trybu tarczy oraz tu pobierać z ustawień, na razie jest wpisane na sztywno, zmieniajcie se żeby testować
-  bool boardVersion = false; // true - dotykowa, false - wpisywanie ręczne
   final GlobalKey dartboardKey = GlobalKey();
-  final List<List<int>> boardScores = [[3, 17, 2, 15, 10, 6, 13, 4, 18, 1], [20, 5, 12, 9, 14, 11, 8, 16, 7, 19]];//będzie indeksowana: 
-  //biardScores[wybór jednego z dwóch trójkątów, które mają tę samą wartość arcsinusa][wybór jednego z nich na podstawie znaku cosinusa (lub tego po której stronie środka znajduje się nasz punkt)]
-
-  //int throwNumber = 0;  //numer rzutu
+  final List<List<int>> boardScores = [[3, 17, 2, 15, 10, 6, 13, 4, 18, 1, 20], [3, 19, 7, 16, 8, 11, 14, 9, 12, 5, 20]];
 
   // Zmienne do przechowywania wartości z pól tekstowych
   final TextEditingController _controller1 = TextEditingController();
@@ -64,37 +51,66 @@ class _GameScreenState extends State<GameScreen> {
     //FIXME: Dokończ mnie
   /// metoda do wyliczania punktów na podstawie współrzędnych rzutu
   int calculateThrow(Offset throw_) {
-    int score = 0;
     final RenderBox box = dartboardKey.currentContext!.findRenderObject() as RenderBox;
     final Size size = box.size;
-    final double boardRadius = min(size.width, size.height) / 2;
     final Offset center = Offset(0.5 * size.width, 0.5 * size.height);
-    final double distance = (throw_ - center).distance;
+    final double boardRadius = min(size.width, size.height) / 2;
+    final double innerRadius = boardRadius * 0.65;  //wewnętrzny okrąg
+    final double bullseyeRadius = boardRadius * 0.125;  //środek
+    final double sectorWidth = boardRadius * 0.1;
 
+    final double distance = (throw_ - center).distance;
     if (distance > boardRadius) {
       return 0;
+    }
+    if (distance <= bullseyeRadius / 2) {
+      return 50;
+    }
+    if (distance <= bullseyeRadius) {
+      return 25;
     }
 
     //arcsin należy do [-pi/2 ; pi/2]
     double arcsin = asin((-throw_.dy + (size.height / 2)) / distance); //sprowadzenie punktów do układu współrzędnych, gdzie środek tarczy ma (0,0)
     const numberOfSegments = 20;
     const startAngle = - 11 / numberOfSegments * pi;
-    const sweepAngle = pi / numberOfSegments;
+    const sweepAngle = 2 * pi / numberOfSegments;
 
-    for (int i = 0; i < 10; i ++) {
+    int mult;
+    if (distance < innerRadius - sectorWidth ||
+        (distance > innerRadius && distance < boardRadius - sectorWidth)) {
+      mult = 1;
+    } else if (distance <= innerRadius) {
+      mult = 3;
+    } else {
+      mult = 2;
+    }
+
+    int i = 0;
+    for (; i < 10; i ++) {
       if (arcsin >= startAngle + i * sweepAngle &&
           arcsin <= startAngle + (i + 1) * sweepAngle) {
-            if (throw_.dx > size.width) {
-              //sprawdź długość distance, który z 3 możliwych obszarów to jest trafiony
+            if (throw_.dx > center.dx) {
+              return mult * boardScores[0][i];
             } else {
-              //też to sprawdź
+              return mult * boardScores[1][i];
             }
           }
     }
-    //TODO: sprawdź, czy należy do 20, czy do 3, i też sprawdź mnożnik
+    return mult * boardScores[0][i];
+  }
 
-    return 10;
-
+  void showSnackBar(BuildContext context, String text) {
+    final snackBar = SnackBar(
+      content: Text(text),
+      action: SnackBarAction(
+        label: 'OK',
+        onPressed: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -129,36 +145,15 @@ class _GameScreenState extends State<GameScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
-                    child: TextField(
-                      controller: _controller1,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
-                      decoration: const InputDecoration(labelText: 'Throw 1'),
-                    ),
+                    child: OwnOnlyNumberTextFirld(controller: _controller1, text: 'Throw 1'),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: TextField(
-                      controller: _controller2,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
-                      decoration: const InputDecoration(labelText: 'Throw 2'),
-                    ),
+                    child: OwnOnlyNumberTextFirld(controller: _controller2, text: 'Throw 2'),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: TextField(
-                      controller: _controller3,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
-                      decoration: const InputDecoration(labelText: 'Throw 3'),
-                    ),
+                    child: OwnOnlyNumberTextFirld(controller: _controller3, text: 'Throw 3'),
                   ),
                 ],
               ),
@@ -174,8 +169,9 @@ class _GameScreenState extends State<GameScreen> {
                     onTapDown: (details) {
                       //final RenderBox box = dartboardKey.currentContext!.findRenderObject() as RenderBox;
 
+                      //ograniczenie na max 3 rzuty
                       if (throws.length == 3) {
-                        //TODO: Komunikat, że to już wszystkie rzuty
+                        showSnackBar(context, "You have only 3 darts!");
                       } else {
                         // Przekształcenie globalnych współrzędnych na lokalne
                         setState(() {
@@ -204,7 +200,7 @@ class _GameScreenState extends State<GameScreen> {
                   text: 'Cancel',
                   onPressed: () {
                     if (throws.isNotEmpty) {
-                      throws.removeLast(); // Usuwa ostatni punkt
+                      throws.removeLast();
                     }
                   },
                   color: Colors.red,
@@ -228,32 +224,35 @@ class _GameScreenState extends State<GameScreen> {
                     List<int> points = [];
 
                     if (boardVersion) {
-                      for (Offset throw_ in throws) {
-                        points.add(calculateThrow(throw_));
+                      if (throws.length != 3) {
+                        showSnackBar(context, "Mark 3 throws");
+                      } else {
+                        for (Offset throw_ in throws) {
+                          points.add(calculateThrow(throw_));
+                        }
                       }
                     } else {
                       int? throw1 = int.tryParse(_controller1.text);
                       int? throw2 = int.tryParse(_controller2.text);
                       int? throw3 = int.tryParse(_controller3.text);
 
+                      //sprawdzenie, czy wpisano tylko liczby
                       if (throw1 == null || throw2 == null || throw3 == null) {
-                        // Jeden z wpisanych tekstów nie jest liczbą
-                        // TODO: Wyświetl komunikat o błędzie
+                        showSnackBar(context, "Type all numbers");
                       } else {
                         points.add(throw1);
                         points.add(throw2);
                         points.add(throw3);
                       }
                     }
-                      
-                    if (points.length != 3) {
-                      //TODO: komunikat, że nie wszystko zostało wprowadzone
-                    } else {
+                    
+                    //sprawdzenie, czy ilość rzutów się zgadza
+                    if (points.length == 3) {
                     
                       //ustalanie punktacji obecnego gracza
                       int score = 0;
                       roundNumber == 1 
-                        ? score = 501 - (points[0] + points[1] + points[2])
+                        ? score = gameScore - (points[0] + points[1] + points[2])
                         : score = players[playerNumber].scores[roundNumber - 2] - (points[0] + points[1] + points[2]);
                       
                       players[playerNumber].scores[roundNumber - 1] = score;
@@ -264,7 +263,7 @@ class _GameScreenState extends State<GameScreen> {
                         //ustalanie punktacji pozostałych graczy przy wygranej obecnego gracza
                         if (roundNumber == 1){
                           for (int i = playerNumber + 1; i < players.length; i ++) {
-                            players[i].scores[roundNumber - 1] = 501;
+                            players[i].scores[roundNumber - 1] = gameScore;
                           }
                         } else {
                           for (int i = playerNumber + 1; i < players.length; i ++) {
