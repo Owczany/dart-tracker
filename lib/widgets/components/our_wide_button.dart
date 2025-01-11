@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 /// Elevated button z ustawionymi na sztywno parametrami wyglądu
-class OwnButton extends StatelessWidget {
+class OurWideButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
   final Color color;
   final Color textColor;
   final Size minimumSize;
 
-  const OwnButton({
+  const OurWideButton({
     super.key, 
     required this.text, 
     required this.onPressed, 

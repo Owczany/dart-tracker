@@ -1,4 +1,4 @@
-import 'package:darttracker/widgets/components/own_button.dart';
+import 'package:darttracker/widgets/components/our_wide_button.dart';
 import 'package:darttracker/screens/game_screen.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,7 @@ class ScoreBoardScreen extends StatelessWidget {
                 //przycisk przejścia do następnej tury
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: OwnButton(
+                  child: OurWideButton(
                     text: 'Next player: ${match.players[match.playerNumber].name}',
                     onPressed: () {
                       //przekierowanie spowrotem do game_screen

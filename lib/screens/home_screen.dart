@@ -3,7 +3,7 @@ import 'package:darttracker/widgets/adapters/dartboard.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../themes/theme_notifier.dart';
-import '../widgets/components/default_button.dart';
+import '../widgets/components/our_thin_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const Dartboard(),
             const SizedBox(height: 30),
             Center(
-              child: DefaultButton(
+              child: OurThinButton(
                 onPressed: () {
                   showNewGameDialog(context);
                 },
@@ -49,14 +49,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 10),
             Center(
-              child: DefaultButton(
+              child: OurThinButton(
                 onPressed: () {},
                 text: AppLocalizations.of(context)!.history,
               ),
             ),
             const SizedBox(height: 10),
             Center(
-              child: DefaultButton(
+              child: OurThinButton(
                 onPressed: () {},
                 text: AppLocalizations.of(context)!.dartRules,
               ),

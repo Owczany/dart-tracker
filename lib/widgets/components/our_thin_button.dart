@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class DefaultButton extends StatelessWidget {
+class OurThinButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
 
-  const DefaultButton({required this.onPressed, required this.text, super.key});
+  const OurThinButton({required this.onPressed, required this.text, super.key});
 
   @override
   Widget build(BuildContext context) {

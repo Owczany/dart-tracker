@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:darttracker/models/match.dart';
-import 'package:darttracker/widgets/components/own_button.dart';
-import 'package:darttracker/widgets/components/own_only_number_text_field.dart';
+import 'package:darttracker/widgets/components/our_wide_button.dart';
+import 'package:darttracker/widgets/components/our_only_number_text_field.dart';
 import 'package:darttracker/screens/end_game_screen.dart';
 import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:flutter/material.dart';
@@ -94,6 +94,7 @@ class GameScreenState extends State<GameScreen> {
   }
 
   void showSnackBar(BuildContext context, String text) {
+    ScaffoldMessenger.of(context).clearSnackBars();
     final snackBar = SnackBar(
       content: Text(text),
       action: SnackBarAction(
@@ -144,17 +145,17 @@ class GameScreenState extends State<GameScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                        child: OwnOnlyNumberTextField(
+                        child: OurOnlyNumberTextField(
                             controller: _controller1, text: 'Throw 1'),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
-                        child: OwnOnlyNumberTextField(
+                        child: OurOnlyNumberTextField(
                             controller: _controller2, text: 'Throw 2'),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
-                        child: OwnOnlyNumberTextField(
+                        child: OurOnlyNumberTextField(
                             controller: _controller3, text: 'Throw 3'),
                       ),
                     ],
@@ -198,7 +199,7 @@ class GameScreenState extends State<GameScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     //przycisk usunięcia ostatniego rzutu
-                    OwnButton(
+                    OurWideButton(
                       text: 'Cancel',
                       onPressed: () {
                         if (throws.isNotEmpty) {
@@ -211,7 +212,7 @@ class GameScreenState extends State<GameScreen> {
                     ),
 
                     // nawigacja do tabelki wyników
-                    OwnButton(
+                    OurWideButton(
                       text: 'Confirm',
                       onPressed: () {
                         //dodanie kolejnej runduy do list wyników

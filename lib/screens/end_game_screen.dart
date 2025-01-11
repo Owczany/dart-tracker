@@ -1,5 +1,5 @@
 import 'package:darttracker/models/match.dart';
-import 'package:darttracker/widgets/components/own_button.dart';
+import 'package:darttracker/widgets/components/our_wide_button.dart';
 import 'package:darttracker/screens/home_screen.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +36,7 @@ class EndGameScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                     //przycisk powrotu do HomeScreen
-                    OwnButton(
+                    OurWideButton(
                       text: 'Back to Main Menu',
                       onPressed: () {
                         //przekierowanie do HomeScreen
@@ -50,7 +50,7 @@ class EndGameScreen extends StatelessWidget {
                     const SizedBox(height: 16), // Odstęp między przyciskami
 
                     //przycisk zapisu gry do pamięci
-                    OwnButton(
+                    OurWideButton(
                       text: 'Save a Game',
                       onPressed: () {
                         //TODO: tu dorobić zapisanie gry
@@ -60,7 +60,7 @@ class EndGameScreen extends StatelessWidget {
                     const SizedBox(height: 16), // Odstęp między przyciskami
 
                     //przycisk nowej szybkiej gry
-                    OwnButton(
+                    OurWideButton(
                       text: 'Quick Start',
                       onPressed: () {
                         //TODO: tu zrobić szybki start
