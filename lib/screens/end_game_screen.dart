@@ -65,7 +65,8 @@ class EndGameScreen extends StatelessWidget {
                       onPressed: () {
                         //TODO: tu zrobić szybki start
                       },
-                      color: Colors.green,
+                      color: theme.colorScheme.secondary,
+                      textColor: theme.colorScheme.onSecondary,
                     ),
                   ],
                 ),

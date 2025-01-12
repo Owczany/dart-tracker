@@ -4,8 +4,7 @@ import 'package:darttracker/models/match.dart';
 
 class ScoreBoard extends StatelessWidget {
   final Match match;
-  final bool
-      endOfGame; // endOfGame: true - kolorowanie i sortowanie wygranych po ostatniej rundzie
+  final bool endOfGame; // endOfGame: true - kolorowanie i sortowanie wygranych po ostatniej rundzie
 
   const ScoreBoard({super.key, required this.match, this.endOfGame = false});
 
@@ -27,7 +26,8 @@ class ScoreBoard extends StatelessWidget {
           child: DataTable(
             columns: _buildColumns(),
             rows: _buildRows(),
-            dataRowHeight: rowHeight,
+            dataRowMinHeight: rowHeight,
+            dataRowMaxHeight: rowHeight,
             headingRowHeight: rowHeight,
           ),
         ),
@@ -69,7 +69,7 @@ class ScoreBoard extends StatelessWidget {
         int index = displayPlayers.indexOf(player);
         if (index == 0) {
           rowColor =
-              Colors.amberAccent.withOpacity(0.9); // Gold color for the best
+              Colors.amberAccent.withOpacity(0.9); //TODO: zaktualizujcie se darta chłopy, tu lepiej używać .withValues// Gold color for the best
         } else if (index == 1) {
           rowColor = const Color.fromRGBO(
               192, 192, 192, 0.9); // Silver color for second

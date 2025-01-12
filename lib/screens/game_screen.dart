@@ -39,7 +39,6 @@ class GameScreenState extends State<GameScreen> {
     match = widget.match;
   }
 
-  //FIXME: Dokończ mnie
   /// metoda do wyliczania punktów na podstawie współrzędnych rzutu
   int calculateThrow(Offset throw_) {
     final RenderBox box =
@@ -216,12 +215,14 @@ class GameScreenState extends State<GameScreen> {
                       text: 'Confirm',
                       onPressed: () {
                         //dodanie kolejnej runduy do list wyników
+                        /*
                         if (match.players[0].scores.length <
                             match.roundNumber) {
                           for (var player in match.players) {
                             player.scores.add(0);
                           }
                         }
+                        */
 
                         //TODO: zrobić ładniej
 
@@ -255,22 +256,24 @@ class GameScreenState extends State<GameScreen> {
                         //sprawdzenie, czy ilość rzutów się zgadza
                         if (points.length == 3) {
                           //ustalanie punktacji obecnego gracza
-                          int score = 0;
+                          int score;
                           match.roundNumber == 1
                               ? score = gameScore -
                                   (points[0] + points[1] + points[2])
                               : score = match.players[match.playerNumber]
                                       .scores[match.roundNumber - 2] -
                                   (points[0] + points[1] + points[2]);
-
+                          /*
                           match.players[match.playerNumber]
                               .scores[match.roundNumber - 1] = score;
+                          */
+                          match.updatePlayerScore(match.playerNumber, score);
 
                           if (match.players[match.playerNumber]
-                                  .scores[match.roundNumber - 1] <=
-                              0) {
+                                 .scores[match.roundNumber - 1] 
+                              <= 0) {
                             match.players[match.playerNumber]
-                                .scores[match.roundNumber - 1] = 0;
+                               .scores[match.roundNumber - 1] = 0;
 
                             //ustalanie punktacji pozostałych graczy przy wygranej obecnego gracza
                             if (match.roundNumber == 1) {
