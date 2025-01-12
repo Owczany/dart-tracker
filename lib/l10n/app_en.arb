@@ -1,40 +1,58 @@
 {
     "@@locale": "en",
-
     "appTitle": "Darts Tracker",
     "@appTitle": {
         "description": "Name of the app"
     },
-
     "newGame": "New Game",
     "@newGame": {
         "description": "Button text to start game"
     },
-
     "history": "History",
     "@history": {
         "description": "",
         "comment": "Nie mam pomysłu"
     },
-
     "dartRules": "Dart Rules",
     "@dartRules": {
         "description": "Text shown on a button"
     },
-
     "cancel": "Cancel",
     "@cancel": {
         "description": "Doesn't need to explain"
     },
-
     "save": "Save",
     "@save": {
         "description": ""
     },
-
+    "stats": "Stats",
+    "@stats": {
+        "description": "Stats"
+    },
     "confirm": "Confirm",
     "@confirm": {
         "description": ""
+    },
+    "mainScreen": "Main Screen",
+    "@mainScreen": {
+        "description": "W drawerze nazwa pierwszego kafelka"
+    },
+    "menu": "Menu",
+    "@menu": {
+        "description": ""
+    },
+    "settings": "Settings",
+    "@settings": {
+        "description": "Settings title"
+    },
+    "player": "Player {number}",
+    "@player": {
+        "description": "",
+        "placeholders": {
+            "number": {
+                "type": "num",
+                "format": "compact"
+            }
+        }
     }
-
 }

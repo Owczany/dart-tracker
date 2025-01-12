@@ -1,17 +1,24 @@
 {
     "@@locale": "pl",
-
     "appTitle": "Darts Tracker",
-
     "newGame": "Nowa Gra",
-
     "history": "Historia",
-
     "dartRules": "Zasady gry",
-
     "cancel": "Anuluj",
-
     "save": "Zapisz",
-
-    "confirm": "Potwierdź"
+    "confirm": "Potwierdź",
+    "settings": "Ustawienia",
+    "stats": "Statystyka",
+    "mainScreen": "Strona Główna",
+    "menu": "Menu",
+    "player": "Gracz {number}",
+    "@player": {
+        "description": "Tekst wyświetlany dla gracza z numerem",
+        "placeholders": {
+            "number": {
+                "type": "num",
+                "format": "compact"
+            }
+        }
+    }
 }

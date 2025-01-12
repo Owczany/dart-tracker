@@ -1,3 +1,4 @@
+import 'package:darttracker/widgets/components/drawer.dart';
 import 'package:darttracker/widgets/dialogs/new_game_dialog.dart';
 import 'package:darttracker/widgets/adapters/dartboard.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+      drawer: const OurDrawer(screen: CurrentScreen.home,),
       body: Container(
         color: theme.scaffoldBackgroundColor,
         child: Column(
