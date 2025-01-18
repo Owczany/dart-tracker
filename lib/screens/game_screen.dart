@@ -275,22 +275,22 @@ class GameScreenState extends State<GameScreen> {
                             match.players[match.playerNumber]
                                .scores[match.roundNumber - 1] = 0;
 
-                            //ustalanie punktacji pozostałych graczy przy wygranej obecnego gracza
-                            if (match.roundNumber == 1) {
+                            /*if (match.roundNumber == 1) { //tak wsm to jest niemożliwe żeby ktoś wygrał w pierwszej turze
                               for (int i = match.playerNumber + 1;
                                   i < match.players.length;
                                   i++) {
                                 match.players[i].scores[match.roundNumber - 1] =
                                     gameScore;
                               }
-                            } else {
-                              for (int i = match.playerNumber + 1;
-                                  i < match.players.length;
-                                  i++) {
-                                match.players[i].scores[match.roundNumber - 1] =
-                                    match.players[i]
-                                        .scores[match.roundNumber - 2];
-                              }
+                            } else {*/
+                            //ustalanie punktacji pozostałych graczy przy wygranej obecnego gracza
+                            for (int i = match.playerNumber + 1;
+                                i < match.players.length;
+                                i++) {
+                              match.updatePlayerScore(i, match.players[i].scores[match.roundNumber - 2]);
+                                //match.players[i].scores[match.roundNumber - 1] =
+                                //    match.players[i]
+                                //        .scores[match.roundNumber - 2];
                             }
 
                             //odpowiednie przekierowanie jeśli już ktoś wygrał (wtedy jego wynik w ostatniej rundzie to 0)
