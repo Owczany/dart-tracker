@@ -1,3 +1,4 @@
+import 'package:darttracker/widgets/dialogs/history_dialog.dart';
 import 'package:darttracker/widgets/dialogs/new_game_dialog.dart';
 import 'package:darttracker/widgets/adapters/dartboard.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,9 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 10),
             Center(
               child: OurThinButton(
-                onPressed: () {},
+                onPressed: () {
+                  showHistoryDialog(context);
+                },
                 text: AppLocalizations.of(context)!.history,
               ),
             ),

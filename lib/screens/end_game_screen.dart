@@ -4,17 +4,25 @@ import 'package:darttracker/screens/home_screen.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:flutter/material.dart';
 
-class EndGameScreen extends StatelessWidget {
+class EndGameScreen extends StatefulWidget {
   final Match match;
+  final bool hideButtons;
 
-  const EndGameScreen({super.key, required this.match});
+  const EndGameScreen(
+      {super.key, required this.match, this.hideButtons = false});
 
+  @override
+  EndGameScreenState createState() => EndGameScreenState();
+}
+
+class EndGameScreenState extends State<EndGameScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('${match.players[match.playerNumber].name} is Winning!'),
+        title: Text(
+            '${widget.match.players[widget.match.playerNumber].name} won!'),
         centerTitle: true,
         backgroundColor: theme.appBarTheme.backgroundColor,
       ),
@@ -27,7 +35,7 @@ class EndGameScreen extends StatelessWidget {
                 Expanded(
                   //tabelka wyników
                   child: Center(
-                    child: ScoreBoard(match: match, endOfGame: true),
+                    child: ScoreBoard(match: widget.match, endOfGame: true),
                   ),
                 ),
                 Padding(
@@ -35,41 +43,46 @@ class EndGameScreen extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                    //przycisk powrotu do HomeScreen
-                    OurWideButton(
-                      text: 'Back to Main Menu',
-                      onPressed: () {
-                        //przekierowanie do HomeScreen
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => const HomeScreen()),
-                        );
-                      },
-                      color: Colors.red,
-                    ),
-                    const SizedBox(height: 16), // Odstęp między przyciskami
+                      //przycisk powrotu do HomeScreen
+                      OurWideButton(
+                        text: 'Back to the Main Menu',
+                        onPressed: () {
+                          //przekierowanie do HomeScreen
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomeScreen()),
+                          );
+                        },
+                        color: Colors.red,
+                      ),
+                      if (!widget.hideButtons) ...[
+                        const SizedBox(height: 16), // Odstęp między przyciskami
 
-                    //przycisk zapisu gry do pamięci
-                    OurWideButton(
-                      text: 'Save a Game',
-                      onPressed: () {
-                        //TODO: tu dorobić zapisanie gry
-                      },
-                      color: Colors.orange,
-                    ),
-                    const SizedBox(height: 16), // Odstęp między przyciskami
+                        //przycisk zapisu gry do pamięci
+                        OurWideButton(
+                          text: 'Save the game...',
+                          onPressed: () async {
+                            await Match.saveMatch(widget.match);
+                            if (!mounted) return;
+                            showSnackBar("Game saved successfully!");
+                          },
+                          color: Colors.orange,
+                        ),
+                        const SizedBox(height: 16), // Odstęp między przyciskami
 
-                    //przycisk nowej szybkiej gry
-                    OurWideButton(
-                      text: 'Quick Start',
-                      onPressed: () {
-                        //TODO: tu zrobić szybki start
-                      },
-                      color: theme.colorScheme.secondary,
-                      textColor: theme.colorScheme.onSecondary,
-                    ),
-                  ],
-                ),
+                        //przycisk nowej szybkiej gry
+                        OurWideButton(
+                          text: 'Quick start',
+                          onPressed: () {
+                            //TODO: tu zrobić szybki start
+                          },
+                          color: theme.colorScheme.secondary,
+                          textColor: theme.colorScheme.onSecondary,
+                        ),
+                      ],
+                    ],
+                  ),
                 )
               ],
             ),
@@ -77,5 +90,18 @@ class EndGameScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void showSnackBar(String text) {
+    final snackBar = SnackBar(
+      content: Text(text),
+      action: SnackBarAction(
+        label: 'OK',
+        onPressed: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

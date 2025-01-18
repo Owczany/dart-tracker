@@ -7,16 +7,16 @@ plugins {
 
 android {
     namespace = "com.mpitsol.darttracker"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
-
+    compileSdk = 34 // Upewnij się, że ta wartość jest poprawna
+    ndkVersion = "25.1.8937393" // Upewnij się, że ta wartość jest poprawna
+    7075529
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = "1.8"
     }
 
     defaultConfig {
@@ -24,10 +24,10 @@ android {
         applicationId = "com.mpitsol.darttracker"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        minSdk = 21 // Upewnij się, że ta wartość jest poprawna
+        targetSdk = 34 // Upewnij się, że ta wartość jest poprawna
+        versionCode = 1 // Upewnij się, że ta wartość jest poprawna
+        versionName = "1.0" // Upewnij się, że ta wartość jest poprawna
     }
 
     buildTypes {
