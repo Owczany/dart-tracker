@@ -5,7 +5,7 @@ class OurOnlyNumberTextField extends StatelessWidget {
   final controller;
   final String text;
 
-  OurOnlyNumberTextField ({
+  const OurOnlyNumberTextField ({
     super.key,
     required this.controller,
     required this.text
