@@ -1,7 +1,6 @@
 import 'package:darttracker/screens/end_game_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:darttracker/models/match.dart';
-import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:intl/intl.dart';
 
 class HistoryDialog extends StatefulWidget {
