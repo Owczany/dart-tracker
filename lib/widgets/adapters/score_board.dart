@@ -4,7 +4,8 @@ import 'package:darttracker/models/match.dart';
 
 class ScoreBoard extends StatelessWidget {
   final Match match;
-  final bool endOfGame; // endOfGame: true - kolorowanie i sortowanie wygranych po ostatniej rundzie
+  final bool
+      endOfGame; // endOfGame: true - kolorowanie i sortowanie wygranych po ostatniej rundzie
 
   const ScoreBoard({super.key, required this.match, this.endOfGame = false});
 
@@ -39,7 +40,10 @@ class ScoreBoard extends StatelessWidget {
     List<DataColumn> columns = [
       const DataColumn(label: Text('Player')),
     ];
-    for (int i = 0; i < match.players[0].scores.length; i++) {
+    int maxRounds = match.players
+        .map((player) => player.scores.length)
+        .reduce((a, b) => a > b ? a : b);
+    for (int i = 0; i < maxRounds; i++) {
       columns.add(DataColumn(label: Text('Round ${i + 1}')));
     }
     return columns;
@@ -59,7 +63,7 @@ class ScoreBoard extends StatelessWidget {
           .toList());
 
       // Ensure the number of cells matches the number of columns
-      while (cells.length < match.players[0].scores.length + 1) {
+      while (cells.length < _buildColumns().length) {
         cells.add(const DataCell(Text('')));
       }
 
@@ -69,7 +73,7 @@ class ScoreBoard extends StatelessWidget {
         int index = displayPlayers.indexOf(player);
         if (index == 0) {
           rowColor =
-              Colors.amberAccent.withOpacity(0.9); //TODO: zaktualizujcie se darta chłopy, tu lepiej używać .withValues// Gold color for the best
+              Colors.amberAccent.withOpacity(0.9); // Gold color for the best
         } else if (index == 1) {
           rowColor = const Color.fromRGBO(
               192, 192, 192, 0.9); // Silver color for second

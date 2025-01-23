@@ -1,12 +1,14 @@
+import 'dart:ui';
 import 'package:darttracker/models/player.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
+import 'package:darttracker/utils/score_calculator.dart';
+import 'package:darttracker/utils/storage.dart';
 
 class Match {
   final List<Player> players;
   int playerNumber;
   int roundNumber;
   final DateTime dateTime;
+  final int gameScore = 501;
 
   Match({
     required this.players,
@@ -31,7 +33,18 @@ class Match {
   }
 
   bool isGameOver() {
-    // TODO: apply game over logic
+    if (players[playerNumber].scores.isNotEmpty &&
+        players[playerNumber].scores.length >= roundNumber &&
+        players[playerNumber].scores[roundNumber - 1] <= 0) {
+      players[playerNumber].scores[roundNumber - 1] = 0;
+
+      for (int i = playerNumber + 1; i < players.length - 1; i++) {
+        if (players[i].scores.length >= roundNumber - 1) {
+          updatePlayerScore(i, players[i].scores[roundNumber - 2]);
+        }
+      }
+      return true;
+    }
     return false;
   }
 
@@ -39,6 +52,26 @@ class Match {
     List<Player> sortedPlayers = List.from(players);
     sortedPlayers.sort((a, b) => a.scores.last.compareTo(b.scores.last));
     return sortedPlayers;
+  }
+
+  Match quickStart() {
+    for (var player in players) {
+      player.resetScores();
+    }
+    return Match(players: players);
+  }
+
+  void processThrows(List<int> points) {
+    int score;
+    roundNumber == 1
+        ? score = gameScore - (points[0] + points[1] + points[2])
+        : score = players[playerNumber].scores[roundNumber - 2] -
+            (points[0] + points[1] + points[2]);
+    updatePlayerScore(playerNumber, score);
+
+    if (!isGameOver()) {
+      nextPlayer();
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -62,17 +95,14 @@ class Match {
   }
 
   static Future<void> saveMatch(Match match) async {
-    final prefs = await SharedPreferences.getInstance();
-    final matches = prefs.getStringList('matches') ?? [];
-    matches.add(jsonEncode(match.toJson()));
-    await prefs.setStringList('matches', matches);
+    await Storage.saveMatch(match);
   }
 
   static Future<List<Match>> loadMatches() async {
-    final prefs = await SharedPreferences.getInstance();
-    final matches = prefs.getStringList('matches') ?? [];
-    return matches
-        .map((matchJson) => Match.fromJson(jsonDecode(matchJson)))
-        .toList();
+    return await Storage.loadMatches();
+  }
+
+  int calculateThrow(Offset throw_, Size size) {
+    return ScoreCalculator.calculateThrow(throw_, size);
   }
 }

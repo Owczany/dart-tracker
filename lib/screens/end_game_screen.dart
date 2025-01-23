@@ -1,4 +1,5 @@
 import 'package:darttracker/models/match.dart';
+import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:darttracker/widgets/components/our_wide_button.dart';
 import 'package:darttracker/screens/home_screen.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
@@ -44,21 +45,8 @@ class EndGameScreenState extends State<EndGameScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       //przycisk powrotu do HomeScreen
-                      OurWideButton(
-                        text: 'Back to the Main Menu',
-                        onPressed: () {
-                          //przekierowanie do HomeScreen
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomeScreen()),
-                          );
-                        },
-                        color: Colors.red,
-                      ),
                       if (!widget.hideButtons) ...[
                         const SizedBox(height: 16), // Odstęp między przyciskami
-
                         //przycisk zapisu gry do pamięci
                         OurWideButton(
                           text: 'Save the game...',
@@ -75,7 +63,13 @@ class EndGameScreenState extends State<EndGameScreen> {
                         OurWideButton(
                           text: 'Quick start',
                           onPressed: () {
-                            //TODO: tu zrobić szybki start
+                            final newMatch = widget.match.quickStart();
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ScoreBoardScreen(match: newMatch),
+                              ),
+                            );
                           },
                           color: theme.colorScheme.secondary,
                           textColor: theme.colorScheme.onSecondary,

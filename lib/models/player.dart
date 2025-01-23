@@ -4,6 +4,10 @@ class Player {
 
   Player({required this.name}) : scores = [];
 
+  void resetScores() {
+    scores = [];
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'name': name,
