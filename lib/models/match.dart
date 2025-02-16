@@ -9,6 +9,7 @@ class Match {
   int roundNumber;
   final DateTime dateTime;
   final int gameScore = 501;
+  final bool boardVersion = false; // true - dotykowa, false - wpisywanie ręczne
 
   Match({
     required this.players,
@@ -35,8 +36,8 @@ class Match {
   bool isGameOver() {
     if (players[playerNumber].scores.isNotEmpty &&
         players[playerNumber].scores.length >= roundNumber &&
-        players[playerNumber].scores[roundNumber - 1] <= 0) {
-      players[playerNumber].scores[roundNumber - 1] = 0;
+        players[playerNumber].scores[roundNumber - 1] == 0) {
+      //players[playerNumber].scores[roundNumber - 1] = 0;
 
       for (int i = playerNumber + 1; i < players.length - 1; i++) {
         if (players[i].scores.length >= roundNumber - 1) {
@@ -60,18 +61,29 @@ class Match {
     }
     return Match(players: players);
   }
+  /// Przypisuje punkty graczowi i zwraca informację, czy runda została uznana,
+  /// true - poprawne przypisanie, false - przekroczona wartść 0
+  bool processThrows(List<int> points) {
+    
+    bool flag;
 
-  void processThrows(List<int> points) {
     int score;
     roundNumber == 1
         ? score = gameScore - (points[0] + points[1] + points[2])
         : score = players[playerNumber].scores[roundNumber - 2] -
             (points[0] + points[1] + points[2]);
-    updatePlayerScore(playerNumber, score);
-
+    if (score >= 0) {
+      updatePlayerScore(playerNumber, score);
+      flag = true;
+    } else {
+      updatePlayerScore(playerNumber, players[playerNumber].scores[roundNumber - 2]);
+      flag = false;
+    }
+    
     if (!isGameOver()) {
       nextPlayer();
     }
+    return flag;
   }
 
   Map<String, dynamic> toJson() {

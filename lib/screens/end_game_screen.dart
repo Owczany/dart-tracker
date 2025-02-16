@@ -1,7 +1,6 @@
 import 'package:darttracker/models/match.dart';
 import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:darttracker/widgets/components/our_wide_button.dart';
-import 'package:darttracker/screens/home_screen.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:flutter/material.dart';
 

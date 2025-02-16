@@ -25,7 +25,7 @@ class ScoreCalculator {
       return 25;
     }
 
-    //arcsin należy do [-pi/2 ; pi/2]
+    //arcsin(x) należy do [-pi/2 ; pi/2]
     double arcsin = asin((-throw_.dy + (size.height / 2)) /
         distance); //sprowadzenie punktów do układu współrzędnych, gdzie środek tarczy ma (0,0)
     const numberOfSegments = 20;

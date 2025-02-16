@@ -4,8 +4,7 @@ import 'package:darttracker/models/match.dart';
 
 class ScoreBoard extends StatelessWidget {
   final Match match;
-  final bool
-      endOfGame; // endOfGame: true - kolorowanie i sortowanie wygranych po ostatniej rundzie
+  final bool endOfGame; // endOfGame: true - kolorowanie i sortowanie wygranych po ostatniej rundzie
 
   const ScoreBoard({super.key, required this.match, this.endOfGame = false});
 

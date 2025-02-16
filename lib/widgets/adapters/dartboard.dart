@@ -3,15 +3,18 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class Dartboard extends StatelessWidget {
-  const Dartboard({super.key});
+  final bool background;  //czy tło ma być rysowane
+  
+  const Dartboard({super.key, this.background = false});
 
   @override
   Widget build(BuildContext context) {
+  final theme = Theme.of(context);
     return Center(
       child: AspectRatio(
         aspectRatio: 1,
         child: CustomPaint(
-          painter: DartBoardPainter(),
+          painter: DartBoardPainter(background: background, theme: theme),
         ),
       ),
     );
@@ -19,6 +22,10 @@ class Dartboard extends StatelessWidget {
 }
 
 class DartBoardPainter extends CustomPainter {
+  final bool background;
+  final theme;
+  DartBoardPainter({required this.background, required this.theme});
+
   @override
   void paint(Canvas canvas, Size size) {
     // Kolory
@@ -36,9 +43,15 @@ class DartBoardPainter extends CustomPainter {
 
     final innerRect = Rect.fromCircle(center: center, radius: innerRadius - 0.5 * sectorWidth);
     final outerRect = Rect.fromCircle(center: center, radius: boardRadius - 0.5 * sectorWidth);
-
+    
     // Paints
-    final backGroundColor = Paint()..color = Colors.white;
+    ///warunkowe kolorowanie tła tarczy
+    if (background) {
+      final Paint backgroundPaint = Paint()..color = theme.appBarTheme.backgroundColor;
+      canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), backgroundPaint);
+    }
+
+    final Paint backGroundColor = Paint()..color = Colors.white;
 
     final segmentPaint = Paint()..color = Colors.grey.shade800;
 
