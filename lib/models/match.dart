@@ -8,8 +8,10 @@ class Match {
   int playerNumber;
   int roundNumber;
   final DateTime dateTime;
-  final int gameScore = 501;
-  final bool boardVersion = false; // true - dotykowa, false - wpisywanie ręczne
+  static int gameScore = 501;
+  static bool boardVersion = true; // true - dotykowa, false - wpisywanie ręczne
+
+  bool get boardversion => boardVersion;
 
   Match({
     required this.players,

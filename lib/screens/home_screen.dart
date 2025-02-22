@@ -1,6 +1,8 @@
 import 'package:darttracker/widgets/dialogs/history_dialog.dart';
 import 'package:darttracker/widgets/dialogs/new_game_dialog.dart';
 import 'package:darttracker/widgets/adapters/dartboard.dart';
+import 'package:darttracker/widgets/dialogs/rules_dialog.dart';
+import 'package:darttracker/widgets/dialogs/settings_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../themes/theme_notifier.dart';
@@ -31,6 +33,13 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             icon: const Icon(Icons.brightness_6),
           ),
+          IconButton(
+            onPressed: () {
+              //TODO: zrobić ustawienia (ustawianie max punktów, zmiana trybu tarczy)
+              showSettingsDialog(context);
+            },
+            icon: const Icon(Icons.settings),
+          )
         ],
       ),
       body: Container(
@@ -60,7 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 10),
             Center(
               child: OurThinButton(
-                onPressed: () {},
+                onPressed: () {
+                  showRulesDialog(context);
+                },
                 text: AppLocalizations.of(context)!.dartRules,
               ),
             ),

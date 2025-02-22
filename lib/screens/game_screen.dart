@@ -90,7 +90,7 @@ class GameScreenState extends State<GameScreen> {
                 ),
               ),
 
-              if (!match.boardVersion)
+              if (!Match.boardVersion)
                 // Dodanie pól tekstowych, można wpisać tylko liczby
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -126,7 +126,7 @@ class GameScreenState extends State<GameScreen> {
                     child: Stack (
                       children: [
                         Dartboard(key: dartboardKey, background: true),
-                        if (match.boardVersion)
+                        if (Match.boardVersion)
                           //zczytywanie kliknięć
                           GestureDetector(
                             onTapDown: (details) {
@@ -160,7 +160,7 @@ class GameScreenState extends State<GameScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     //przycisk usunięcia ostatniego rzutu
-                    if (match.boardVersion)
+                    if (Match.boardVersion)
                       OurWideButton(
                         text: 'Cancel',
                         onPressed: () {
@@ -179,7 +179,7 @@ class GameScreenState extends State<GameScreen> {
                       onPressed: () {
                         List<int> points = [];
 
-                        if (match.boardVersion) {
+                        if (Match.boardVersion) {
                           if (throws.length != 3) {
                             showSnackBar(context, "Mark 3 throws");
                           } else {
