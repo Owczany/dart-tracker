@@ -1,7 +1,7 @@
-//TODO: jakieś listy rozwijalne do tarczy manualnej, lub jakiś inny sposób żeby nie dało się wpisać czegokolwiek, 
 //TODO: dopisać zasady
-//TODO: zrobić ładniejsze menu ustawień
-//TODO: (opcjonalne) dodać obsługę języków
+//TODO: (opcjonalnie) dodać obsługę języków lub usunąć istniejącą
+//TODO: potwierdzenie wyjścia podczas rozgrywki strzałką u góry ekranu
+//TODO: przemyśleć grafikę znacznika dotknięcia trarczy
 
 import 'package:darttracker/app.dart';
 import 'package:flutter/material.dart';

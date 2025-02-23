@@ -1,3 +1,4 @@
+import 'package:darttracker/utils/app_bar_util.dart';
 import 'package:darttracker/widgets/components/our_wide_button.dart';
 import 'package:darttracker/screens/game_screen.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
@@ -13,11 +14,8 @@ class ScoreBoardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Scores after each round'),
-        centerTitle: true,
-        backgroundColor: theme.appBarTheme.backgroundColor,
-      ),
+      appBar: AppBarInGameUtil.createAppBarInGame('Scores after each round', theme, context),
+      
       body: Container (
         color: theme.scaffoldBackgroundColor,
         child: Stack(

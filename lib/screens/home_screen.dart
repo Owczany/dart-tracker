@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../themes/theme_notifier.dart';
 import '../widgets/components/our_thin_button.dart';
+import '../models/match.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+//import 'package:flutter/foundation.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           IconButton(
             onPressed: () {
-              //TODO: zrobić ustawienia (ustawianie max punktów, zmiana trybu tarczy)
               showSettingsDialog(context);
             },
             icon: const Icon(Icons.settings),
@@ -47,7 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            const Dartboard(),
+            ValueListenableBuilder(
+              valueListenable: Match.showNumbersNotifier,
+              builder: (context, bool value, child) {
+                return Dartboard(showNumbers: value);
+              },
+            ),
             const SizedBox(height: 30),
             Center(
               child: OurThinButton(

@@ -1,7 +1,7 @@
-import 'dart:ui';
 import 'package:darttracker/models/player.dart';
 import 'package:darttracker/utils/score_calculator.dart';
 import 'package:darttracker/utils/storage.dart';
+import 'package:flutter/material.dart';
 
 class Match {
   final List<Player> players;
@@ -10,6 +10,9 @@ class Match {
   final DateTime dateTime;
   static int gameScore = 501;
   static bool boardVersion = true; // true - dotykowa, false - wpisywanie ręczne
+  static bool showNumbers = false; // true - rysowanie numerów na tarczy
+  static ValueNotifier<bool> showNumbersNotifier = ValueNotifier(showNumbers);
+  static ValueNotifier<bool> boardversionNotifier = ValueNotifier(boardVersion);
 
   bool get boardversion => boardVersion;
 
@@ -67,25 +70,27 @@ class Match {
   /// true - poprawne przypisanie, false - przekroczona wartść 0
   bool processThrows(List<int> points) {
     
-    bool flag;
+    bool tooMuch;
 
     int score;
     roundNumber == 1
-        ? score = gameScore - (points[0] + points[1] + points[2])
-        : score = players[playerNumber].scores[roundNumber - 2] -
-            (points[0] + points[1] + points[2]);
+      ? score = gameScore - (points[0] + points[1] + points[2])
+      : score = players[playerNumber].scores[roundNumber - 2] -
+          (points[0] + points[1] + points[2]);
     if (score >= 0) {
       updatePlayerScore(playerNumber, score);
-      flag = true;
+      tooMuch = false;
     } else {
-      updatePlayerScore(playerNumber, players[playerNumber].scores[roundNumber - 2]);
-      flag = false;
+      roundNumber == 1
+        ? updatePlayerScore(playerNumber, gameScore)
+        : updatePlayerScore(playerNumber, players[playerNumber].scores[roundNumber - 2]);
+      tooMuch = true;
     }
     
     if (!isGameOver()) {
       nextPlayer();
     }
-    return flag;
+    return tooMuch;
   }
 
   Map<String, dynamic> toJson() {

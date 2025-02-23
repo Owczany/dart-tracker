@@ -4,17 +4,18 @@ import 'package:flutter/material.dart';
 
 class Dartboard extends StatelessWidget {
   final bool background;  //czy tło ma być rysowane
+  final bool showNumbers; // czy mają być rysowane liczby na tarczy
   
-  const Dartboard({super.key, this.background = false});
+  const Dartboard({super.key, this.background = false, this.showNumbers = false});
 
   @override
   Widget build(BuildContext context) {
-  final theme = Theme.of(context);
+    final theme = Theme.of(context);
     return Center(
       child: AspectRatio(
         aspectRatio: 1,
         child: CustomPaint(
-          painter: DartBoardPainter(background: background, theme: theme),
+          painter: DartBoardPainter(background: background, theme: theme, showNumbers: showNumbers),
         ),
       ),
     );
@@ -23,14 +24,14 @@ class Dartboard extends StatelessWidget {
 
 class DartBoardPainter extends CustomPainter {
   final bool background;
-  final theme;
-  DartBoardPainter({required this.background, required this.theme});
+  final bool showNumbers;
+  final ThemeData theme;
+  DartBoardPainter({required this.background, required this.theme, required this.showNumbers});
 
   @override
   void paint(Canvas canvas, Size size) {
     // Kolory
     // const Color bullseyeColor = Color;
-
 
     // Środek i promień tarczy
     final Offset center = Offset(0.5 * size.width, 0.5 * size.height);
@@ -47,7 +48,7 @@ class DartBoardPainter extends CustomPainter {
     // Paints
     ///warunkowe kolorowanie tła tarczy
     if (background) {
-      final Paint backgroundPaint = Paint()..color = theme.appBarTheme.backgroundColor;
+      final Paint backgroundPaint = Paint()..color = theme.appBarTheme.backgroundColor!;
       canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), backgroundPaint);
     }
 
@@ -144,8 +145,114 @@ class DartBoardPainter extends CustomPainter {
     canvas.drawCircle(center, bullseyeRadius, wirePaint);
     canvas.drawCircle(center, bullseyeRadius / 2, wirePaint);
 
-    for (int i = 0; i < 20; i++) {
-      canvas.clipPath(Path()..lineTo(10.0 * i, 10.0 * i));
+    // Wpisz wartości pól, jeżeli drawNumbers = true
+    if (showNumbers) {
+
+      final numberPainter = TextPainter(
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      );
+      final mult2Painter = TextPainter(
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      );
+      final mult3Painter = TextPainter(
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      );
+
+      final numberStyle = TextStyle(
+        color: Colors.black,
+        fontSize: boardRadius * 0.1,
+        fontWeight: FontWeight.bold,
+      );
+
+      final multStyle = TextStyle (
+        color: theme.appBarTheme.backgroundColor,
+        fontSize: boardRadius * 0.075,
+        fontWeight: FontWeight.bold
+      );
+
+      mult2Painter.text = TextSpan(
+        text: 'x2',
+        style: multStyle,
+      );
+      mult3Painter.text = TextSpan(
+        text: 'x3',
+        style: multStyle,
+      );
+      final numbers = [
+        '10', '15', '2', '17', '3', '19', '7', '16', '8', '11',
+        '14', '9', '12', '5', '20', '1', '18', '4', '13', '6'
+      ];
+
+      for (int i = 0; i < 20; i++) {
+        final angle = startAngle + (sweepAngle * i) + (sweepAngle / 2);
+        //wpisz wartości i mnożniki
+        final x_mult2 = center.dx + (boardRadius * 0.95) * cos(angle);
+        final y_mult2 = center.dy + (boardRadius * 0.95) * sin(angle);
+
+        final x_number = center.dx + (boardRadius * 0.78) * cos(angle);
+        final y_number = center.dy + (boardRadius * 0.78) * sin(angle);
+
+        final x_mult3 = center.dy + (boardRadius * 0.6) * cos(angle);
+        final y_mult3 = center.dy + (boardRadius * 0.6) * sin(angle);
+
+        numberPainter.text = TextSpan(
+          text: numbers[i],
+          style: numberStyle,
+        );
+
+        numberPainter.layout();
+        numberPainter.paint(
+          canvas,
+          Offset(x_number - numberPainter.width / 2, y_number - numberPainter.height / 2),
+        );
+        mult2Painter.layout();
+        mult2Painter.paint(
+          canvas,
+          Offset(x_mult2 - mult2Painter.width / 2, y_mult2 - mult2Painter.height / 2),
+        );
+        mult3Painter.layout();
+        mult3Painter.paint(
+          canvas,
+          Offset(x_mult3 - mult3Painter.width / 2, y_mult3 - mult3Painter.height / 2),
+        );
+        
+      }
+      //rysiowanie liczb na środku tarczy
+      final middleNumberPainter = TextPainter(
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      );
+
+      middleNumberPainter.text = TextSpan(
+        text: '50',
+        style: TextStyle(
+          color: Colors.green,
+          fontSize: boardRadius * 0.075,
+          fontWeight: FontWeight.bold
+        )
+      );
+      middleNumberPainter.layout();
+      middleNumberPainter.paint(
+        canvas,
+        Offset(center.dx - middleNumberPainter.width / 2, center.dy - middleNumberPainter.height / 2)
+      );
+
+      middleNumberPainter.text = TextSpan(
+        text: '25',
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: boardRadius * 0.065,
+          fontWeight: FontWeight.bold
+        )
+      );
+      middleNumberPainter.layout();
+      middleNumberPainter.paint(
+        canvas,
+        Offset(center.dx - middleNumberPainter.width / 2, center.dy - middleNumberPainter.height / 2 - (boardRadius * 0.093))
+      );
     }
   }
 

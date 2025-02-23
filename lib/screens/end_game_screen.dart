@@ -1,5 +1,6 @@
 import 'package:darttracker/models/match.dart';
 import 'package:darttracker/screens/score_board_screen.dart';
+import 'package:darttracker/utils/app_bar_util.dart';
 import 'package:darttracker/widgets/components/our_wide_button.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +21,8 @@ class EndGameScreenState extends State<EndGameScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-            '${widget.match.players[widget.match.playerNumber].name} won!'),
-        centerTitle: true,
-        backgroundColor: theme.appBarTheme.backgroundColor,
-      ),
+      appBar: AppBarInGameUtil.createAppBarInGame('${widget.match.players[widget.match.playerNumber].name} won!', theme, context),
+      
       body: Container(
         color: theme.scaffoldBackgroundColor,
         child: Stack(
