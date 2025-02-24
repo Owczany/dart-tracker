@@ -42,7 +42,6 @@ class Match {
     if (players[playerNumber].scores.isNotEmpty &&
         players[playerNumber].scores.length >= roundNumber &&
         players[playerNumber].scores[roundNumber - 1] == 0) {
-      //players[playerNumber].scores[roundNumber - 1] = 0;
 
       for (int i = playerNumber + 1; i < players.length - 1; i++) {
         if (players[i].scores.length >= roundNumber - 1) {

@@ -28,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Darts Tracker'),
         centerTitle: true,
         backgroundColor: theme.appBarTheme.backgroundColor,
+        
         actions: [
           IconButton(
             onPressed: () {

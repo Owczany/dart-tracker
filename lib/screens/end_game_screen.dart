@@ -3,6 +3,7 @@ import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:darttracker/utils/app_bar_util.dart';
 import 'package:darttracker/widgets/components/our_wide_button.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
+import 'package:darttracker/widgets/components/snackbars.dart';
 import 'package:flutter/material.dart';
 
 class EndGameScreen extends StatefulWidget {
@@ -49,7 +50,7 @@ class EndGameScreenState extends State<EndGameScreen> {
                           onPressed: () async {
                             await Match.saveMatch(widget.match);
                             if (!mounted) return;
-                            showSnackBar("Game saved successfully!");
+                            showSuccessSnackbar(context, "Game saved successfully!");
                           },
                           color: Colors.orange,
                         ),
