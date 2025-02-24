@@ -60,7 +60,7 @@ class AppBarInGameUtil {
           ),
           IconButton(
             onPressed: () {
-              showSettingsDialog(context, changableScore: false);
+              showSettingsDialog(context, isMainMenu: false);
             },
             icon: const Icon(Icons.settings),
           )

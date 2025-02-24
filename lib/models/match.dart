@@ -11,6 +11,7 @@ class Match {
   static int gameScore = 501;
   static bool boardVersion = true; // true - dotykowa, false - wpisywanie ręczne
   static bool showNumbers = false; // true - rysowanie numerów na tarczy
+  static bool easyMode = false; // true - trzeba osiągnąć 0 lub mniej, false - trzeba osiągnąć dokładnie 0
   static ValueNotifier<bool> showNumbersNotifier = ValueNotifier(showNumbers);
   static ValueNotifier<bool> boardversionNotifier = ValueNotifier(boardVersion);
 
@@ -40,8 +41,10 @@ class Match {
 
   bool isGameOver() {
     if (players[playerNumber].scores.isNotEmpty &&
-        players[playerNumber].scores.length >= roundNumber &&
-        players[playerNumber].scores[roundNumber - 1] == 0) {
+        players[playerNumber].scores.length >= roundNumber && (
+        (!easyMode && players[playerNumber].scores[roundNumber - 1] == 0) ||   //warunek zwycięstwa w normalMode
+        (easyMode && players[playerNumber].scores[roundNumber - 1] <= 0)))     //warunek zwycięstwa w easyMode
+        {
 
       for (int i = playerNumber + 1; i < players.length - 1; i++) {
         if (players[i].scores.length >= roundNumber - 1) {
@@ -66,30 +69,51 @@ class Match {
     return Match(players: players);
   }
   /// Przypisuje punkty graczowi i zwraca informację, czy runda została uznana,
-  /// true - poprawne przypisanie, false - przekroczona wartść 0
-  bool processThrows(List<int> points) {
+  ///0 - zero zostało przekroczone więc nie uznajemy, 1 - osiągnięto jedynkę, więc nie uznajemy, 2 - runda uznana
+  int processThrows(List<int> points) {
     
-    bool tooMuch;
+    int howMuch; 
 
     int score;
     roundNumber == 1
       ? score = gameScore - (points[0] + points[1] + points[2])
       : score = players[playerNumber].scores[roundNumber - 2] -
           (points[0] + points[1] + points[2]);
-    if (score >= 0) {
-      updatePlayerScore(playerNumber, score);
-      tooMuch = false;
+    
+    //easyMode:
+    if (easyMode) {
+      //runda zaliczona
+      if (score >= 0) {
+        updatePlayerScore(playerNumber, score);
+        howMuch = 2;
+        //runda niezaliczona
+      } else {
+        roundNumber == 1
+          ? updatePlayerScore(playerNumber, gameScore)
+          : updatePlayerScore(playerNumber, players[playerNumber].scores[roundNumber - 2]);
+        howMuch = 0;
+      }
+    //normalMode:
     } else {
-      roundNumber == 1
-        ? updatePlayerScore(playerNumber, gameScore)
-        : updatePlayerScore(playerNumber, players[playerNumber].scores[roundNumber - 2]);
-      tooMuch = true;
+      //runda zaliczona
+      if (score >= 0 && score != 1) {
+        updatePlayerScore(playerNumber, score);
+        howMuch = 2;
+      //runda niezaliczona
+      } else {
+        roundNumber == 1
+          ? updatePlayerScore(playerNumber, gameScore)
+          : updatePlayerScore(playerNumber, players[playerNumber].scores[roundNumber - 2]);
+        score == 1
+          ? howMuch = 1
+          : howMuch = 0;
+      }
     }
     
     if (!isGameOver()) {
       nextPlayer();
     }
-    return tooMuch;
+    return howMuch;
   }
 
   Map<String, dynamic> toJson() {

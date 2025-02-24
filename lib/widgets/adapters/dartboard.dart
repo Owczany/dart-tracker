@@ -156,6 +156,7 @@ class DartBoardPainter extends CustomPainter {
         textAlign: TextAlign.center,
         textDirection: TextDirection.ltr,
       );
+      
       final mult3Painter = TextPainter(
         textAlign: TextAlign.center,
         textDirection: TextDirection.ltr,
@@ -188,15 +189,15 @@ class DartBoardPainter extends CustomPainter {
 
       for (int i = 0; i < 20; i++) {
         final angle = startAngle + (sweepAngle * i) + (sweepAngle / 2);
-        //wpisz wartości i mnożniki
-        final x_mult2 = center.dx + (boardRadius * 0.95) * cos(angle);
-        final y_mult2 = center.dy + (boardRadius * 0.95) * sin(angle);
 
-        final x_number = center.dx + (boardRadius * 0.78) * cos(angle);
-        final y_number = center.dy + (boardRadius * 0.78) * sin(angle);
+        final xMult2 = center.dx + (boardRadius * 0.95) * cos(angle);
+        final yMult2 = center.dy + (boardRadius * 0.95) * sin(angle);
 
-        final x_mult3 = center.dy + (boardRadius * 0.6) * cos(angle);
-        final y_mult3 = center.dy + (boardRadius * 0.6) * sin(angle);
+        final xNumber = center.dx + (boardRadius * 0.78) * cos(angle);
+        final yNumber = center.dy + (boardRadius * 0.78) * sin(angle);
+
+        final xMult3 = center.dy + (boardRadius * 0.6) * cos(angle);
+        final yMult3 = center.dy + (boardRadius * 0.6) * sin(angle);
 
         numberPainter.text = TextSpan(
           text: numbers[i],
@@ -206,17 +207,17 @@ class DartBoardPainter extends CustomPainter {
         numberPainter.layout();
         numberPainter.paint(
           canvas,
-          Offset(x_number - numberPainter.width / 2, y_number - numberPainter.height / 2),
+          Offset(xNumber - numberPainter.width / 2, yNumber - numberPainter.height / 2),
         );
         mult2Painter.layout();
         mult2Painter.paint(
           canvas,
-          Offset(x_mult2 - mult2Painter.width / 2, y_mult2 - mult2Painter.height / 2),
+          Offset(xMult2 - mult2Painter.width / 2, yMult2 - mult2Painter.height / 2),
         );
         mult3Painter.layout();
         mult3Painter.paint(
           canvas,
-          Offset(x_mult3 - mult3Painter.width / 2, y_mult3 - mult3Painter.height / 2),
+          Offset(xMult3 - mult3Painter.width / 2, yMult3 - mult3Painter.height / 2),
         );
         
       }

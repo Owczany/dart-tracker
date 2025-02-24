@@ -1,3 +1,4 @@
+import 'package:darttracker/utils/locate_provider.dart';
 import 'package:darttracker/widgets/dialogs/history_dialog.dart';
 import 'package:darttracker/widgets/dialogs/new_game_dialog.dart';
 import 'package:darttracker/widgets/adapters/dartboard.dart';
@@ -29,12 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: theme.appBarTheme.backgroundColor,
         
         actions: [
-          IconButton(
-            onPressed: () {
-              //TODO: dodać Notifier do zmiany języka 
-            },
-            icon: const Icon(Icons.language),
-          ),
           IconButton(
             onPressed: () {
               Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();

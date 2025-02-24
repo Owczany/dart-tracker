@@ -48,7 +48,9 @@ class HistoryDialogState extends State<HistoryDialog> {
                       DateFormat('dd-MM-yyyy HH:mm').format(match.dateTime);
                   return ListTile(
                     title: Text(
-                        '$formattedDate - ${match.players.length} ${AppLocalizations.of(context)!.players}'),
+                        '$formattedDate - ${match.players.length} ${match.players.length > 1
+                                                                    ? AppLocalizations.of(context)!.players
+                                                                    : AppLocalizations.of(context)!.player}'),
                     onTap: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (context) => EndGameScreen(match: match, hideButtons: true)));

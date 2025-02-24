@@ -1,24 +1,26 @@
+import 'package:darttracker/utils/locate_provider.dart';
 import 'package:darttracker/widgets/components/our_only_number_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:darttracker/models/match.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class SettingsDialog extends StatefulWidget {
-  final bool changableScore;
-  const SettingsDialog({super.key, required this.changableScore});
+  final bool isMainMenu;
+  const SettingsDialog({super.key, required this.isMainMenu});
 
   @override
   SettingsDialogState createState() => SettingsDialogState();
 }
 
 class SettingsDialogState extends State<SettingsDialog> {
-  late bool changableScore;
-  //late Match match;
+  late bool isMainMenu;
+  final TextStyle tittleStyle = const TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
 
   @override
   void initState() {
     super.initState();
-    changableScore = widget.changableScore;
+    isMainMenu = widget.isMainMenu;
   }
 
   @override
@@ -31,8 +33,38 @@ class SettingsDialogState extends State<SettingsDialog> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
 
+            // ustawianie języka
+            Text(AppLocalizations.of(context)!.settings_choose_language, style: tittleStyle),
+            const SizedBox(height: 8),
+            StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                var localeProvider = context.read<LocaleProvider>();
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Switch(
+                      value: localeProvider.locale.languageCode == 'en',
+                      onChanged: (bool value) {
+                        setState(() {
+                          localeProvider.setLocale(Locale(value ? 'en' : 'pl'));
+                        });
+                      },
+                    ),
+                    Text(
+                      localeProvider.locale.languageCode == 'en' 
+                          ? 'English'
+                          : 'Polski',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
+                );
+              }
+            ),
+            const SizedBox(height: 16),
+
+
             // ustawianie tarczy
-            Text(AppLocalizations.of(context)!.settings_board_version),
+            Text(AppLocalizations.of(context)!.settings_board_version, style: tittleStyle),
             const SizedBox(height: 8),
             StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
@@ -61,7 +93,7 @@ class SettingsDialogState extends State<SettingsDialog> {
             const SizedBox(height: 16),
 
             // wyświetlanie numerów na tarczy
-            Text(AppLocalizations.of(context)!.settings_show_numbers),
+            Text(AppLocalizations.of(context)!.settings_show_numbers, style: tittleStyle),
             const SizedBox(height: 8),
             StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
@@ -89,12 +121,58 @@ class SettingsDialogState extends State<SettingsDialog> {
             ),
             const SizedBox(height: 16),
 
-            // ustawianie wyniku gry
-            if (changableScore)
-              Text(AppLocalizations.of(context)!.settings_points_to_win),
-            if (changableScore)
+            //ustawianie trybu gry (easyMode, normalMode):
+            if (isMainMenu)
+              Text(AppLocalizations.of(context)!.settings_game_mode, style: tittleStyle),
+            if (isMainMenu)
               const SizedBox(height: 8),
-            if (changableScore)
+            if (isMainMenu)
+              StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState) {
+                  return Column (
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Switch(
+                            value: Match.easyMode,
+                            onChanged: (bool value) {
+                              setState(() {
+                                Match.easyMode = value;
+                                //Match.showNumbersNotifier.value = value;
+                              });
+                            },
+                          ),
+                          Text(
+                            Match.easyMode
+                                ? AppLocalizations.of(context)!.settings_easyMode
+                                : AppLocalizations.of(context)!.settings_normalMode,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          Match.easyMode
+                              ? AppLocalizations.of(context)!.settings_easyMode_hint
+                              : AppLocalizations.of(context)!.settings_normalMode_hint,
+                        ),
+                      ),
+                    ],
+                  );
+                  
+                },
+              ),
+            if (isMainMenu)
+              const SizedBox(height: 16),
+
+            // ustawianie wyniku gry
+            if (isMainMenu)
+              Text(AppLocalizations.of(context)!.settings_points_to_win, style: tittleStyle),
+            if (isMainMenu)
+              const SizedBox(height: 8),
+            if (isMainMenu)
               StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
                   return DropdownButton<int>(
@@ -206,11 +284,11 @@ void _showCustomScoreDialog(BuildContext context, StateSetter setState) {
 }
 
 /// Funkcja wyświetlająca dialog ustawień (zmiana wyniku gry jest ukryta, jeżeli changableScore = false)
-void showSettingsDialog(BuildContext context, {bool changableScore = true}) {
+void showSettingsDialog(BuildContext context, {bool isMainMenu = true}) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return SettingsDialog(changableScore: changableScore);
+      return SettingsDialog(isMainMenu: isMainMenu);
     },
   );
 }

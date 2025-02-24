@@ -27,7 +27,7 @@
     "off": "Wyłączone",
 
     "player": "Gracz",
-    "players": "Gracze",
+    "players": "Graczy",
     "round": "Runda",
 
     "end_game_screen_won": "wygrał",
@@ -39,6 +39,7 @@
     "game_screen_mark_3_throws": "Zaznacz 3 rzuty",
     "game_screen_incorect_mult": "Nie możesz mnożyć bullseye, usuń niepoprawne mnożniki",
     "game_screen_too_many_points": "Zdobyłeś za dużo punktów w ostatniej rundzie :(",
+    "game_screen_one_point": "Osiągnąłeś dokładnie 1 punkt w poprzedniej rundzie, dlatego ona się nie liczy :(",
     "game_screen_miss": "Pudło",
     "game_screen_throw": "Rzut",
     "game_screen_multiplicator": "Mnożnik",
@@ -58,10 +59,16 @@
     "game_rules": "Zasady Gry",
 
     "settings": "Ustawienia",
+    "settings_choose_language": "Język",
     "settings_board_version": "Wersja tarczy",
     "settings_touch": "Dotykowa",
     "settings_type": "Manualna",
     "settings_show_numbers": "Pokaż wartości pól na tablicy",
+    "settings_game_mode": "Tryb gry",
+    "settings_easyMode": "Łatwy",
+    "settings_easyMode_hint": "Żeby wygrać należy zdobyć 0 punktów lub mniej",
+    "settings_normalMode": "Normalny",
+    "settings_normalMode_hint": "Żeby wygrać należy zdobyć dokładnie 0 punktów",
     "settings_points_to_win": "Do ilu punktów chcesz grać?",
     "settings_classic": "Klasyczny",
     "settings_quick": "Szybki",

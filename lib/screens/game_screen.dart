@@ -196,32 +196,34 @@ class GameScreenState extends State<GameScreen> {
                           //sprawdzenie, czy ilość rzutów się zgadza
                           if (points.length == 3) {
                             //ustalanie punktacji obecnego gracza
-                            bool tooMuch = match.processThrows(points);
-                            if (tooMuch) {
+                            int howMuch = match.processThrows(points);
+                            if (howMuch == 0) {
                               showErrorSnackbar(context, AppLocalizations.of(context)!.game_screen_too_many_points);
-                            }
-                            //ScaffoldMessenger.of(context).clearSnackBars();
-                            
-                            if (match.isGameOver()) {
-                              //odpowiednie przekierowanie jeśli już ktoś wygrał (wtedy jego wynik w ostatniej rundzie to 0)
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => EndGameScreen(
-                                    match: match,
-                                  ),
-                                ),
-                              );
+                            } else if (howMuch == 1) {
+                              showErrorSnackbar(context, AppLocalizations.of(context)!.game_screen_one_point);
                             } else {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ScoreBoardScreen(
-                                    match: match,
+                              if (match.isGameOver()) {
+                                //odpowiednie przekierowanie jeśli już ktoś wygrał (wtedy jego wynik w ostatniej rundzie to 0)
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EndGameScreen(
+                                      match: match,
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
+                              } else {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ScoreBoardScreen(
+                                      match: match,
+                                    ),
+                                  ),
+                                );
+                              }
                             }
+                            //tu było if (match.isGameOver()) {
                           }
                         },
                         color: theme.colorScheme.secondary,
