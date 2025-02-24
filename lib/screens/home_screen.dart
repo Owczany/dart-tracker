@@ -9,7 +9,6 @@ import '../themes/theme_notifier.dart';
 import '../widgets/components/our_thin_button.dart';
 import '../models/match.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-//import 'package:flutter/foundation.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,6 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: theme.appBarTheme.backgroundColor,
         
         actions: [
+          IconButton(
+            onPressed: () {
+              //TODO: dodać Notifier do zmiany języka 
+            },
+            icon: const Icon(Icons.language),
+          ),
           IconButton(
             onPressed: () {
               Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();

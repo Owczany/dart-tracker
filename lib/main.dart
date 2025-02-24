@@ -1,5 +1,4 @@
 //TODO: dopisać zasady
-//TODO: dokończyćobsługę języków
 //TODO: przemyśleć grafikę znacznika dotknięcia trarczy
 
 import 'package:darttracker/app.dart';

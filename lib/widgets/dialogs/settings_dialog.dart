@@ -1,6 +1,7 @@
 import 'package:darttracker/widgets/components/our_only_number_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:darttracker/models/match.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsDialog extends StatefulWidget {
   final bool changableScore;
@@ -23,7 +24,7 @@ class SettingsDialogState extends State<SettingsDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Settings"),
+      title: Text(AppLocalizations.of(context)!.settings),
       content: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +32,7 @@ class SettingsDialogState extends State<SettingsDialog> {
           children: <Widget>[
 
             // ustawianie tarczy
-            const Text("Board Version:"),
+            Text(AppLocalizations.of(context)!.settings_board_version),
             const SizedBox(height: 8),
             StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
@@ -48,7 +49,9 @@ class SettingsDialogState extends State<SettingsDialog> {
                       },
                     ),
                     Text(
-                      Match.boardVersion ? "Touch" : "Type",
+                      Match.boardVersion 
+                          ? AppLocalizations.of(context)!.settings_touch
+                          : AppLocalizations.of(context)!.settings_type,
                       style: const TextStyle(fontSize: 16),
                     ),
                   ],
@@ -58,7 +61,7 @@ class SettingsDialogState extends State<SettingsDialog> {
             const SizedBox(height: 16),
 
             // wyświetlanie numerów na tarczy
-            const Text("Show numbers on the board:"),
+            Text(AppLocalizations.of(context)!.settings_show_numbers),
             const SizedBox(height: 8),
             StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
@@ -75,7 +78,9 @@ class SettingsDialogState extends State<SettingsDialog> {
                       },
                     ),
                     Text(
-                      Match.showNumbers ? "On" : "Off",
+                      Match.showNumbers
+                          ? AppLocalizations.of(context)!.on
+                          : AppLocalizations.of(context)!.off,
                       style: const TextStyle(fontSize: 16),
                     ),
                   ],
@@ -86,7 +91,7 @@ class SettingsDialogState extends State<SettingsDialog> {
 
             // ustawianie wyniku gry
             if (changableScore)
-              const Text("Points to win:"),
+              Text(AppLocalizations.of(context)!.settings_points_to_win),
             if (changableScore)
               const SizedBox(height: 8),
             if (changableScore)
@@ -96,22 +101,22 @@ class SettingsDialogState extends State<SettingsDialog> {
                     value: Match.gameScore,
                     isExpanded: true,
                     items: [
-                      const DropdownMenuItem<int>(
+                      DropdownMenuItem<int>(
                         value: 501,
-                        child: Text("501 (Classic)"),
+                        child: Text("501 (${AppLocalizations.of(context)!.settings_classic})"),
                       ),
-                      const DropdownMenuItem<int>(
+                      DropdownMenuItem<int>(
                         value: 301,
-                        child: Text("301 (Quick)"),
+                        child: Text("301 (${AppLocalizations.of(context)!.settings_quick})"),
                       ),
-                      const DropdownMenuItem<int>(
+                      DropdownMenuItem<int>(
                         value: -1,
-                        child: Text("Custom"),
+                        child: Text(AppLocalizations.of(context)!.settings_custom),
                       ),
                       if (Match.gameScore > 1 && Match.gameScore != 501 && Match.gameScore != 301)
                         DropdownMenuItem<int>(
                           value: Match.gameScore,
-                          child: Text("${Match.gameScore} (custom)"),
+                          child: Text("${Match.gameScore} (${AppLocalizations.of(context)!.settings_custom})"),
                         ),
                     ],
                     onChanged: (int? newValue) {
@@ -137,7 +142,7 @@ class SettingsDialogState extends State<SettingsDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Close'),
+          child: Text(AppLocalizations.of(context)!.close),
         ),
       ],
     );
@@ -155,13 +160,13 @@ void _showCustomScoreDialog(BuildContext context, StateSetter setState) {
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter dialogSetState) {
           return AlertDialog(
-            title: const Text("Enter Custom Score (bigger than 1)"),
+            title: Text("${AppLocalizations.of(context)!.settings_entering_score} (${AppLocalizations.of(context)!.settings_entering_hint} 1)"),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 OurOnlyNumberTextField(
                   controller: controller1,
-                  text: 'For example: 420',
+                  text: '${AppLocalizations.of(context)!.settings_fe}: 420',
                 ),
                 if (errorMessage != null)
                   Padding(
@@ -186,11 +191,11 @@ void _showCustomScoreDialog(BuildContext context, StateSetter setState) {
                     setState(() {});
                   } else {
                     dialogSetState(() {
-                      errorMessage = "Invalid value! Enter a number greater than 1.";
+                      errorMessage = "${AppLocalizations.of(context)!.settings_entering_error} 1.";
                     });
                   }
                 },
-                child: const Text('Ok'),
+                child: Text(AppLocalizations.of(context)!.ok),
               ),
             ],
           );

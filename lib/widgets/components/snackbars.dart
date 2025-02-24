@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void showErrorSnackbar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).clearSnackBars();
@@ -10,7 +11,7 @@ void showErrorSnackbar(BuildContext context, String message) {
       ),
     ),
     action: SnackBarAction(
-      label: 'OK',
+      label: AppLocalizations.of(context)!.ok,
       onPressed: () {
         if (context.mounted) {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -38,7 +39,7 @@ void showSuccessSnackbar(BuildContext context, String message) {
       ),
     ),
     action: SnackBarAction(
-      label: 'OK',
+      label: AppLocalizations.of(context)!.ok,
       onPressed: () {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
       },

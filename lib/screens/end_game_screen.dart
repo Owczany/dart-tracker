@@ -24,7 +24,7 @@ class EndGameScreenState extends State<EndGameScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBarInGameUtil.createAppBarInGame('${widget.match.players[widget.match.playerNumber].name} ${AppLocalizations.of(context)!.end_game_screen_won}', theme, context),
+      appBar: AppBarInGameUtil.createAppBarInGame('${widget.match.players[widget.match.playerNumber].name} ${AppLocalizations.of(context)!.end_game_screen_won}!', theme, context),
       
       body: Container(
         color: theme.scaffoldBackgroundColor,
@@ -48,7 +48,7 @@ class EndGameScreenState extends State<EndGameScreen> {
                         const SizedBox(height: 16), // Odstęp między przyciskami
                         //przycisk zapisu gry do pamięci
                         OurWideButton(
-                          text: AppLocalizations.of(context)!.end_game_screen_saving,
+                          text: '${AppLocalizations.of(context)!.end_game_screen_saving}...',
                           onPressed: () async {
                             await Match.saveMatch(widget.match);
                             if (!mounted) return;

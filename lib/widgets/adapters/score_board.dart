@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:darttracker/models/player.dart';
 import 'package:darttracker/models/match.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ScoreBoard extends StatelessWidget {
   final Match match;
@@ -24,8 +25,8 @@ class ScoreBoard extends StatelessWidget {
             border: Border.all(color: Colors.black, width: 2.0),
           ),
           child: DataTable(
-            columns: _buildColumns(),
-            rows: _buildRows(),
+            columns: _buildColumns(context),
+            rows: _buildRows(context),
             dataRowMinHeight: rowHeight,
             dataRowMaxHeight: rowHeight,
             headingRowHeight: rowHeight,
@@ -35,20 +36,21 @@ class ScoreBoard extends StatelessWidget {
     );
   }
 
-  List<DataColumn> _buildColumns() {
+  List<DataColumn> _buildColumns(BuildContext context) {
     List<DataColumn> columns = [
-      const DataColumn(label: Text('Player')),
+      DataColumn(label: Text(AppLocalizations.of(context)!.player)),
     ];
     int maxRounds = match.players
         .map((player) => player.scores.length)
         .reduce((a, b) => a > b ? a : b);
+    String round = AppLocalizations.of(context)!.round;
     for (int i = 0; i < maxRounds; i++) {
-      columns.add(DataColumn(label: Text('Round ${i + 1}')));
+      columns.add(DataColumn(label: Text('$round ${i + 1}')));
     }
     return columns;
   }
 
-  List<DataRow> _buildRows() {
+  List<DataRow> _buildRows(BuildContext context) {
     List<Player> displayPlayers =
         endOfGame ? match.getSortedPlayers() : match.players;
 
@@ -62,7 +64,7 @@ class ScoreBoard extends StatelessWidget {
           .toList());
 
       // Ensure the number of cells matches the number of columns
-      while (cells.length < _buildColumns().length) {
+      while (cells.length < _buildColumns(context).length) {
         cells.add(const DataCell(Text('')));
       }
 

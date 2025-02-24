@@ -15,10 +15,10 @@ class App extends StatelessWidget {
         builder: (context, themeNotifier, child) {
           return MaterialApp(
               debugShowCheckedModeBanner: false,
-              title: 'Darts Tracker',
+              title: AppLocalizations.of(context)?.appTitle ?? 'Dart Tracker',
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
-              locale: const Locale('en'), //! Ustawione na razie na sztywno do testów
+              locale: const Locale('pl'), //! Ustawione na razie na sztywno do testów
               theme: themeNotifier.currentTheme,
               home: const HomeScreen());
         },

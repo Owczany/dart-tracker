@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RulesDialog extends StatefulWidget {
   const RulesDialog({super.key});
@@ -16,7 +17,7 @@ class RulesDialogState extends State<RulesDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Game Rules'),
+      title: Text(AppLocalizations.of(context)!.game_rules),
       content: const SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
@@ -32,7 +33,7 @@ class RulesDialogState extends State<RulesDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Close')
+          child: Text(AppLocalizations.of(context)!.close)
         ),
       ],
     );

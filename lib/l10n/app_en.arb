@@ -7,57 +7,67 @@
     },
 
     "newGame": "New Game",
-    "@newGame": {
-        "description": "Button text to start game"
-    },
 
     "history": "History",
-    "@history": {
-        "description": "",
-        "comment": "Nie mam pomysłu"
-    },
 
     "dartRules": "Dart Rules",
     "@dartRules": {
         "description": "Text shown on a button"
     },
 
-    "cancel": "Cancel",
-    "@cancel": {
-        "description": "Doesn't need to explain"
-    },
-
-    "save": "Save",
-    "@save": {
-        "description": ""
-    },
-
     "confirm": "Confirm",
-    "@confirm": {
-        "description": ""
-    },
-
-    "ok": "OK",
-    "no": "No",
+    "cancel": "Cancel",
+    "save": "Save",
+    "start": "Start",
+    "ok": "Ok",
+    "close": "Close",
     "yes": "Yes",
+    "no": "No",
+    "on": "On",
+    "off": "Off",
 
-    "end_game_screen_won": "won!",
-    "end_game_screen_saving": "Save the game...",
+    "player": "Player",
+    "players": "Players",
+    "round": "Round",
+
+    "end_game_screen_won": "won",
+    "end_game_screen_saving": "Save the game",
     "end_game_screen_saved": "Game saved successfully!",
-    "end_game_screen_quick_start": "Quick start",
+    "end_game_screen_quick_start": "Quick rematch",
 
-    "game_screen_round": "Round",
-    "game_screen_only_3_darts": "You have only 3 darts!",
+    "game_screen_only_3_darts": "You have only 3 throws!",
     "game_screen_mark_3_throws": "Mark 3 throws",
-    "game_screen_incorect_mult": "You can't multiply bullseye, remove unnececery mults",
+    "game_screen_incorect_mult": "You can't multiply bullseye, remove incorrect mults",
     "game_screen_too_many_points": "You have reached too many points last turn :(",
     "game_screen_miss": "Miss",
     "game_screen_throw": "Throw",
     "game_screen_multiplicator": "Multiplicator",
 
-    "score_board_screen_scores_after_each_round": "Scores after each round",
+    "score_board_screen_scores_after_each_round": "Score board",
     "score_board_screen_next_player": "Next player",
 
     "app_bar_leaving": "Are you sure you want to leave this match?",
-    "app_bar_lost_data": "All data will be lost."
+    "app_bar_lost_data": "All scores will be lost.",
+
+    "match_history": "Match History",
+    "history_loading_error": "Error loading matches",
+    "history_noone_found": "No matches found",
+
+    "new_game_enter_players_names": "Enter player names",
+
+    "game_rules": "Game Rules",
+
+    "settings": "Settings",
+    "settings_board_version": "Board Version",
+    "settings_touch": "Touch",
+    "settings_type": "Type",
+    "settings_show_numbers": "Show field's values on the board",
+    "settings_points_to_win": "How many points do you want to play to?",
+    "settings_classic": "Classic",
+    "settings_quick": "Quick",
+    "settings_custom": "Custom",
+    "settings_entering_score": "Enter Custom Score",
+    "settings_entering_hint": "bigger than",
+    "settings_fe": "For example",
+    "settings_entering_error": "Invalid value. Enter a number greater than"
 }

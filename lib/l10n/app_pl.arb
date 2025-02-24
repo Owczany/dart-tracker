@@ -2,16 +2,72 @@
     "@@locale": "pl",
 
     "appTitle": "Darts Tracker",
+    "@appTitle": {
+        "description": "Nazwa aplikacji"
+    },
 
     "newGame": "Nowa Gra",
 
     "history": "Historia",
 
     "dartRules": "Zasady gry",
+    "@dartRules": {
+        "description": "Tekst wyświetlany na przycisku"
+    },
 
+    "confirm": "Potwierdź",
     "cancel": "Anuluj",
-
     "save": "Zapisz",
+    "start": "Start",
+    "ok": "Ok",
+    "close": "Zamknij",
+    "yes": "Tak",
+    "no": "Nie",
+    "on": "Włączone",
+    "off": "Wyłączone",
 
-    "confirm": "Potwierdź"
+    "player": "Gracz",
+    "players": "Gracze",
+    "round": "Runda",
+
+    "end_game_screen_won": "wygrał",
+    "end_game_screen_saving": "Zapisz mecz",
+    "end_game_screen_saved": "Mecz został zapisany!",
+    "end_game_screen_quick_start": "Szybki rewanż",
+
+    "game_screen_only_3_darts": "Masz tylko 3 rzuty!",
+    "game_screen_mark_3_throws": "Zaznacz 3 rzuty",
+    "game_screen_incorect_mult": "Nie możesz mnożyć bullseye, usuń niepoprawne mnożniki",
+    "game_screen_too_many_points": "Zdobyłeś za dużo punktów w ostatniej rundzie :(",
+    "game_screen_miss": "Pudło",
+    "game_screen_throw": "Rzut",
+    "game_screen_multiplicator": "Mnożnik",
+
+    "score_board_screen_scores_after_each_round": "Tabela wyników",
+    "score_board_screen_next_player": "Następny gracz",
+
+    "app_bar_leaving": "Jesteś pewny/-a, że chcesz opuścić mecz?",
+    "app_bar_lost_data": "Wszystkie wyniki zostaną utracone.",
+
+    "match_history": "Historia meczów",
+    "history_loading_error": "Błąd podczas wczytywania meczów",
+    "history_noone_found": "Nie znaleziono żadnego meczu",
+
+    "new_game_enter_players_names": "Wpisz nazwy graczy",
+
+    "game_rules": "Zasady Gry",
+
+    "settings": "Ustawienia",
+    "settings_board_version": "Wersja tarczy",
+    "settings_touch": "Dotykowa",
+    "settings_type": "Manualna",
+    "settings_show_numbers": "Pokaż wartości pól na tablicy",
+    "settings_points_to_win": "Do ilu punktów chcesz grać?",
+    "settings_classic": "Klasyczny",
+    "settings_quick": "Szybki",
+    "settings_custom": "Niestandardowy",
+    "settings_entering_score": "Wpisz niestandardowy wynik",
+    "settings_entering_hint": "większy niż",
+    "settings_fe": "Na przykład",
+    "settings_entering_error": "Niepoprawna wartość. Wpisz liczbę większą niż"
 }

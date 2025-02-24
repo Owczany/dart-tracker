@@ -2,6 +2,7 @@ import 'package:darttracker/screens/end_game_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:darttracker/models/match.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HistoryDialog extends StatefulWidget {
   const HistoryDialog({super.key});
@@ -22,16 +23,16 @@ class HistoryDialogState extends State<HistoryDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Match History'),
+      title: Text(AppLocalizations.of(context)!.match_history),
       content: FutureBuilder<List<Match>>(
         future: _matchesFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
-            return const Text('Error loading matches');
+            return Text(AppLocalizations.of(context)!.history_loading_error);
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Text('No matches found');
+            return Text(AppLocalizations.of(context)!.history_noone_found);
           } else {
             final matches = snapshot.data!;
             matches.sort((a, b) => b.dateTime.compareTo(a.dateTime));
@@ -47,7 +48,7 @@ class HistoryDialogState extends State<HistoryDialog> {
                       DateFormat('dd-MM-yyyy HH:mm').format(match.dateTime);
                   return ListTile(
                     title: Text(
-                        '$formattedDate - ${match.players.length} players'),
+                        '$formattedDate - ${match.players.length} ${AppLocalizations.of(context)!.players}'),
                     onTap: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (context) => EndGameScreen(match: match, hideButtons: true)));
@@ -64,7 +65,7 @@ class HistoryDialogState extends State<HistoryDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Close'),
+          child: Text(AppLocalizations.of(context)!.close),
         ),
       ],
     );

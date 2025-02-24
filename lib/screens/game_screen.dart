@@ -46,7 +46,7 @@ class GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBarInGameUtil.createAppBarInGame('${AppLocalizations.of(context)!.game_screen_round} ${match.roundNumber}', theme, context),
+      appBar: AppBarInGameUtil.createAppBarInGame('${AppLocalizations.of(context)!.round} ${match.roundNumber}', theme, context),
 
       body: Container(
         color: theme.scaffoldBackgroundColor,

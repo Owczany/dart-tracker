@@ -2,6 +2,7 @@ import 'package:darttracker/models/player_field.dart';
 import 'package:darttracker/models/match.dart';
 import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewGameDialog extends StatefulWidget {
   const NewGameDialog({super.key});
@@ -104,11 +105,11 @@ class NewGameDialogState extends State<NewGameDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('New Game'),
+      title: Text(AppLocalizations.of(context)!.newGame),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const Text('Enter player names:'),
+          Text(AppLocalizations.of(context)!.new_game_enter_players_names),
           const SizedBox(height: 10),
           ..._playerFields.asMap().entries.map((entry) {
             int index = entry.key;
@@ -123,7 +124,7 @@ class NewGameDialogState extends State<NewGameDialog> {
                         (_isAnyEditing && !playerField.isEditing),
                     enabled: !_isAnyEditing || playerField.isEditing,
                     decoration: InputDecoration(
-                      labelText: 'Player ${index + 1}',
+                      labelText: '${AppLocalizations.of(context)!.player} ${index + 1}',
                     ),
                     onChanged: (text) {
                       setState(() {});
@@ -168,11 +169,11 @@ class NewGameDialogState extends State<NewGameDialog> {
               : () {
                   Navigator.of(context).pop();
                 },
-          child: const Text('Cancel'),
+          child: Text(AppLocalizations.of(context)!.cancel),
         ),
         TextButton(
           onPressed: _isAnyEditing || !_canStartGame() ? null : _startGame,
-          child: const Text('Start'),
+          child: Text(AppLocalizations.of(context)!.start),
         ),
       ],
     );
