@@ -5,6 +5,8 @@ import 'package:darttracker/widgets/components/our_wide_button.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:darttracker/widgets/components/snackbars.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+//import '../utils/locate_provider.dart';
 
 class EndGameScreen extends StatefulWidget {
   final Match match;
@@ -22,7 +24,7 @@ class EndGameScreenState extends State<EndGameScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBarInGameUtil.createAppBarInGame('${widget.match.players[widget.match.playerNumber].name} won!', theme, context),
+      appBar: AppBarInGameUtil.createAppBarInGame('${widget.match.players[widget.match.playerNumber].name} ${AppLocalizations.of(context)!.end_game_screen_won}', theme, context),
       
       body: Container(
         color: theme.scaffoldBackgroundColor,
@@ -46,11 +48,11 @@ class EndGameScreenState extends State<EndGameScreen> {
                         const SizedBox(height: 16), // Odstęp między przyciskami
                         //przycisk zapisu gry do pamięci
                         OurWideButton(
-                          text: 'Save the game...',
+                          text: AppLocalizations.of(context)!.end_game_screen_saving,
                           onPressed: () async {
                             await Match.saveMatch(widget.match);
                             if (!mounted) return;
-                            showSuccessSnackbar(context, "Game saved successfully!");
+                            showSuccessSnackbar(context, AppLocalizations.of(context)!.end_game_screen_saved);
                           },
                           color: Colors.orange,
                         ),
@@ -58,7 +60,7 @@ class EndGameScreenState extends State<EndGameScreen> {
 
                         //przycisk nowej szybkiej gry
                         OurWideButton(
-                          text: 'Quick start',
+                          text: AppLocalizations.of(context)!.end_game_screen_quick_start,
                           onPressed: () {
                             final newMatch = widget.match.quickStart();
                             Navigator.pushReplacement(

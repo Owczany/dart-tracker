@@ -7,6 +7,7 @@ import 'package:darttracker/widgets/components/snackbars.dart';
 import 'package:flutter/material.dart';
 import '../widgets/adapters/touch_points_painter.dart';
 import '../widgets/adapters/dartboard.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 /// To jest ekran gry, gdzie gracz wklepuje swoje rzuty
 class GameScreen extends StatefulWidget {
@@ -45,7 +46,7 @@ class GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBarInGameUtil.createAppBarInGame('Round ${match.roundNumber}', theme, context),
+      appBar: AppBarInGameUtil.createAppBarInGame('${AppLocalizations.of(context)!.game_screen_round} ${match.roundNumber}', theme, context),
 
       body: Container(
         color: theme.scaffoldBackgroundColor,
@@ -69,7 +70,7 @@ class GameScreenState extends State<GameScreen> {
                     padding: const EdgeInsets.all(16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: _buildDropdowns(setState, typedThrows, typedMults), 
+                      children: _buildDropdowns(context, setState, typedThrows, typedMults), 
                     ),
                   );
                 }
@@ -110,7 +111,7 @@ class GameScreenState extends State<GameScreen> {
                                 
                                 //ograniczenie na max 3 rzuty
                                 if (throws.length == 3) {
-                                  showErrorSnackbar(context, "You have only 3 darts!");
+                                  showErrorSnackbar(context, AppLocalizations.of(context)!.game_screen_only_3_darts);
                                 } else {
                                   // Przekształcenie globalnych współrzędnych na lokalne
                                   setState(() {
@@ -146,7 +147,7 @@ class GameScreenState extends State<GameScreen> {
                       //przycisk usunięcia ostatniego rzutu
                       if (value)
                         OurWideButton(
-                          text: 'Cancel',
+                          text: AppLocalizations.of(context)!.cancel,
                           onPressed: () {
                             setState(() {
                               if (throws.isNotEmpty) {
@@ -162,14 +163,14 @@ class GameScreenState extends State<GameScreen> {
 
                       // nawigacja do tabelki wyników
                       OurWideButton(
-                        text: 'Confirm',
+                        text: AppLocalizations.of(context)!.confirm,
                         onPressed: () {
                           List<int> points = [];
 
 
                           if (Match.boardVersion) {
                             if (throws.length != 3) {
-                              showErrorSnackbar(context, "Mark 3 throws");
+                              showErrorSnackbar(context, AppLocalizations.of(context)!.game_screen_mark_3_throws);
                             } else {
                               for (Offset throw_ in throws) {
                                 points.add(calculateThrow(throw_));
@@ -180,7 +181,7 @@ class GameScreenState extends State<GameScreen> {
                             for (int i = 0; i < 3; i++) {
                               if ( (typedThrows[i] == 25 || typedThrows[i] == 50) &&
                                     typedMults[i] != 1) {
-                                showErrorSnackbar(context, "You can't multiply bullseye, remove unnececery mults");
+                                showErrorSnackbar(context, AppLocalizations.of(context)!.game_screen_incorect_mult);
                                 isGoodtyped = false;
                                 break;
                               }
@@ -197,7 +198,7 @@ class GameScreenState extends State<GameScreen> {
                             //ustalanie punktacji obecnego gracza
                             bool tooMuch = match.processThrows(points);
                             if (tooMuch) {
-                              showErrorSnackbar(context, "You have reached too many points last turn :(");
+                              showErrorSnackbar(context, AppLocalizations.of(context)!.game_screen_too_many_points);
                             }
                             //ScaffoldMessenger.of(context).clearSnackBars();
                             
@@ -239,7 +240,7 @@ class GameScreenState extends State<GameScreen> {
   }
 }
 
-List<DropdownMenuItem<int>> _getDropdownItems() {
+List<DropdownMenuItem<int>> _getDropdownItems(BuildContext context) {
   //TODO: pobierać to z Scorecalculator.boardScores
   List<int> values = [0, 20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5, 25, 50];
   List<DropdownMenuItem<int>> items = [];
@@ -247,7 +248,7 @@ List<DropdownMenuItem<int>> _getDropdownItems() {
     items.add(DropdownMenuItem<int>(
       value: values[i],
       child: values[i] == 0 
-        ? const Text('Miss') 
+        ? Text(AppLocalizations.of(context)!.game_screen_miss) 
         : Text(values[i].toString())
     ));
   }
@@ -267,7 +268,7 @@ List<DropdownMenuItem<int>> _getDropDownMults() {
 }
 
 /// Tworzy listę widgetów z list rozwijalnych
-List<Widget> _buildDropdowns(StateSetter setState, List<int> typedThrows, List<int> typedMults) {
+List<Widget> _buildDropdowns(BuildContext context, StateSetter setState, List<int> typedThrows, List<int> typedMults) {
   List<Widget> widgets = [];
   for (int i = 0; i < 3; i++) {
     widgets.add(
@@ -276,7 +277,7 @@ List<Widget> _buildDropdowns(StateSetter setState, List<int> typedThrows, List<i
           children: [
             DropdownButtonFormField<int>(
               value: typedThrows[i],
-              items: _getDropdownItems(),
+              items: _getDropdownItems(context),
               onChanged: (newValue) {
               setState(() {
                 typedThrows[i] = newValue!;
@@ -284,7 +285,7 @@ List<Widget> _buildDropdowns(StateSetter setState, List<int> typedThrows, List<i
               });
               },
               decoration: InputDecoration(
-                labelText: 'Throw ${i + 1}',
+                labelText: '${AppLocalizations.of(context)!.game_screen_throw} ${i + 1}',
                 border: const OutlineInputBorder(),
               ),
             ),
@@ -298,7 +299,7 @@ List<Widget> _buildDropdowns(StateSetter setState, List<int> typedThrows, List<i
                   });
                 },
                 decoration: InputDecoration(
-                  labelText: 'Multiplicator ${i + 1}',
+                  labelText: '${AppLocalizations.of(context)!.game_screen_multiplicator} ${i + 1}',
                   border: const OutlineInputBorder(),
                 ),
             )

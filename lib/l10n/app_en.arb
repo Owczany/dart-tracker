@@ -35,6 +35,29 @@
     "confirm": "Confirm",
     "@confirm": {
         "description": ""
-    }
+    },
 
+    "ok": "OK",
+    "no": "No",
+    "yes": "Yes",
+
+    "end_game_screen_won": "won!",
+    "end_game_screen_saving": "Save the game...",
+    "end_game_screen_saved": "Game saved successfully!",
+    "end_game_screen_quick_start": "Quick start",
+
+    "game_screen_round": "Round",
+    "game_screen_only_3_darts": "You have only 3 darts!",
+    "game_screen_mark_3_throws": "Mark 3 throws",
+    "game_screen_incorect_mult": "You can't multiply bullseye, remove unnececery mults",
+    "game_screen_too_many_points": "You have reached too many points last turn :(",
+    "game_screen_miss": "Miss",
+    "game_screen_throw": "Throw",
+    "game_screen_multiplicator": "Multiplicator",
+
+    "score_board_screen_scores_after_each_round": "Scores after each round",
+    "score_board_screen_next_player": "Next player",
+
+    "app_bar_leaving": "Are you sure you want to leave this match?",
+    "app_bar_lost_data": "All data will be lost."
 }

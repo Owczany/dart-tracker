@@ -2,6 +2,7 @@ import 'package:darttracker/themes/theme_notifier.dart';
 import 'package:darttracker/widgets/dialogs/settings_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppBarInGameUtil {
   
@@ -12,22 +13,22 @@ class AppBarInGameUtil {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Are you sure you want to leave this match?'),
-          content: const Text('All data will be lost.'),
+          title: Text(AppLocalizations.of(context)!.app_bar_leaving),
+          content: Text(AppLocalizations.of(context)!.app_bar_lost_data),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 confirm = false;
                 Navigator.of(context).pop();
               },
-              child: const Text('No'),
+              child: Text(AppLocalizations.of(context)!.no),
             ),
             TextButton(
               onPressed: () {
                 confirm = true;
                 Navigator.of(context).pop();
               },
-              child: const Text('Yes'),
+              child: Text(AppLocalizations.of(context)!.yes),
             ),
           ],
         );

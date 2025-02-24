@@ -4,6 +4,7 @@ import 'package:darttracker/screens/game_screen.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:flutter/material.dart';
 import 'package:darttracker/models/match.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ScoreBoardScreen extends StatelessWidget {
   final Match match;
@@ -14,7 +15,7 @@ class ScoreBoardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBarInGameUtil.createAppBarInGame('Scores after each round', theme, context),
+      appBar: AppBarInGameUtil.createAppBarInGame(AppLocalizations.of(context)!.score_board_screen_scores_after_each_round, theme, context),
       
       body: Container (
         color: theme.scaffoldBackgroundColor,
@@ -33,7 +34,7 @@ class ScoreBoardScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: OurWideButton(
-                    text: 'Next player: ${match.players[match.playerNumber].name}',
+                    text: '${AppLocalizations.of(context)!.score_board_screen_next_player}: ${match.players[match.playerNumber].name}',
                     onPressed: () {
                       //przekierowanie spowrotem do game_screen
                       Navigator.pushReplacement(
