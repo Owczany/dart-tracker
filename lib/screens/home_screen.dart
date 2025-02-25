@@ -1,4 +1,3 @@
-import 'package:darttracker/utils/locate_provider.dart';
 import 'package:darttracker/widgets/dialogs/history_dialog.dart';
 import 'package:darttracker/widgets/dialogs/new_game_dialog.dart';
 import 'package:darttracker/widgets/adapters/dartboard.dart';

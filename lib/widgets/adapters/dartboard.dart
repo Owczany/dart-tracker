@@ -69,7 +69,6 @@ class DartBoardPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;
 
-    // TODO: Do zmiany połozenie
     const numberOfSegments = 20;
     const startAngle = 1 / numberOfSegments * pi; //to to samo 
     const sweepAngle = 2 * pi / 20;
