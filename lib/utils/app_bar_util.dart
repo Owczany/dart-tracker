@@ -47,8 +47,16 @@ class AppBarInGameUtil {
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),
         onPressed: () {
-          // Tu można dodać dowolną akcję przed powrotem
-          _onBackPressed(context);
+          //wyświetlanie potwierdzenia wyjścia, gdy jesteśmy w trakcie rozgrywki
+          String? currentScreen = ModalRoute.of(context)?.settings.name;
+          if (currentScreen == 'GameScreen'    ||
+              currentScreen == 'EndGameScreen' ||
+              currentScreen == 'ScoreBoardScreen') 
+            {
+            _onBackPressed(context);
+          } else {
+            Navigator.pop(context);
+          }
         },
       ),
       actions: [

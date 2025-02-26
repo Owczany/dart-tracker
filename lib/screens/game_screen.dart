@@ -210,6 +210,7 @@ class GameScreenState extends State<GameScreen> {
                                   builder: (context) => EndGameScreen(
                                     match: match,
                                   ),
+                                  settings: const RouteSettings(name: 'EndGameScreen'),
                                 ),
                               );
                             } else {
@@ -219,6 +220,7 @@ class GameScreenState extends State<GameScreen> {
                                   builder: (context) => ScoreBoardScreen(
                                     match: match,
                                   ),
+                                  settings: const RouteSettings(name: 'ScoreBoardScreen'),
                                 ),
                               );
                             }
@@ -241,8 +243,7 @@ class GameScreenState extends State<GameScreen> {
 }
 
 List<DropdownMenuItem<int>> _getDropdownItems(BuildContext context) {
-  //TODO: pobierać to z Scorecalculator.boardScores
-  List<int> values = [0, 20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5, 25, 50];
+  List<int> values = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25, 50];
   List<DropdownMenuItem<int>> items = [];
   for (int i = 0; i < values.length; i++) {
     items.add(DropdownMenuItem<int>(

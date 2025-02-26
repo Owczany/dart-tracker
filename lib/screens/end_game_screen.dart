@@ -67,6 +67,7 @@ class EndGameScreenState extends State<EndGameScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ScoreBoardScreen(match: newMatch),
+                                settings: const RouteSettings(name: 'ScoreBoardScreen'),
                               ),
                             );
                           },
@@ -84,7 +85,7 @@ class EndGameScreenState extends State<EndGameScreen> {
       ),
     );
   }
-
+/* niepotrebne już
   void showSnackBar(String text) {
     final snackBar = SnackBar(
       content: Text(text),
@@ -97,4 +98,5 @@ class EndGameScreenState extends State<EndGameScreen> {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+*/
 }

@@ -39,7 +39,10 @@ class ScoreBoardScreen extends StatelessWidget {
                       //przekierowanie spowrotem do game_screen
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => GameScreen(match: match)),
+                        MaterialPageRoute(
+                          builder: (context) => GameScreen(match: match),
+                          settings: const RouteSettings(name: 'GameScreen')
+                        ),
                       );
                     },
                     color: theme.colorScheme.primary,
