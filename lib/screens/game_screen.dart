@@ -201,29 +201,27 @@ class GameScreenState extends State<GameScreen> {
                               showErrorSnackbar(context, AppLocalizations.of(context)!.game_screen_too_many_points);
                             } else if (howMuch == 1) {
                               showErrorSnackbar(context, AppLocalizations.of(context)!.game_screen_one_point);
-                            } else {
-                              if (match.isGameOver()) {
-                                //odpowiednie przekierowanie jeśli już ktoś wygrał (wtedy jego wynik w ostatniej rundzie to 0)
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => EndGameScreen(
-                                      match: match,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ScoreBoardScreen(
-                                      match: match,
-                                    ),
-                                  ),
-                                );
-                              }
                             }
-                            //tu było if (match.isGameOver()) {
+                            if (match.isGameOver()) {
+                              //odpowiednie przekierowanie jeśli już ktoś wygrał (wtedy jego wynik w ostatniej rundzie to 0)
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EndGameScreen(
+                                    match: match,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ScoreBoardScreen(
+                                    match: match,
+                                  ),
+                                ),
+                              );
+                            }
                           }
                         },
                         color: theme.colorScheme.secondary,

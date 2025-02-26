@@ -44,13 +44,7 @@ class Match {
         players[playerNumber].scores.length >= roundNumber && (
         (!easyMode && players[playerNumber].scores[roundNumber - 1] == 0) ||   //warunek zwycięstwa w normalMode
         (easyMode && players[playerNumber].scores[roundNumber - 1] <= 0)))     //warunek zwycięstwa w easyMode
-        {
-
-      for (int i = playerNumber + 1; i < players.length - 1; i++) {
-        if (players[i].scores.length >= roundNumber - 1) {
-          updatePlayerScore(i, players[i].scores[roundNumber - 2]);
-        }
-      }
+    {
       return true;
     }
     return false;
@@ -109,8 +103,18 @@ class Match {
           : howMuch = 0;
       }
     }
-    
-    if (!isGameOver()) {
+    //przypisanie wyników pozostałym graczom przy wygranej obecnego
+    if (isGameOver()) {
+      for (int i = playerNumber + 1; i < players.length; i++) {
+        if (players[i].scores.length >= roundNumber - 1) {
+          if (roundNumber == 1) {
+            updatePlayerScore(i, gameScore);
+          } else {
+            updatePlayerScore(i, players[i].scores[roundNumber - 2]);
+          }
+        }
+      }
+    } else {
       nextPlayer();
     }
     return howMuch;
