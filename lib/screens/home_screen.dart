@@ -1,6 +1,7 @@
 import 'package:darttracker/widgets/dialogs/history_dialog.dart';
-import 'package:darttracker/widgets/dialogs/new_game_dialog.dart';
+import 'package:darttracker/widgets/dialogs/new_game_players_dialog.dart';
 import 'package:darttracker/widgets/adapters/dartboard.dart';
+import 'package:darttracker/widgets/dialogs/new_game_settings_dialog.dart';
 import 'package:darttracker/widgets/dialogs/rules_dialog.dart';
 import 'package:darttracker/widgets/dialogs/settings_dialog.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Center(
               child: OurThinButton(
                 onPressed: () {
-                  showNewGameDialog(context);
+                  showNewGameSettingsDialog(context);
                 },
                 text: AppLocalizations.of(context)!.newGame,
               ),

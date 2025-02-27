@@ -4,14 +4,14 @@ import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class NewGameDialog extends StatefulWidget {
-  const NewGameDialog({super.key});
+class NewGamePlayersDialog extends StatefulWidget {
+  const NewGamePlayersDialog({super.key});
 
   @override
-  NewGameDialogState createState() => NewGameDialogState();
+  NewGamePlayersDialogState createState() => NewGamePlayersDialogState();
 }
 
-class NewGameDialogState extends State<NewGameDialog> {
+class NewGamePlayersDialogState extends State<NewGamePlayersDialog> {
   final List<PlayerField> _playerFields = [];
   bool _isAnyEditing = false;
 
@@ -180,11 +180,11 @@ class NewGameDialogState extends State<NewGameDialog> {
   }
 }
 
-void showNewGameDialog(BuildContext context) {
+void showNewGamePlayersDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return const NewGameDialog();
+      return const NewGamePlayersDialog();
     },
   );
 }
