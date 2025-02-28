@@ -79,18 +79,12 @@ class Match {
 
     //easyMode:
     if (easyMode) {
-      //runda zaliczona
       if (score >= 0) {
         updatePlayerScore(playerNumber, score);
-        howMuch = 2;
-        //runda niezaliczona
       } else {
-        roundNumber == 1
-            ? updatePlayerScore(playerNumber, gameStartingScore)
-            : updatePlayerScore(
-                playerNumber, players[playerNumber].scores[roundNumber - 2]);
-        howMuch = 0;
+        updatePlayerScore(playerNumber, 0);
       }
+      howMuch = 2;
       //normalMode:
     } else {
       //runda zaliczona
