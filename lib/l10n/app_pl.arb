@@ -77,5 +77,8 @@
     "settings_entering_score": "Wpisz niestandardowy wynik",
     "settings_entering_hint": "większy niż",
     "settings_fe": "Na przykład",
-    "settings_entering_error": "Niepoprawna wartość. Wpisz liczbę większą niż"
+    "settings_entering_error": "Niepoprawna wartość. Wpisz liczbę większą niż",
+    "settings_theme_dark": "Ciemny",
+    "settings_theme_light": "Jasny",
+    "settings_choose_theme": "Wybierz motyw"
 }

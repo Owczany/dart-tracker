@@ -31,13 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
-            },
-            icon: const Icon(Icons.brightness_6),
-          ),
-          IconButton(
-            onPressed: () {
-              showSettingsDialog(context);
+              showSettingsDialog(context, isMainMenu: true);
             },
             icon: const Icon(Icons.settings),
           )

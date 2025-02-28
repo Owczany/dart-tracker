@@ -78,5 +78,8 @@
     "settings_entering_score": "Enter Custom Score",
     "settings_entering_hint": "bigger than",
     "settings_fe": "For example",
-    "settings_entering_error": "Invalid value. Enter a number greater than"
+    "settings_entering_error": "Invalid value. Enter a number greater than",
+    "settings_theme_dark": "Dark",
+    "settings_theme_light": "Light",
+    "settings_choose_theme": "Choose theme"
 }

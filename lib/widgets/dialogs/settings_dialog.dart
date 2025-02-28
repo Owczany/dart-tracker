@@ -5,6 +5,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:darttracker/models/dartboard_notifier.dart';
 import 'package:darttracker/models/game_settings_notifier.dart';
+import 'package:darttracker/themes/theme_notifier.dart';
+import 'package:darttracker/themes/light_theme.dart';
+import 'package:darttracker/themes/dark_theme.dart';
 
 class SettingsDialog extends StatefulWidget {
   final bool isMainMenu;
@@ -59,58 +62,85 @@ class SettingsDialogState extends State<SettingsDialog> {
             }),
             const SizedBox(height: 16),
 
-            // ustawianie tarczy
-            Text(AppLocalizations.of(context)!.settings_board_version,
+            // ustawianie motywu
+            Text(AppLocalizations.of(context)!.settings_choose_theme,
                 style: tittleStyle),
             const SizedBox(height: 8),
-            Consumer<DartboardNotifier>(
-              builder: (context, dartboardNotifier, child) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Switch(
-                      value: dartboardNotifier.boardVersion,
-                      onChanged: (bool value) {
-                        dartboardNotifier.toggleBoardVersion();
-                      },
-                    ),
-                    Text(
-                      dartboardNotifier.boardVersion
-                          ? AppLocalizations.of(context)!.settings_touch
-                          : AppLocalizations.of(context)!.settings_type,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ],
-                );
-              },
-            ),
-            const SizedBox(height: 16),
+            Consumer<ThemeNotifier>(builder: (context, themeNotifier, child) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Switch(
+                    value: themeNotifier.currentTheme == DarkTheme.themeData,
+                    onChanged: (bool value) {
+                      themeNotifier.toggleTheme();
+                    },
+                  ),
+                  Text(
+                    themeNotifier.currentTheme == DarkTheme.themeData
+                        ? AppLocalizations.of(context)!.settings_theme_dark
+                        : AppLocalizations.of(context)!.settings_theme_light,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
+              );
+            }),
+            if (!isMainMenu) ...[
+              const SizedBox(height: 16),
 
-            // wyświetlanie numerów na tarczy
-            Text(AppLocalizations.of(context)!.settings_show_numbers,
-                style: tittleStyle),
-            const SizedBox(height: 8),
-            Consumer<DartboardNotifier>(
-              builder: (context, dartboardNotifier, child) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Switch(
-                      value: dartboardNotifier.showNumbers,
-                      onChanged: (bool value) {
-                        dartboardNotifier.toggleShowNumbers();
-                      },
-                    ),
-                    Text(
-                      dartboardNotifier.showNumbers
-                          ? AppLocalizations.of(context)!.on
-                          : AppLocalizations.of(context)!.off,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ],
-                );
-              },
-            ),
+              // ustawianie tarczy
+              Text(AppLocalizations.of(context)!.settings_board_version,
+                  style: tittleStyle),
+              const SizedBox(height: 8),
+              Consumer<DartboardNotifier>(
+                builder: (context, dartboardNotifier, child) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Switch(
+                        value: dartboardNotifier.boardVersion,
+                        onChanged: (bool value) {
+                          dartboardNotifier.toggleBoardVersion();
+                        },
+                      ),
+                      Text(
+                        dartboardNotifier.boardVersion
+                            ? AppLocalizations.of(context)!.settings_touch
+                            : AppLocalizations.of(context)!.settings_type,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+
+              // wyświetlanie numerów na tarczy
+              Text(AppLocalizations.of(context)!.settings_show_numbers,
+                  style: tittleStyle),
+              const SizedBox(height: 8),
+              Consumer<DartboardNotifier>(
+                builder: (context, dartboardNotifier, child) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Switch(
+                        value: dartboardNotifier.showNumbers,
+                        onChanged: (bool value) {
+                          dartboardNotifier.toggleShowNumbers();
+                        },
+                      ),
+                      Text(
+                        dartboardNotifier.showNumbers
+                            ? AppLocalizations.of(context)!.on
+                            : AppLocalizations.of(context)!.off,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ],
           ],
         ),
       ),
@@ -126,62 +156,6 @@ class SettingsDialogState extends State<SettingsDialog> {
   }
 }
 
-/// Funkcja wyświetlająca dialog do wpisania customowego wyniku gry
-void _showCustomScoreDialog(
-    BuildContext context, GameSettingsNotifier gameSettingsNotifier) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      final TextEditingController controller1 = TextEditingController();
-      String? errorMessage;
-
-      return StatefulBuilder(
-        builder: (BuildContext context, StateSetter dialogSetState) {
-          return AlertDialog(
-            title: Text(
-                "${AppLocalizations.of(context)!.settings_entering_score} (${AppLocalizations.of(context)!.settings_entering_hint} 1)"),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                OurOnlyNumberTextField(
-                  controller: controller1,
-                  text: '${AppLocalizations.of(context)!.settings_fe}: 420',
-                ),
-                if (errorMessage != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      errorMessage!,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                  ),
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  int? typedValue = int.tryParse(controller1.text);
-                  if (typedValue != null && typedValue > 1) {
-                    gameSettingsNotifier.setGameStartingScore(typedValue);
-                    errorMessage = null;
-
-                    Navigator.of(context).pop();
-                  } else {
-                    dialogSetState(() {
-                      errorMessage =
-                          "${AppLocalizations.of(context)!.settings_entering_error} 1.";
-                    });
-                  }
-                },
-                child: Text(AppLocalizations.of(context)!.ok),
-              ),
-            ],
-          );
-        },
-      );
-    },
-  );
-}
 
 /// Funkcja wyświetlająca dialog ustawień (zmiana wyniku gry jest ukryta, jeżeli changableScore = false)
 void showSettingsDialog(BuildContext context, {bool isMainMenu = true}) {
