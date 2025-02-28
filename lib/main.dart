@@ -1,7 +1,6 @@
 //TODO: dopisać zasady (M)
 //TODO: tryb pro (M)
 //TODO: zmienić kolory tarczy na mniej sraczkwate (w zależności od motywu kolorystycznego)
-//TODO: odpowiednie ustawienia przenieść do tworzenia rozgrywki
 
 
 import 'package:darttracker/app.dart';
