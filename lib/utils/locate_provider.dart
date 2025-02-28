@@ -1,11 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:ui'; // Dla domyślnego locale
 
 /// Klasa zarządzająca stanem języka
 class LocaleProvider extends ChangeNotifier {
-  Locale _locale = PlatformDispatcher.instance.locale;
+  Locale _locale = const Locale('en');
 
   Locale get locale => _locale;
 
@@ -29,7 +28,8 @@ class LocaleProvider extends ChangeNotifier {
     String? countryCode = prefs.getString('country_code');
 
     if (langCode != null) {
-      _locale = Locale(langCode, countryCode?.isEmpty ?? true ? null : countryCode);
+      _locale =
+          Locale(langCode, countryCode?.isEmpty ?? true ? null : countryCode);
       notifyListeners();
     }
   }
