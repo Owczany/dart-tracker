@@ -24,8 +24,10 @@ class EndGameScreenState extends State<EndGameScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBarInGameUtil.createAppBarInGame('${widget.match.players[widget.match.playerNumber].name} ${AppLocalizations.of(context)!.end_game_screen_won}!', theme, context),
-      
+      appBar: AppBarInGameUtil.createAppBarInGame(
+          '${widget.match.players[widget.match.playerNumber].name} ${AppLocalizations.of(context)!.end_game_screen_won}!',
+          theme,
+          context),
       body: Container(
         color: theme.scaffoldBackgroundColor,
         child: Stack(
@@ -48,11 +50,17 @@ class EndGameScreenState extends State<EndGameScreen> {
                         const SizedBox(height: 16), // Odstęp między przyciskami
                         //przycisk zapisu gry do pamięci
                         OurWideButton(
-                          text: '${AppLocalizations.of(context)!.end_game_screen_saving}...',
+                          text:
+                              '${AppLocalizations.of(context)!.end_game_screen_saving}...',
                           onPressed: () async {
+                            print(
+                                'Players: ${widget.match.players}, Player Number: ${widget.match.playerNumber}, Date Time: ${widget.match.dateTime}, Easy Mode: ${widget.match.easyMode}, Round Number: ${widget.match.roundNumber}, Game Starting Score: ${widget.match.gameStartingScore}');
                             await Match.saveMatch(widget.match);
                             if (!mounted) return;
-                            showSuccessSnackbar(context, AppLocalizations.of(context)!.end_game_screen_saved);
+                            showSuccessSnackbar(
+                                context,
+                                AppLocalizations.of(context)!
+                                    .end_game_screen_saved);
                           },
                           color: Colors.orange,
                         ),
@@ -60,14 +68,17 @@ class EndGameScreenState extends State<EndGameScreen> {
 
                         //przycisk nowej szybkiej gry
                         OurWideButton(
-                          text: AppLocalizations.of(context)!.end_game_screen_quick_start,
+                          text: AppLocalizations.of(context)!
+                              .end_game_screen_quick_start,
                           onPressed: () {
                             final newMatch = widget.match.quickStart();
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ScoreBoardScreen(match: newMatch),
-                                settings: const RouteSettings(name: 'ScoreBoardScreen'),
+                                builder: (context) =>
+                                    ScoreBoardScreen(match: newMatch),
+                                settings: const RouteSettings(
+                                    name: 'ScoreBoardScreen'),
                               ),
                             );
                           },

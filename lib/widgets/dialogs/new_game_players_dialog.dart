@@ -1,8 +1,10 @@
 import 'package:darttracker/models/player_field.dart';
 import 'package:darttracker/models/match.dart';
+import 'package:darttracker/models/game_settings_notifier.dart';
 import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class NewGamePlayersDialog extends StatefulWidget {
   const NewGamePlayersDialog({super.key});
@@ -92,12 +94,19 @@ class NewGamePlayersDialogState extends State<NewGamePlayersDialog> {
   }
 
   void _startGame() {
+    final gameSettingsNotifier =
+        Provider.of<GameSettingsNotifier>(context, listen: false);
     final match = Match(
       players: _playerFields
           .where((field) => field.player != null)
           .map((field) => field.player!)
           .toList(),
+      gameStartingScore: gameSettingsNotifier.gameStartingScore,
+      easyMode: gameSettingsNotifier.easyMode,
     );
+
+    print(
+        'Players: ${match.players}, Player Number: ${match.playerNumber}, Date Time: ${match.dateTime}, Easy Mode: ${match.easyMode}, Round Number: ${match.roundNumber}, Game Starting Score: ${match.gameStartingScore}');
     Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => ScoreBoardScreen(match: match)));
   }
@@ -124,7 +133,8 @@ class NewGamePlayersDialogState extends State<NewGamePlayersDialog> {
                         (_isAnyEditing && !playerField.isEditing),
                     enabled: !_isAnyEditing || playerField.isEditing,
                     decoration: InputDecoration(
-                      labelText: '${AppLocalizations.of(context)!.player} ${index + 1}',
+                      labelText:
+                          '${AppLocalizations.of(context)!.player} ${index + 1}',
                     ),
                     onChanged: (text) {
                       setState(() {});

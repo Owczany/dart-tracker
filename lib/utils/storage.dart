@@ -6,6 +6,7 @@ class Storage {
   static Future<void> saveMatch(Match match) async {
     final prefs = await SharedPreferences.getInstance();
     final matches = prefs.getStringList('matches') ?? [];
+    print(match.toJson());
     matches.add(jsonEncode(match.toJson()));
     await prefs.setStringList('matches', matches);
   }

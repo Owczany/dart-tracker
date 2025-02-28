@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:darttracker/models/dartboard_notifier.dart';
-import 'package:darttracker/models/match.dart';
+import 'package:darttracker/models/game_settings_notifier.dart';
 
 class SettingsDialog extends StatefulWidget {
   final bool isMainMenu;
@@ -119,23 +119,21 @@ class SettingsDialogState extends State<SettingsDialog> {
                   style: tittleStyle),
             if (isMainMenu) const SizedBox(height: 8),
             if (isMainMenu)
-              StatefulBuilder(
-                builder: (BuildContext context, StateSetter setState) {
+              Consumer<GameSettingsNotifier>(
+                builder: (context, gameSettingsNotifier, child) {
                   return Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Switch(
-                            value: Match.easyMode,
+                            value: gameSettingsNotifier.easyMode,
                             onChanged: (bool value) {
-                              setState(() {
-                                Match.easyMode = value;
-                              });
+                              gameSettingsNotifier.toggleEasyMode();
                             },
                           ),
                           Text(
-                            Match.easyMode
+                            gameSettingsNotifier.easyMode
                                 ? AppLocalizations.of(context)!
                                     .settings_easyMode
                                 : AppLocalizations.of(context)!
@@ -147,7 +145,7 @@ class SettingsDialogState extends State<SettingsDialog> {
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(
-                          Match.easyMode
+                          gameSettingsNotifier.easyMode
                               ? AppLocalizations.of(context)!
                                   .settings_easyMode_hint
                               : AppLocalizations.of(context)!
@@ -166,10 +164,10 @@ class SettingsDialogState extends State<SettingsDialog> {
                   style: tittleStyle),
             if (isMainMenu) const SizedBox(height: 8),
             if (isMainMenu)
-              StatefulBuilder(
-                builder: (BuildContext context, StateSetter setState) {
+              Consumer<GameSettingsNotifier>(
+                builder: (context, gameSettingsNotifier, child) {
                   return DropdownButton<int>(
-                    value: Match.gameScore,
+                    value: gameSettingsNotifier.gameStartingScore,
                     isExpanded: true,
                     items: [
                       DropdownMenuItem<int>(
@@ -187,25 +185,23 @@ class SettingsDialogState extends State<SettingsDialog> {
                         child:
                             Text(AppLocalizations.of(context)!.settings_custom),
                       ),
-                      if (Match.gameScore > 1 &&
-                          Match.gameScore != 501 &&
-                          Match.gameScore != 301)
+                      if (gameSettingsNotifier.gameStartingScore > 1 &&
+                          gameSettingsNotifier.gameStartingScore != 501 &&
+                          gameSettingsNotifier.gameStartingScore != 301)
                         DropdownMenuItem<int>(
-                          value: Match.gameScore,
+                          value: gameSettingsNotifier.gameStartingScore,
                           child: Text(
-                              "${Match.gameScore} (${AppLocalizations.of(context)!.settings_custom})"),
+                              "${gameSettingsNotifier.gameStartingScore} (${AppLocalizations.of(context)!.settings_custom})"),
                         ),
                     ],
                     onChanged: (int? newValue) {
                       if (newValue != null) {
-                        setState(() {
-                          if (newValue == -1) {
-                            // Pokaż dialog do wpisania swojego wyniku gry
-                            _showCustomScoreDialog(context, setState);
-                          } else {
-                            Match.gameScore = newValue;
-                          }
-                        });
+                        if (newValue == -1) {
+                          // Pokaż dialog do wpisania swojego wyniku gry
+                          _showCustomScoreDialog(context, gameSettingsNotifier);
+                        } else {
+                          gameSettingsNotifier.setGameStartingScore(newValue);
+                        }
                       }
                     },
                   );
@@ -227,7 +223,8 @@ class SettingsDialogState extends State<SettingsDialog> {
 }
 
 /// Funkcja wyświetlająca dialog do wpisania customowego wyniku gry
-void _showCustomScoreDialog(BuildContext context, StateSetter setState) {
+void _showCustomScoreDialog(
+    BuildContext context, GameSettingsNotifier gameSettingsNotifier) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -261,12 +258,10 @@ void _showCustomScoreDialog(BuildContext context, StateSetter setState) {
                 onPressed: () {
                   int? typedValue = int.tryParse(controller1.text);
                   if (typedValue != null && typedValue > 1) {
-                    Match.gameScore = typedValue;
+                    gameSettingsNotifier.setGameStartingScore(typedValue);
                     errorMessage = null;
 
                     Navigator.of(context).pop();
-
-                    setState(() {});
                   } else {
                     dialogSetState(() {
                       errorMessage =

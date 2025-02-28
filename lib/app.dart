@@ -1,6 +1,7 @@
 import 'package:darttracker/screens/home_screen.dart';
 import 'package:darttracker/themes/theme_notifier.dart';
 import 'package:darttracker/models/dartboard_notifier.dart';
+import 'package:darttracker/models/game_settings_notifier.dart';
 import 'package:darttracker/utils/locate_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -16,6 +17,7 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
         ChangeNotifierProvider(create: (_) => ThemeNotifier()),
         ChangeNotifierProvider(create: (_) => DartboardNotifier()),
+        ChangeNotifierProvider(create: (_) => GameSettingsNotifier()),
       ],
       child: Consumer3<ThemeNotifier, LocaleProvider, DartboardNotifier>(
         builder:

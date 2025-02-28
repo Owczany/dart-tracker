@@ -30,6 +30,7 @@ class HistoryDialogState extends State<HistoryDialog> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
+            print('blaaad: ${snapshot.error}');
             return Text(AppLocalizations.of(context)!.history_loading_error);
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Text(AppLocalizations.of(context)!.history_noone_found);
@@ -48,12 +49,11 @@ class HistoryDialogState extends State<HistoryDialog> {
                       DateFormat('dd-MM-yyyy HH:mm').format(match.dateTime);
                   return ListTile(
                     title: Text(
-                        '$formattedDate - ${match.players.length} ${match.players.length > 1
-                                                                    ? AppLocalizations.of(context)!.players
-                                                                    : AppLocalizations.of(context)!.player}'),
+                        '$formattedDate - ${match.players.length} ${match.players.length > 1 ? AppLocalizations.of(context)!.players : AppLocalizations.of(context)!.player}'),
                     onTap: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => EndGameScreen(match: match, hideButtons: true)));
+                          builder: (context) =>
+                              EndGameScreen(match: match, hideButtons: true)));
                     },
                   );
                 },

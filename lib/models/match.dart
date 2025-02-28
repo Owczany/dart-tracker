@@ -8,15 +8,16 @@ class Match {
   int playerNumber;
   int roundNumber;
   final DateTime dateTime;
-  static int gameScore = 501;
-  static bool easyMode =
-      false; // true - trzeba osiągnąć 0 lub mniej, false - trzeba osiągnąć dokładnie 0
+  final int gameStartingScore;
+  final bool easyMode;
 
   Match({
     required this.players,
     this.playerNumber = 0,
     this.roundNumber = 1,
     DateTime? dateTime,
+    required this.gameStartingScore,
+    required this.easyMode,
   }) : dateTime = dateTime ?? DateTime.now();
 
   void updatePlayerScore(int playerIndex, int score) {
@@ -59,7 +60,10 @@ class Match {
     for (var player in players) {
       player.resetScores();
     }
-    return Match(players: players);
+    return Match(
+        players: players,
+        gameStartingScore: gameStartingScore,
+        easyMode: easyMode);
   }
 
   /// Przypisuje punkty graczowi i zwraca informację, czy runda została uznana,
@@ -69,7 +73,7 @@ class Match {
 
     int score;
     roundNumber == 1
-        ? score = gameScore - (points[0] + points[1] + points[2])
+        ? score = gameStartingScore - (points[0] + points[1] + points[2])
         : score = players[playerNumber].scores[roundNumber - 2] -
             (points[0] + points[1] + points[2]);
 
@@ -82,7 +86,7 @@ class Match {
         //runda niezaliczona
       } else {
         roundNumber == 1
-            ? updatePlayerScore(playerNumber, gameScore)
+            ? updatePlayerScore(playerNumber, gameStartingScore)
             : updatePlayerScore(
                 playerNumber, players[playerNumber].scores[roundNumber - 2]);
         howMuch = 0;
@@ -96,7 +100,7 @@ class Match {
         //runda niezaliczona
       } else {
         roundNumber == 1
-            ? updatePlayerScore(playerNumber, gameScore)
+            ? updatePlayerScore(playerNumber, gameStartingScore)
             : updatePlayerScore(
                 playerNumber, players[playerNumber].scores[roundNumber - 2]);
         score == 1 ? howMuch = 1 : howMuch = 0;
@@ -107,7 +111,7 @@ class Match {
       for (int i = playerNumber + 1; i < players.length; i++) {
         if (players[i].scores.length >= roundNumber - 1) {
           if (roundNumber == 1) {
-            updatePlayerScore(i, gameScore);
+            updatePlayerScore(i, gameStartingScore);
           } else {
             updatePlayerScore(i, players[i].scores[roundNumber - 2]);
           }
@@ -125,10 +129,20 @@ class Match {
       'playerNumber': playerNumber,
       'roundNumber': roundNumber,
       'dateTime': dateTime.toIso8601String(),
+      'gameStartingScore': gameStartingScore,
+      'easyMode': easyMode,
     };
   }
 
   static Match fromJson(Map<String, dynamic> json) {
+    // Print all parameters before returning the Match object
+    print('players: ${json['players']}');
+    print('playerNumber: ${json['playerNumber']}');
+    print('roundNumber: ${json['roundNumber']}');
+    print('dateTime: ${json['dateTime']}');
+    print('gameStartingScore: ${json['gameStartingScore']}');
+    print('easyMode: ${json['easyMode']}');
+
     return Match(
       players: (json['players'] as List)
           .map((playerJson) => Player.fromJson(playerJson))
@@ -136,6 +150,8 @@ class Match {
       playerNumber: json['playerNumber'],
       roundNumber: json['roundNumber'],
       dateTime: DateTime.parse(json['dateTime']),
+      gameStartingScore: json['gameStartingScore'],
+      easyMode: json['easyMode'],
     );
   }
 
