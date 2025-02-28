@@ -9,13 +9,8 @@ class Match {
   int roundNumber;
   final DateTime dateTime;
   static int gameScore = 501;
-  static bool boardVersion = true; // true - dotykowa, false - wpisywanie ręczne
-  static bool showNumbers = false; // true - rysowanie numerów na tarczy
-  static bool easyMode = false; // true - trzeba osiągnąć 0 lub mniej, false - trzeba osiągnąć dokładnie 0
-  static ValueNotifier<bool> showNumbersNotifier = ValueNotifier(showNumbers);
-  static ValueNotifier<bool> boardversionNotifier = ValueNotifier(boardVersion);
-
-  bool get boardversion => boardVersion;
+  static bool easyMode =
+      false; // true - trzeba osiągnąć 0 lub mniej, false - trzeba osiągnąć dokładnie 0
 
   Match({
     required this.players,
@@ -41,9 +36,13 @@ class Match {
 
   bool isGameOver() {
     if (players[playerNumber].scores.isNotEmpty &&
-        players[playerNumber].scores.length >= roundNumber && (
-        (!easyMode && players[playerNumber].scores[roundNumber - 1] == 0) ||   //warunek zwycięstwa w normalMode
-        (easyMode && players[playerNumber].scores[roundNumber - 1] <= 0)))     //warunek zwycięstwa w easyMode
+        players[playerNumber].scores.length >= roundNumber &&
+        ((!easyMode &&
+                players[playerNumber].scores[roundNumber - 1] ==
+                    0) || //warunek zwycięstwa w normalMode
+            (easyMode &&
+                players[playerNumber].scores[roundNumber - 1] <=
+                    0))) //warunek zwycięstwa w easyMode
     {
       return true;
     }
@@ -62,18 +61,18 @@ class Match {
     }
     return Match(players: players);
   }
+
   /// Przypisuje punkty graczowi i zwraca informację, czy runda została uznana,
   ///0 - zero zostało przekroczone więc nie uznajemy, 1 - osiągnięto jedynkę, więc nie uznajemy, 2 - runda uznana
   int processThrows(List<int> points) {
-    
-    int howMuch; 
+    int howMuch;
 
     int score;
     roundNumber == 1
-      ? score = gameScore - (points[0] + points[1] + points[2])
-      : score = players[playerNumber].scores[roundNumber - 2] -
-          (points[0] + points[1] + points[2]);
-    
+        ? score = gameScore - (points[0] + points[1] + points[2])
+        : score = players[playerNumber].scores[roundNumber - 2] -
+            (points[0] + points[1] + points[2]);
+
     //easyMode:
     if (easyMode) {
       //runda zaliczona
@@ -83,24 +82,24 @@ class Match {
         //runda niezaliczona
       } else {
         roundNumber == 1
-          ? updatePlayerScore(playerNumber, gameScore)
-          : updatePlayerScore(playerNumber, players[playerNumber].scores[roundNumber - 2]);
+            ? updatePlayerScore(playerNumber, gameScore)
+            : updatePlayerScore(
+                playerNumber, players[playerNumber].scores[roundNumber - 2]);
         howMuch = 0;
       }
-    //normalMode:
+      //normalMode:
     } else {
       //runda zaliczona
       if (score >= 0 && score != 1) {
         updatePlayerScore(playerNumber, score);
         howMuch = 2;
-      //runda niezaliczona
+        //runda niezaliczona
       } else {
         roundNumber == 1
-          ? updatePlayerScore(playerNumber, gameScore)
-          : updatePlayerScore(playerNumber, players[playerNumber].scores[roundNumber - 2]);
-        score == 1
-          ? howMuch = 1
-          : howMuch = 0;
+            ? updatePlayerScore(playerNumber, gameScore)
+            : updatePlayerScore(
+                playerNumber, players[playerNumber].scores[roundNumber - 2]);
+        score == 1 ? howMuch = 1 : howMuch = 0;
       }
     }
     //przypisanie wyników pozostałym graczom przy wygranej obecnego

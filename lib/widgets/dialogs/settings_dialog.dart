@@ -1,9 +1,10 @@
 import 'package:darttracker/utils/locate_provider.dart';
 import 'package:darttracker/widgets/components/our_only_number_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:darttracker/models/match.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:darttracker/models/dartboard_notifier.dart';
+import 'package:darttracker/models/match.dart';
 
 class SettingsDialog extends StatefulWidget {
   final bool isMainMenu;
@@ -15,7 +16,8 @@ class SettingsDialog extends StatefulWidget {
 
 class SettingsDialogState extends State<SettingsDialog> {
   late bool isMainMenu;
-  final TextStyle tittleStyle = const TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
+  final TextStyle tittleStyle =
+      const TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
 
   @override
   void initState() {
@@ -32,56 +34,48 @@ class SettingsDialogState extends State<SettingsDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-
             // ustawianie języka
-            Text(AppLocalizations.of(context)!.settings_choose_language, style: tittleStyle),
+            Text(AppLocalizations.of(context)!.settings_choose_language,
+                style: tittleStyle),
             const SizedBox(height: 8),
-            StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-                var localeProvider = context.read<LocaleProvider>();
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Switch(
-                      value: localeProvider.locale.languageCode == 'en',
-                      onChanged: (bool value) {
-                        setState(() {
-                          localeProvider.setLocale(Locale(value ? 'en' : 'pl'));
-                        });
-                      },
-                    ),
-                    Text(
-                      localeProvider.locale.languageCode == 'en' 
-                          ? 'English'
-                          : 'Polski',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ],
-                );
-              }
-            ),
+            Consumer<LocaleProvider>(builder: (context, localeProvider, child) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Switch(
+                    value: localeProvider.locale.languageCode == 'en',
+                    onChanged: (bool value) {
+                      localeProvider.setLocale(Locale(value ? 'en' : 'pl'));
+                    },
+                  ),
+                  Text(
+                    localeProvider.locale.languageCode == 'en'
+                        ? 'English'
+                        : 'Polski',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
+              );
+            }),
             const SizedBox(height: 16),
 
-
             // ustawianie tarczy
-            Text(AppLocalizations.of(context)!.settings_board_version, style: tittleStyle),
+            Text(AppLocalizations.of(context)!.settings_board_version,
+                style: tittleStyle),
             const SizedBox(height: 8),
-            StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
+            Consumer<DartboardNotifier>(
+              builder: (context, dartboardNotifier, child) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Switch(
-                      value: Match.boardVersion,
+                      value: dartboardNotifier.boardVersion,
                       onChanged: (bool value) {
-                        setState(() {
-                          Match.boardVersion = value;
-                          Match.boardversionNotifier.value = value;
-                        });
+                        dartboardNotifier.toggleBoardVersion();
                       },
                     ),
                     Text(
-                      Match.boardVersion 
+                      dartboardNotifier.boardVersion
                           ? AppLocalizations.of(context)!.settings_touch
                           : AppLocalizations.of(context)!.settings_type,
                       style: const TextStyle(fontSize: 16),
@@ -93,24 +87,22 @@ class SettingsDialogState extends State<SettingsDialog> {
             const SizedBox(height: 16),
 
             // wyświetlanie numerów na tarczy
-            Text(AppLocalizations.of(context)!.settings_show_numbers, style: tittleStyle),
+            Text(AppLocalizations.of(context)!.settings_show_numbers,
+                style: tittleStyle),
             const SizedBox(height: 8),
-            StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
+            Consumer<DartboardNotifier>(
+              builder: (context, dartboardNotifier, child) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Switch(
-                      value: Match.showNumbers,
+                      value: dartboardNotifier.showNumbers,
                       onChanged: (bool value) {
-                        setState(() {
-                          Match.showNumbers = value;
-                          Match.showNumbersNotifier.value = value;
-                        });
+                        dartboardNotifier.toggleShowNumbers();
                       },
                     ),
                     Text(
-                      Match.showNumbers
+                      dartboardNotifier.showNumbers
                           ? AppLocalizations.of(context)!.on
                           : AppLocalizations.of(context)!.off,
                       style: const TextStyle(fontSize: 16),
@@ -123,13 +115,13 @@ class SettingsDialogState extends State<SettingsDialog> {
 
             //ustawianie trybu gry (easyMode, normalMode):
             if (isMainMenu)
-              Text(AppLocalizations.of(context)!.settings_game_mode, style: tittleStyle),
-            if (isMainMenu)
-              const SizedBox(height: 8),
+              Text(AppLocalizations.of(context)!.settings_game_mode,
+                  style: tittleStyle),
+            if (isMainMenu) const SizedBox(height: 8),
             if (isMainMenu)
               StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
-                  return Column (
+                  return Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -139,14 +131,15 @@ class SettingsDialogState extends State<SettingsDialog> {
                             onChanged: (bool value) {
                               setState(() {
                                 Match.easyMode = value;
-                                //Match.showNumbersNotifier.value = value;
                               });
                             },
                           ),
                           Text(
                             Match.easyMode
-                                ? AppLocalizations.of(context)!.settings_easyMode
-                                : AppLocalizations.of(context)!.settings_normalMode,
+                                ? AppLocalizations.of(context)!
+                                    .settings_easyMode
+                                : AppLocalizations.of(context)!
+                                    .settings_normalMode,
                             style: const TextStyle(fontSize: 16),
                           ),
                         ],
@@ -155,23 +148,23 @@ class SettingsDialogState extends State<SettingsDialog> {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(
                           Match.easyMode
-                              ? AppLocalizations.of(context)!.settings_easyMode_hint
-                              : AppLocalizations.of(context)!.settings_normalMode_hint,
+                              ? AppLocalizations.of(context)!
+                                  .settings_easyMode_hint
+                              : AppLocalizations.of(context)!
+                                  .settings_normalMode_hint,
                         ),
                       ),
                     ],
                   );
-                  
                 },
               ),
-            if (isMainMenu)
-              const SizedBox(height: 16),
+            if (isMainMenu) const SizedBox(height: 16),
 
             // ustawianie wyniku gry
             if (isMainMenu)
-              Text(AppLocalizations.of(context)!.settings_points_to_win, style: tittleStyle),
-            if (isMainMenu)
-              const SizedBox(height: 8),
+              Text(AppLocalizations.of(context)!.settings_points_to_win,
+                  style: tittleStyle),
+            if (isMainMenu) const SizedBox(height: 8),
             if (isMainMenu)
               StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
@@ -181,20 +174,26 @@ class SettingsDialogState extends State<SettingsDialog> {
                     items: [
                       DropdownMenuItem<int>(
                         value: 501,
-                        child: Text("501 (${AppLocalizations.of(context)!.settings_classic})"),
+                        child: Text(
+                            "501 (${AppLocalizations.of(context)!.settings_classic})"),
                       ),
                       DropdownMenuItem<int>(
                         value: 301,
-                        child: Text("301 (${AppLocalizations.of(context)!.settings_quick})"),
+                        child: Text(
+                            "301 (${AppLocalizations.of(context)!.settings_quick})"),
                       ),
                       DropdownMenuItem<int>(
                         value: -1,
-                        child: Text(AppLocalizations.of(context)!.settings_custom),
+                        child:
+                            Text(AppLocalizations.of(context)!.settings_custom),
                       ),
-                      if (Match.gameScore > 1 && Match.gameScore != 501 && Match.gameScore != 301)
+                      if (Match.gameScore > 1 &&
+                          Match.gameScore != 501 &&
+                          Match.gameScore != 301)
                         DropdownMenuItem<int>(
                           value: Match.gameScore,
-                          child: Text("${Match.gameScore} (${AppLocalizations.of(context)!.settings_custom})"),
+                          child: Text(
+                              "${Match.gameScore} (${AppLocalizations.of(context)!.settings_custom})"),
                         ),
                     ],
                     onChanged: (int? newValue) {
@@ -238,7 +237,8 @@ void _showCustomScoreDialog(BuildContext context, StateSetter setState) {
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter dialogSetState) {
           return AlertDialog(
-            title: Text("${AppLocalizations.of(context)!.settings_entering_score} (${AppLocalizations.of(context)!.settings_entering_hint} 1)"),
+            title: Text(
+                "${AppLocalizations.of(context)!.settings_entering_score} (${AppLocalizations.of(context)!.settings_entering_hint} 1)"),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -269,7 +269,8 @@ void _showCustomScoreDialog(BuildContext context, StateSetter setState) {
                     setState(() {});
                   } else {
                     dialogSetState(() {
-                      errorMessage = "${AppLocalizations.of(context)!.settings_entering_error} 1.";
+                      errorMessage =
+                          "${AppLocalizations.of(context)!.settings_entering_error} 1.";
                     });
                   }
                 },

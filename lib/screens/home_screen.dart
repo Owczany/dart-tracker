@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../themes/theme_notifier.dart';
 import '../widgets/components/our_thin_button.dart';
-import '../models/match.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../models/dartboard_notifier.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Darts Tracker'),
         centerTitle: true,
         backgroundColor: theme.appBarTheme.backgroundColor,
-        
         actions: [
           IconButton(
             onPressed: () {
@@ -49,10 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            ValueListenableBuilder(
-              valueListenable: Match.showNumbersNotifier,
-              builder: (context, bool value, child) {
-                return Dartboard(showNumbers: value);
+            Consumer<DartboardNotifier>(
+              builder: (context, dartboardNotifier, child) {
+                return Dartboard();
               },
             ),
             const SizedBox(height: 30),

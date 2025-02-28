@@ -1,21 +1,25 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../models/dartboard_notifier.dart';
 
 class Dartboard extends StatelessWidget {
-  final bool background;  //czy tło ma być rysowane
-  final bool showNumbers; // czy mają być rysowane liczby na tarczy
-  
-  const Dartboard({super.key, this.background = false, this.showNumbers = false});
+  const Dartboard({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final dartboardNotifier = Provider.of<DartboardNotifier>(context);
+
     return Center(
       child: AspectRatio(
         aspectRatio: 1,
         child: CustomPaint(
-          painter: DartBoardPainter(background: background, theme: theme, showNumbers: showNumbers),
+          painter: DartBoardPainter(
+            background: dartboardNotifier.boardVersion,
+            theme: theme,
+            showNumbers: dartboardNotifier.showNumbers,
+          ),
         ),
       ),
     );
@@ -26,7 +30,10 @@ class DartBoardPainter extends CustomPainter {
   final bool background;
   final bool showNumbers;
   final ThemeData theme;
-  DartBoardPainter({required this.background, required this.theme, required this.showNumbers});
+  DartBoardPainter(
+      {required this.background,
+      required this.theme,
+      required this.showNumbers});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -42,14 +49,18 @@ class DartBoardPainter extends CustomPainter {
 
     final rectangle = Rect.fromCircle(center: center, radius: boardRadius);
 
-    final innerRect = Rect.fromCircle(center: center, radius: innerRadius - 0.5 * sectorWidth);
-    final outerRect = Rect.fromCircle(center: center, radius: boardRadius - 0.5 * sectorWidth);
-    
+    final innerRect = Rect.fromCircle(
+        center: center, radius: innerRadius - 0.5 * sectorWidth);
+    final outerRect = Rect.fromCircle(
+        center: center, radius: boardRadius - 0.5 * sectorWidth);
+
     // Paints
     ///warunkowe kolorowanie tła tarczy
     if (background) {
-      final Paint backgroundPaint = Paint()..color = theme.appBarTheme.backgroundColor!;
-      canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), backgroundPaint);
+      final Paint backgroundPaint = Paint()
+        ..color = theme.appBarTheme.backgroundColor!;
+      canvas.drawRect(
+          Rect.fromLTWH(0, 0, size.width, size.height), backgroundPaint);
     }
 
     final Paint backGroundColor = Paint()..color = Colors.white;
@@ -70,7 +81,7 @@ class DartBoardPainter extends CustomPainter {
       ..strokeWidth = 2.0;
 
     const numberOfSegments = 20;
-    const startAngle = 1 / numberOfSegments * pi; //to to samo 
+    const startAngle = 1 / numberOfSegments * pi; //to to samo
     const sweepAngle = 2 * pi / 20;
 
     // Tło tarczy
@@ -146,7 +157,6 @@ class DartBoardPainter extends CustomPainter {
 
     // Wpisz wartości pól, jeżeli drawNumbers = true
     if (showNumbers) {
-
       final numberPainter = TextPainter(
         textAlign: TextAlign.center,
         textDirection: TextDirection.ltr,
@@ -155,7 +165,7 @@ class DartBoardPainter extends CustomPainter {
         textAlign: TextAlign.center,
         textDirection: TextDirection.ltr,
       );
-      
+
       final mult3Painter = TextPainter(
         textAlign: TextAlign.center,
         textDirection: TextDirection.ltr,
@@ -167,11 +177,10 @@ class DartBoardPainter extends CustomPainter {
         fontWeight: FontWeight.bold,
       );
 
-      final multStyle = TextStyle (
-        color: theme.appBarTheme.backgroundColor,
-        fontSize: boardRadius * 0.075,
-        fontWeight: FontWeight.bold
-      );
+      final multStyle = TextStyle(
+          color: theme.appBarTheme.backgroundColor,
+          fontSize: boardRadius * 0.075,
+          fontWeight: FontWeight.bold);
 
       mult2Painter.text = TextSpan(
         text: 'x2',
@@ -182,8 +191,26 @@ class DartBoardPainter extends CustomPainter {
         style: multStyle,
       );
       final numbers = [
-        '10', '15', '2', '17', '3', '19', '7', '16', '8', '11',
-        '14', '9', '12', '5', '20', '1', '18', '4', '13', '6'
+        '10',
+        '15',
+        '2',
+        '17',
+        '3',
+        '19',
+        '7',
+        '16',
+        '8',
+        '11',
+        '14',
+        '9',
+        '12',
+        '5',
+        '20',
+        '1',
+        '18',
+        '4',
+        '13',
+        '6'
       ];
 
       for (int i = 0; i < 20; i++) {
@@ -206,19 +233,21 @@ class DartBoardPainter extends CustomPainter {
         numberPainter.layout();
         numberPainter.paint(
           canvas,
-          Offset(xNumber - numberPainter.width / 2, yNumber - numberPainter.height / 2),
+          Offset(xNumber - numberPainter.width / 2,
+              yNumber - numberPainter.height / 2),
         );
         mult2Painter.layout();
         mult2Painter.paint(
           canvas,
-          Offset(xMult2 - mult2Painter.width / 2, yMult2 - mult2Painter.height / 2),
+          Offset(xMult2 - mult2Painter.width / 2,
+              yMult2 - mult2Painter.height / 2),
         );
         mult3Painter.layout();
         mult3Painter.paint(
           canvas,
-          Offset(xMult3 - mult3Painter.width / 2, yMult3 - mult3Painter.height / 2),
+          Offset(xMult3 - mult3Painter.width / 2,
+              yMult3 - mult3Painter.height / 2),
         );
-        
       }
       //rysiowanie liczb na środku tarczy
       final middleNumberPainter = TextPainter(
@@ -227,37 +256,36 @@ class DartBoardPainter extends CustomPainter {
       );
 
       middleNumberPainter.text = TextSpan(
-        text: '50',
-        style: TextStyle(
-          color: Colors.green,
-          fontSize: boardRadius * 0.075,
-          fontWeight: FontWeight.bold
-        )
-      );
+          text: '50',
+          style: TextStyle(
+              color: Colors.green,
+              fontSize: boardRadius * 0.075,
+              fontWeight: FontWeight.bold));
       middleNumberPainter.layout();
       middleNumberPainter.paint(
-        canvas,
-        Offset(center.dx - middleNumberPainter.width / 2, center.dy - middleNumberPainter.height / 2)
-      );
+          canvas,
+          Offset(center.dx - middleNumberPainter.width / 2,
+              center.dy - middleNumberPainter.height / 2));
 
       middleNumberPainter.text = TextSpan(
-        text: '25',
-        style: TextStyle(
-          color: Colors.red,
-          fontSize: boardRadius * 0.065,
-          fontWeight: FontWeight.bold
-        )
-      );
+          text: '25',
+          style: TextStyle(
+              color: Colors.red,
+              fontSize: boardRadius * 0.065,
+              fontWeight: FontWeight.bold));
       middleNumberPainter.layout();
       middleNumberPainter.paint(
-        canvas,
-        Offset(center.dx - middleNumberPainter.width / 2, center.dy - middleNumberPainter.height / 2 - (boardRadius * 0.093))
-      );
+          canvas,
+          Offset(
+              center.dx - middleNumberPainter.width / 2,
+              center.dy -
+                  middleNumberPainter.height / 2 -
+                  (boardRadius * 0.093)));
     }
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+    return true;
   }
 }
