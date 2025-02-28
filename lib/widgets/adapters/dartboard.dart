@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 import '../../models/dartboard_notifier.dart';
 
 class Dartboard extends StatelessWidget {
-  const Dartboard({super.key});
+  final bool isMainMenu;
+  const Dartboard({super.key, this.isMainMenu = false});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class Dartboard extends StatelessWidget {
         aspectRatio: 1,
         child: CustomPaint(
           painter: DartBoardPainter(
-            background: dartboardNotifier.boardVersion,
+            background: isMainMenu ? false : dartboardNotifier.boardVersion,
             theme: theme,
             showNumbers: dartboardNotifier.showNumbers,
           ),

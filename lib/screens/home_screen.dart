@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 20),
             Consumer<DartboardNotifier>(
               builder: (context, dartboardNotifier, child) {
-                return Dartboard();
+                return const Dartboard(isMainMenu: true);
               },
             ),
             const SizedBox(height: 30),
