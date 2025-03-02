@@ -30,6 +30,7 @@ class HistoryDialogState extends State<HistoryDialog> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
+            //TODO: usuń print
             print('blaaad: ${snapshot.error}');
             return Text(AppLocalizations.of(context)!.history_loading_error);
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

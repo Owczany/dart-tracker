@@ -26,6 +26,7 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            //ustawianie trybu gry
             const SizedBox(height: 16),
             Consumer<GameSettingsNotifier>(
               builder: (context, gameSettingsNotifier, child) {
@@ -63,6 +64,7 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
                 );
               },
             ),
+            //ustawianie wyniku gry
             const SizedBox(height: 16),
             Consumer<GameSettingsNotifier>(
               builder: (context, gameSettingsNotifier, child) {

@@ -6,7 +6,7 @@ class DartboardNotifier extends ChangeNotifier {
   bool _boardVersion = true;
 
   bool get showNumbers => _showNumbers;
-  bool get boardVersion => _boardVersion;
+  bool get boardVersion => _boardVersion; //true - dotykowa, false - manualna
 
   DartboardNotifier() {
     _loadSettings();

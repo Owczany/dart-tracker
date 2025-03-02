@@ -1,3 +1,4 @@
+import 'package:darttracker/models/game_mode.dart';
 import 'package:darttracker/models/player.dart';
 import 'package:darttracker/utils/score_calculator.dart';
 import 'package:darttracker/utils/storage.dart';
@@ -10,6 +11,9 @@ class Match {
   final DateTime dateTime;
   final int gameStartingScore;
   final bool easyMode;
+  final bool doubleIn;
+  final bool doubleOut;
+  final bool lowwerThan0;
 
   Match({
     required this.players,
@@ -18,6 +22,9 @@ class Match {
     DateTime? dateTime,
     required this.gameStartingScore,
     required this.easyMode,
+    required this.doubleIn,
+    required this.doubleOut,
+    required this.lowwerThan0,
   }) : dateTime = dateTime ?? DateTime.now();
 
   void updatePlayerScore(int playerIndex, int score) {
@@ -63,13 +70,19 @@ class Match {
     return Match(
         players: players,
         gameStartingScore: gameStartingScore,
-        easyMode: easyMode);
+        easyMode: easyMode,
+        doubleIn: doubleIn,
+        doubleOut: doubleOut,
+        lowwerThan0: lowwerThan0
+        );
   }
 
   /// Przypisuje punkty graczowi i zwraca informację, czy runda została uznana,
   ///0 - zero zostało przekroczone więc nie uznajemy, 1 - osiągnięto jedynkę, więc nie uznajemy, 2 - runda uznana
   int processThrows(List<int> points) {
     int howMuch;
+
+
 
     int score;
     roundNumber == 1
@@ -97,9 +110,13 @@ class Match {
             ? updatePlayerScore(playerNumber, gameStartingScore)
             : updatePlayerScore(
                 playerNumber, players[playerNumber].scores[roundNumber - 2]);
-        score == 1 ? howMuch = 1 : howMuch = 0;
+        score == 1 
+            ? howMuch = 1 
+            : howMuch = 0;
       }
     }
+
+
     //przypisanie wyników pozostałym graczom przy wygranej obecnego
     if (isGameOver()) {
       for (int i = playerNumber + 1; i < players.length; i++) {
@@ -157,7 +174,7 @@ class Match {
     return await Storage.loadMatches();
   }
 
-  int calculateThrow(Offset throw_, Size size) {
-    return ScoreCalculator.calculateThrow(throw_, size);
+  int calculateThrow(Offset throw_, Size size, bool needsDoubleIn) {
+    return ScoreCalculator.calculateThrow(throw_, size, needsDoubleIn);
   }
 }

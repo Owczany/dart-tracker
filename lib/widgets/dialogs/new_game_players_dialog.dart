@@ -103,8 +103,11 @@ class NewGamePlayersDialogState extends State<NewGamePlayersDialog> {
           .toList(),
       gameStartingScore: gameSettingsNotifier.gameStartingScore,
       easyMode: gameSettingsNotifier.easyMode,
+      doubleIn: gameSettingsNotifier.doubleIn,
+      doubleOut: gameSettingsNotifier.doubleOut,
+      lowwerThan0: gameSettingsNotifier.lowwerThan0,
     );
-
+    //TODO: usuń print
     print(
         'Players: ${match.players}, Player Number: ${match.playerNumber}, Date Time: ${match.dateTime}, Easy Mode: ${match.easyMode}, Round Number: ${match.roundNumber}, Game Starting Score: ${match.gameStartingScore}');
     Navigator.of(context).pushReplacement(MaterialPageRoute(

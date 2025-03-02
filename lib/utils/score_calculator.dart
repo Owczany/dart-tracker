@@ -7,7 +7,7 @@ class ScoreCalculator {
     [3, 19, 7, 16, 8, 11, 14, 9, 12, 5, 20]
   ];
 
-  static int calculateThrow(Offset throw_, Size size) {
+  static int calculateThrow(Offset throw_, Size size, bool needsDoubleIn) {
     final Offset center = Offset(0.5 * size.width, 0.5 * size.height);
     final double boardRadius = min(size.width, size.height) / 2;
     final double innerRadius = boardRadius * 0.65; //wewnętrzny okrąg
@@ -22,6 +22,9 @@ class ScoreCalculator {
       return 50;
     }
     if (distance <= bullseyeRadius) {
+      if (needsDoubleIn) {
+        return 0;
+      }
       return 25;
     }
 
@@ -35,8 +38,14 @@ class ScoreCalculator {
     int mult;
     if (distance < innerRadius - sectorWidth ||
         (distance > innerRadius && distance < boardRadius - sectorWidth)) {
+      if (needsDoubleIn) {
+        return 0;
+      }
       mult = 1;
     } else if (distance <= innerRadius) {
+      if (needsDoubleIn) {
+        return 0;
+      }
       mult = 3;
     } else {
       mult = 2;

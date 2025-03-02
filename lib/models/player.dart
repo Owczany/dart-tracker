@@ -1,11 +1,13 @@
 class Player {
   final String name;
   List<int> scores;
+  bool getsIn; // czy wszedł do gry
 
-  Player({required this.name}) : scores = [];
+  Player({required this.name}) : scores = [], getsIn = false;
 
   void resetScores() {
     scores = [];
+    getsIn = false;
   }
 
   Map<String, dynamic> toJson() {

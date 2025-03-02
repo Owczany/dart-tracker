@@ -1,3 +1,4 @@
+import 'package:darttracker/models/game_settings_notifier.dart';
 import 'package:darttracker/models/match.dart';
 import 'package:darttracker/utils/app_bar_util.dart';
 import 'package:darttracker/widgets/components/our_wide_button.dart';
@@ -47,17 +48,25 @@ class GameScreenState extends State<GameScreen> {
   }
 
   /// metoda do wyliczania punktów na podstawie współrzędnych rzutu
-  int calculateThrow(Offset throw_) {
+  int calculateThrow(Offset throw_, BuildContext context, bool needsDoubleIn) {
     final RenderBox box =
         dartboardKey.currentContext!.findRenderObject() as RenderBox;
     final Size size = box.size;
-    return match.calculateThrow(throw_, size);
+    
+    //sprawdzanie warunku doubleIn
+    int answer = match.calculateThrow(throw_, size, needsDoubleIn);
+    if (needsDoubleIn &&
+        answer != 0) {
+            match.players[match.playerNumber].getsIn = true;
+        }
+    return answer;
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final dartboardNotifier = context.watch<DartboardNotifier>();
+    final gameSettingsNotifier = context.watch<GameSettingsNotifier>();
 
     return Scaffold(
         appBar: AppBarInGameUtil.createAppBarInGame(
@@ -77,7 +86,7 @@ class GameScreenState extends State<GameScreen> {
                 ),
               ),
 
-              // Dodanie list rozwijalnych (reagujące na zmianę trybu tarczy)
+              // Dodanie list rozwijalnych
               if (!dartboardNotifier.boardVersion)
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -97,14 +106,13 @@ class GameScreenState extends State<GameScreen> {
                     minScale: 0.5,
                     maxScale: 3.0,
                     child: Stack(children: [
-                      //rysowanie tarczy reagującej na zmianę wartości showNumbers
+                      //rysowanie tarczy
                       Dartboard(key: dartboardKey),
 
                       // reagowanie na kliknięcia przy tarczy dotykowej
                       if (dartboardNotifier.boardVersion)
                         GestureDetector(
                           onTapDown: (details) {
-                            //final RenderBox box = dartboardKey.currentContext!.findRenderObject() as RenderBox;
 
                             //ograniczenie na max 3 rzuty
                             if (throws.length == 3) {
@@ -165,15 +173,24 @@ class GameScreenState extends State<GameScreen> {
                                     .game_screen_mark_3_throws);
                           } else {
                             for (Offset throw_ in throws) {
-                              points.add(calculateThrow(throw_));
+                              //sprawdzanie warunku doubleIn
+                              if (gameSettingsNotifier.doubleIn &&
+                                  !match.players[match.playerNumber].getsIn) 
+                              {
+                                  points.add(calculateThrow(throw_, context, true));
+                              } else {
+                                match.players[match.playerNumber].getsIn = true;
+                                points.add(calculateThrow(throw_, context, false));
+
+                              }
+                              
                             }
                           }
                         } else {
                           bool isGoodtyped = true;
                           for (int i = 0; i < 3; i++) {
-                            if ((typedThrows[i] == 25 ||
-                                    typedThrows[i] == 50) &&
-                                typedMults[i] != 1) {
+                            if (typedThrows[i] == 25 &&
+                                typedMults[i] == 3) {
                               showErrorSnackbar(
                                   context,
                                   AppLocalizations.of(context)!
@@ -184,7 +201,17 @@ class GameScreenState extends State<GameScreen> {
                           }
                           if (isGoodtyped) {
                             for (int i = 0; i < 3; i++) {
-                              points.add(typedThrows[i] * typedMults[i]);
+                              //sprawdzanie warunku doubleIn
+                              if (gameSettingsNotifier.doubleIn &&
+                                  !match.players[match.playerNumber].getsIn &&
+                                  typedMults[i] != 2)
+                                {
+                                  points.add(0);
+                                } else {
+                                  match.players[match.playerNumber].getsIn = true;
+                                  points.add(typedThrows[i] * typedMults[i]);
+
+                                }
                             }
                           }
                         }
@@ -266,8 +293,7 @@ List<DropdownMenuItem<int>> _getDropdownItems(BuildContext context) {
     18,
     19,
     20,
-    25,
-    50
+    25
   ];
   List<DropdownMenuItem<int>> items = [];
   for (int i = 0; i < values.length; i++) {

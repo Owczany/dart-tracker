@@ -17,7 +17,7 @@ class Dartboard extends StatelessWidget {
         aspectRatio: 1,
         child: CustomPaint(
           painter: DartBoardPainter(
-            background: isMainMenu ? false : dartboardNotifier.boardVersion,
+            //background: isMainMenu ? false : dartboardNotifier.boardVersion,
             theme: theme,
             showNumbers: dartboardNotifier.showNumbers,
           ),
@@ -28,11 +28,11 @@ class Dartboard extends StatelessWidget {
 }
 
 class DartBoardPainter extends CustomPainter {
-  final bool background;
+  //final bool background;
   final bool showNumbers;
   final ThemeData theme;
   DartBoardPainter(
-      {required this.background,
+      {//required this.background,
       required this.theme,
       required this.showNumbers});
 
@@ -57,12 +57,14 @@ class DartBoardPainter extends CustomPainter {
 
     // Paints
     ///warunkowe kolorowanie tła tarczy
+    /*
     if (background) {
       final Paint backgroundPaint = Paint()
         ..color = theme.appBarTheme.backgroundColor!;
       canvas.drawRect(
           Rect.fromLTWH(0, 0, size.width, size.height), backgroundPaint);
     }
+    */
 
     final Paint backGroundColor = Paint()..color = Colors.white;
 

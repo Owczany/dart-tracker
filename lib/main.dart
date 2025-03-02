@@ -1,5 +1,8 @@
 //TODO: dopisać zasady (M)
-//TODO: tryb pro (M)
+//TODO: ustawianie trybu w new_game_settings_dialog (M)
+//TODO: doubleOut, lowerThan0, Match (M)
+
+
 //TODO: zmienić kolory tarczy na mniej sraczkwate (w zależności od motywu kolorystycznego)
 
 
