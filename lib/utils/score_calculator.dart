@@ -1,13 +1,15 @@
 import 'dart:ui';
 import 'dart:math';
 
+import 'package:darttracker/models/pair.dart';
+
 class ScoreCalculator {
   static const List<List<int>> boardScores = [
     [3, 17, 2, 15, 10, 6, 13, 4, 18, 1, 20],
     [3, 19, 7, 16, 8, 11, 14, 9, 12, 5, 20]
   ];
 
-  static int calculateThrow(Offset throw_, Size size, bool needsDoubleIn) {
+  static Pair<int, int> calculateThrow(Offset throw_, Size size) {
     final Offset center = Offset(0.5 * size.width, 0.5 * size.height);
     final double boardRadius = min(size.width, size.height) / 2;
     final double innerRadius = boardRadius * 0.65; //wewnętrzny okrąg
@@ -16,16 +18,13 @@ class ScoreCalculator {
 
     final double distance = (throw_ - center).distance;
     if (distance > boardRadius) {
-      return 0;
+      return Pair(0, 1);
     }
     if (distance <= bullseyeRadius / 2) {
-      return 50;
+      return Pair(25, 2);
     }
     if (distance <= bullseyeRadius) {
-      if (needsDoubleIn) {
-        return 0;
-      }
-      return 25;
+      return Pair(25, 1);
     }
 
     //arcsin(x) należy do [-pi/2 ; pi/2]
@@ -38,14 +37,8 @@ class ScoreCalculator {
     int mult;
     if (distance < innerRadius - sectorWidth ||
         (distance > innerRadius && distance < boardRadius - sectorWidth)) {
-      if (needsDoubleIn) {
-        return 0;
-      }
       mult = 1;
     } else if (distance <= innerRadius) {
-      if (needsDoubleIn) {
-        return 0;
-      }
       mult = 3;
     } else {
       mult = 2;
@@ -56,12 +49,12 @@ class ScoreCalculator {
       if (arcsin >= startAngle + i * sweepAngle &&
           arcsin <= startAngle + (i + 1) * sweepAngle) {
         if (throw_.dx > center.dx) {
-          return mult * boardScores[0][i];
+          return Pair(boardScores[0][i], mult);
         } else {
-          return mult * boardScores[1][i];
+          return Pair(boardScores[1][i] ,mult);
         }
       }
     }
-    return mult * boardScores[0][i];
+    return Pair(boardScores[0][i] ,mult);
   }
 }

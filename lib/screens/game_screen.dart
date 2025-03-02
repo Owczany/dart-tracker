@@ -1,5 +1,6 @@
 import 'package:darttracker/models/game_settings_notifier.dart';
 import 'package:darttracker/models/match.dart';
+import 'package:darttracker/models/pair.dart';
 import 'package:darttracker/utils/app_bar_util.dart';
 import 'package:darttracker/widgets/components/our_wide_button.dart';
 import 'package:darttracker/screens/end_game_screen.dart';
@@ -48,18 +49,13 @@ class GameScreenState extends State<GameScreen> {
   }
 
   /// metoda do wyliczania punktów na podstawie współrzędnych rzutu
-  int calculateThrow(Offset throw_, BuildContext context, bool needsDoubleIn) {
+  Pair<int, int> calculateThrow(Offset throw_, BuildContext context) {
     final RenderBox box =
         dartboardKey.currentContext!.findRenderObject() as RenderBox;
     final Size size = box.size;
     
     //sprawdzanie warunku doubleIn
-    int answer = match.calculateThrow(throw_, size, needsDoubleIn);
-    if (needsDoubleIn &&
-        answer != 0) {
-            match.players[match.playerNumber].getsIn = true;
-        }
-    return answer;
+    return match.calculateThrow(throw_, size);
   }
 
   @override
@@ -180,7 +176,7 @@ class GameScreenState extends State<GameScreen> {
                     OurWideButton(
                       text: AppLocalizations.of(context)!.confirm,
                       onPressed: () {
-                        List<int> points = [];
+                        List<Pair<int,int>> points = [];
 
                         if (dartboardNotifier.boardVersion) {
                           if (throws.length != 3) {
@@ -194,10 +190,10 @@ class GameScreenState extends State<GameScreen> {
                               if (gameSettingsNotifier.doubleIn &&
                                   !match.players[match.playerNumber].getsIn)
                               {
-                                  points.add(calculateThrow(throw_, context, true));
+                                  points.add(calculateThrow(throw_, context));
                               } else {
                                 match.players[match.playerNumber].getsIn = true;
-                                points.add(calculateThrow(throw_, context, false));
+                                points.add(calculateThrow(throw_, context));
                               }
 
                             }
@@ -218,16 +214,17 @@ class GameScreenState extends State<GameScreen> {
                           if (isGoodtyped) {
                             for (int i = 0; i < 3; i++) {
                               //sprawdzanie warunku doubleIn
+                              /*
                               if (gameSettingsNotifier.doubleIn &&
                                   !match.players[match.playerNumber].getsIn &&
                                   typedMults[i] != 2) {
 
                                 points.add(0);
-                              } else {
-                                match.players[match.playerNumber].getsIn = true;
-                                points.add(typedThrows[i] * typedMults[i]);
+                              } else {*/
+                                //match.players[match.playerNumber].getsIn = true;
+                                points.add(Pair(typedThrows[i], typedMults[i]));
 
-                              }
+                              //}
                             }
                           }
                         }

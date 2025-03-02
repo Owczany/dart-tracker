@@ -1,4 +1,5 @@
 import 'package:darttracker/models/game_mode.dart';
+import 'package:darttracker/models/pair.dart';
 import 'package:darttracker/models/player.dart';
 import 'package:darttracker/utils/score_calculator.dart';
 import 'package:darttracker/utils/storage.dart';
@@ -81,38 +82,87 @@ class Match {
   ///0 - zero zostało przekroczone, 
   ///1 - osiągnięto jedynkę, 
   ///2 - żadne z powyższych
-  int processThrows(List<int> points) {
-    int howMuch;
-
+  int processThrows(List<Pair<int, int>> points) {
+    points.removeWhere((e) => e.left == 0);
+    int message = 2;
     int score;
-    roundNumber == 1
-        ? score = gameStartingScore - (points[0] + points[1] + points[2])
-        : score = players[playerNumber].scores[roundNumber - 2] -
-            (points[0] + points[1] + points[2]);
+    int getsPoints = 0;
 
-    //lowerThan0 Mode On:
-    if (lowwerThan0) {
-      if (score >= 0) {
-        updatePlayerScore(playerNumber, score);
-      } else {
-        updatePlayerScore(playerNumber, 0);
+    int beforeScore =
+        roundNumber == 1 
+            ? gameStartingScore 
+            : players[playerNumber].scores[roundNumber - 2];
+
+    //wpisywanie punktów przy doubleIn
+    if (doubleIn) {
+      for (int i = 0; i < points.length; i++) {
+        if (players[playerNumber].getsIn ||
+            points[i].right == 2) {
+          players[playerNumber].getsIn = true;
+          getsPoints += points[i].left * points[i].right;
+        }
       }
-      howMuch = 2;
-    //lowerThan0 Mode off:
     } else {
-      //runda zaliczona
-      if (score >= 0 && score != 1) {
-        updatePlayerScore(playerNumber, score);
-        howMuch = 2;
-      //runda niezaliczona
+      for (int i = 0; i < points.length; i++) {
+        getsPoints += points[i].left * points[i].right;
+      }
+    }
+    score = beforeScore - getsPoints;
+    
+    bool end = false;
+    if (score < 0) {
+      if (!lowwerThan0) {
+        while (score < 0) {
+          score += points.last.left * points.last.right;
+          points.removeLast();
+        }
       } else {
-        roundNumber == 1
-            ? updatePlayerScore(playerNumber, gameStartingScore)
-            : updatePlayerScore(
-                playerNumber, players[playerNumber].scores[roundNumber - 2]);
-        score == 1 
-            ? howMuch = 1 
-            : howMuch = 0;
+        if (!doubleOut) {
+          updatePlayerScore(playerNumber, 0);
+          end = true;
+        } else {
+          while (score + (points.last.left * points.last.right) < 0) {
+            score += points.last.left * points.last.right;
+            points.removeLast();
+          }
+          if (points.last.right == 2) {
+            updatePlayerScore(playerNumber, 0);
+            end = true;
+          } else {
+            score += points.last.left * points.last.right;
+            points.removeLast();
+          }
+        }
+      }
+    }
+    if (points.isEmpty) {
+      updatePlayerScore(playerNumber, score);
+      end = true;
+    }
+    if (!end) {
+      if (score == 0) {
+        if (doubleOut) {
+          if (points.last.right == 2) {
+            updatePlayerScore(playerNumber, score);
+          } else {
+            score += points.last.left * points.last.right;
+            updatePlayerScore(playerNumber, score);
+          }
+        }
+      } else if (score == 1) {
+        if (doubleOut) {
+          if (lowwerThan0) {
+            updatePlayerScore(playerNumber, score);
+          } else {
+            score += points.last.left * points.last.right;
+            updatePlayerScore(playerNumber, score);
+            //TODO: osiągnięto jedynkę
+          }
+        } else {
+          updatePlayerScore(playerNumber, score);
+        }
+      } else if (score > 1) {
+          updatePlayerScore(playerNumber, score);
       }
     }
 
@@ -130,7 +180,7 @@ class Match {
     } else {
       nextPlayer();
     }
-    return howMuch;
+    return message;
   }
 
   Map<String, dynamic> toJson() {
@@ -149,6 +199,7 @@ class Match {
 
   static Match fromJson(Map<String, dynamic> json) {
     // Print all parameters before returning the Match object
+    //TODO: usuń printy
     print('players: ${json['players']}');
     print('playerNumber: ${json['playerNumber']}');
     print('roundNumber: ${json['roundNumber']}');
@@ -183,7 +234,7 @@ class Match {
     return await Storage.loadMatches();
   }
 
-  int calculateThrow(Offset throw_, Size size, bool needsDoubleIn) {
-    return ScoreCalculator.calculateThrow(throw_, size, needsDoubleIn);
+  Pair<int, int> calculateThrow(Offset throw_, Size size) {
+    return ScoreCalculator.calculateThrow(throw_, size);
   }
 }
