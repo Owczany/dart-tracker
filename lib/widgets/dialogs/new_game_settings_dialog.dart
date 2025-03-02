@@ -109,7 +109,7 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
                               gameSettingsNotifier.toggleDoubleIn();
                             },
                           ),
-                          Text("Double In"),
+                          Text("Double In (First throw must be into double field)"),
                         ]
                       ),
 
@@ -121,7 +121,8 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
                               gameSettingsNotifier.toggleDoubleOut();
                             },
                           ),
-                          Text("Double Out"),
+                          //TODO: dodaj zawijanie tekstu
+                          Text("Double Out (Last throw must be into double firld)", ),
                         ],
                       ),
 

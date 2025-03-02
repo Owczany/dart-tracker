@@ -6,7 +6,7 @@ class GameSettingsNotifier extends ChangeNotifier {
   int _gameMode = 0;
   bool _doubleIn = false;
   bool _doubleOut = false;
-  bool _lowwerThan0 = false;
+  bool _lowwerThan0 = true;
   
 
   int get gameStartingScore => _gameStartingScore;

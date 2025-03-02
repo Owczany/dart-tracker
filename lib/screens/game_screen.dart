@@ -81,9 +81,25 @@ class GameScreenState extends State<GameScreen> {
               Padding(
                 padding: const EdgeInsets.only(
                     top: 16, left: 16, right: 16, bottom: 0),
-                child: Text(
-                  match.players[match.playerNumber].name,
-                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      '${AppLocalizations.of(context)!.player}: ${match.players[match.playerNumber].name}',
+                    ),
+                    Text(
+                      //TODO: przetłumacz
+                      'Game Mode: ${
+                        match.gameMode == 0 
+                            ? AppLocalizations.of(context)!.settings_easyMode 
+                            : match.gameMode == 1 
+                                ? /*AppLocalizations.of(context)!.settings_proMode */ 'proMode'
+                                : AppLocalizations.of(context)!.settings_custom}',
+                      
+                      
+                    )
+                  ],
+                )
               ),
 
               // Dodanie list rozwijalnych
@@ -100,10 +116,11 @@ class GameScreenState extends State<GameScreen> {
               Expanded(
                 child: InteractiveViewer(
                     //powiększanie tarczy
+                    
                     transformationController: _transformController,
                     boundaryMargin:
                         const EdgeInsets.all(20), // Margines do przewijania
-                    minScale: 0.5,
+                    minScale: 1,
                     maxScale: 3.0,
                     child: Stack(children: [
                       //rysowanie tarczy
@@ -175,15 +192,14 @@ class GameScreenState extends State<GameScreen> {
                             for (Offset throw_ in throws) {
                               //sprawdzanie warunku doubleIn
                               if (gameSettingsNotifier.doubleIn &&
-                                  !match.players[match.playerNumber].getsIn) 
+                                  !match.players[match.playerNumber].getsIn)
                               {
                                   points.add(calculateThrow(throw_, context, true));
                               } else {
                                 match.players[match.playerNumber].getsIn = true;
                                 points.add(calculateThrow(throw_, context, false));
-
                               }
-                              
+
                             }
                           }
                         } else {
@@ -204,14 +220,14 @@ class GameScreenState extends State<GameScreen> {
                               //sprawdzanie warunku doubleIn
                               if (gameSettingsNotifier.doubleIn &&
                                   !match.players[match.playerNumber].getsIn &&
-                                  typedMults[i] != 2)
-                                {
-                                  points.add(0);
-                                } else {
-                                  match.players[match.playerNumber].getsIn = true;
-                                  points.add(typedThrows[i] * typedMults[i]);
+                                  typedMults[i] != 2) {
 
-                                }
+                                points.add(0);
+                              } else {
+                                match.players[match.playerNumber].getsIn = true;
+                                points.add(typedThrows[i] * typedMults[i]);
+
+                              }
                             }
                           }
                         }

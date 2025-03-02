@@ -48,6 +48,7 @@
 
     "score_board_screen_scores_after_each_round": "Score board",
     "score_board_screen_next_player": "Next player",
+    "score_board_screen_total": "Goal",
 
     "app_bar_leaving": "Are you sure you want to leave this match?",
     "app_bar_lost_data": "All scores will be lost.",

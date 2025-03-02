@@ -44,6 +44,8 @@ class ScoreBoard extends StatelessWidget {
         .map((player) => player.scores.length)
         .reduce((a, b) => a > b ? a : b);
     String round = AppLocalizations.of(context)!.round;
+
+    columns.add(DataColumn(label: Text(AppLocalizations.of(context)!.score_board_screen_total)));
     for (int i = 0; i < maxRounds; i++) {
       columns.add(DataColumn(label: Text('$round ${i + 1}')));
     }
@@ -58,7 +60,7 @@ class ScoreBoard extends StatelessWidget {
       List<DataCell> cells = [
         DataCell(Text(player.name)),
       ];
-
+      cells.add(DataCell(Text(match.gameStartingScore.toString())));
       cells.addAll(player.scores
           .map((score) => DataCell(Text(score.toString())))
           .toList());

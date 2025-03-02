@@ -109,7 +109,7 @@ class NewGamePlayersDialogState extends State<NewGamePlayersDialog> {
     );
     //TODO: usuń print
     print(
-        'Players: ${match.players}, Player Number: ${match.playerNumber}, Date Time: ${match.dateTime}, Game Mode: ${match.gameMode}, Round Number: ${match.roundNumber}, Game Starting Score: ${match.gameStartingScore}');
+        'Players: ${match.players}, Player Number: ${match.playerNumber}, Date Time: ${match.dateTime}, Game Mode: ${match.gameMode}, doubleIn: ${match.doubleIn}, doubleOut: ${match.doubleOut}, lowerThan0: ${match.lowwerThan0}, Round Number: ${match.roundNumber}, Game Starting Score: ${match.gameStartingScore}');
     Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => ScoreBoardScreen(match: match)));
   }

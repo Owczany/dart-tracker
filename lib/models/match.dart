@@ -46,11 +46,11 @@ class Match {
     if (players[playerNumber].scores.isNotEmpty &&
         players[playerNumber].scores.length >= roundNumber &&
         ((!lowwerThan0 &&
-                players[playerNumber].scores[roundNumber - 1] ==
-                    0) || //warunek zwycięstwa gdy lowerThan0 = false
-            (lowwerThan0 &&
-                players[playerNumber].scores[roundNumber - 1] <=
-                    0))) //warunek zwycięstwa gdy lowerThan0 = true
+            players[playerNumber].scores[roundNumber - 1] ==
+                0) || //warunek zwycięstwa gdy lowerThan0 = false
+          (lowwerThan0 &&
+            players[playerNumber].scores[roundNumber - 1] <=
+                0))) //warunek zwycięstwa gdy lowerThan0 = true
     {
       return true;
     }
@@ -78,11 +78,11 @@ class Match {
   }
 
   /// Przypisuje punkty graczowi i zwraca informację, czy runda została uznana,
-  ///0 - zero zostało przekroczone więc nie uznajemy, 1 - osiągnięto jedynkę, więc nie uznajemy, 2 - runda uznana
+  ///0 - zero zostało przekroczone, 
+  ///1 - osiągnięto jedynkę, 
+  ///2 - żadne z powyższych
   int processThrows(List<int> points) {
     int howMuch;
-
-
 
     int score;
     roundNumber == 1
@@ -90,7 +90,7 @@ class Match {
         : score = players[playerNumber].scores[roundNumber - 2] -
             (points[0] + points[1] + points[2]);
 
-    //lowerThan0 Mode:
+    //lowerThan0 Mode On:
     if (lowwerThan0) {
       if (score >= 0) {
         updatePlayerScore(playerNumber, score);
@@ -115,7 +115,6 @@ class Match {
             : howMuch = 0;
       }
     }
-
 
     //przypisanie wyników pozostałym graczom przy wygranej obecnego
     if (isGameOver()) {
@@ -155,7 +154,10 @@ class Match {
     print('roundNumber: ${json['roundNumber']}');
     print('dateTime: ${json['dateTime']}');
     print('gameStartingScore: ${json['gameStartingScore']}');
-    print('easyMode: ${json['easyMode']}');
+    print('gameMode: ${json['gameMode']}');
+    print('doubleIn: ${json['doubleIn']}');
+    print('doubleIn: ${json['doubleIn']}');
+    print('lowerThan0: ${json['lowerThan0']}');
 
 //TODO: dokończ zapisywanie meczu
     return Match(
