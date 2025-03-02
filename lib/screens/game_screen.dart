@@ -73,29 +73,47 @@ class GameScreenState extends State<GameScreen> {
           color: theme.scaffoldBackgroundColor,
           child: Column(
             children: [
-              // Nazwa gracza
+              // pasek z nazwą gracza i trybem gry
               Padding(
                 padding: const EdgeInsets.only(
-                    top: 16, left: 16, right: 16, bottom: 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      '${AppLocalizations.of(context)!.player}: ${match.players[match.playerNumber].name}',
-                    ),
-                    Text(
-                      //TODO: przetłumacz
-                      'Game Mode: ${
-                        match.gameMode == 0 
-                            ? AppLocalizations.of(context)!.settings_easyMode 
-                            : match.gameMode == 1 
-                                ? /*AppLocalizations.of(context)!.settings_proMode */ 'proMode'
+                  top: 16, left: 16, right: 16, bottom: 0,
+                ),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: theme.appBarTheme.backgroundColor,
+                    borderRadius: BorderRadius.circular(30), // Owalne rogi
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 6,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '${AppLocalizations.of(context)!.player}: ${match.players[match.playerNumber].name}',
+                          overflow: TextOverflow.ellipsis, // obcinanie za długich nazw użytkowników
+                          style: const TextStyle (fontSize: 16)
+                        ),
+                      ),
+                      Text(
+                        '${AppLocalizations.of(context)!.settings_game_mode}: ${
+                          match.gameMode == 0 
+                              ? AppLocalizations.of(context)!.settings_easyMode 
+                              : match.gameMode == 1 
+                                ? AppLocalizations.of(context)!.settings_proMode
                                 : AppLocalizations.of(context)!.settings_custom}',
-                      
-                      
-                    )
-                  ],
-                )
+                        style: const TextStyle (fontSize: 16),
+                        textAlign: TextAlign.end,
+                      ),
+                    ],
+                  ),
+                ),
               ),
 
               // Dodanie list rozwijalnych
@@ -213,39 +231,43 @@ class GameScreenState extends State<GameScreen> {
                           }
                           if (isGoodtyped) {
                             for (int i = 0; i < 3; i++) {
-                              //sprawdzanie warunku doubleIn
-                              /*
-                              if (gameSettingsNotifier.doubleIn &&
-                                  !match.players[match.playerNumber].getsIn &&
-                                  typedMults[i] != 2) {
-
-                                points.add(0);
-                              } else {*/
-                                //match.players[match.playerNumber].getsIn = true;
                                 points.add(Pair(typedThrows[i], typedMults[i]));
-
-                              //}
                             }
                           }
                         }
 
                         //sprawdzenie, czy ilość rzutów się zgadza
                         if (points.length == 3) {
-                          //ustalanie punktacji obecnego gracza
+                          
+                          //komunikaty, gdy rzut nie został zaliczony
                           int howMuch = match.processThrows(points);
-                          if (howMuch == 0) {
+                          if (howMuch == 0) {         //0 przekroczone
+                            showErrorSnackbar(
+                              context,
+                              AppLocalizations.of(context)!
+                                  .game_screen_lowerThan0_error
+                            );
+                          } else if (howMuch == 1) {  //doubleIn
                             showErrorSnackbar(
                                 context,
                                 AppLocalizations.of(context)!
-                                    .game_screen_too_many_points);
-                          } else if (howMuch == 1) {
+                                    .game_screen_doubleIn_error 
+                            );
+                          } else if (howMuch == 2) {  //doubleOut
                             showErrorSnackbar(
                                 context,
                                 AppLocalizations.of(context)!
-                                    .game_screen_one_point);
+                                    .game_screen_doubleOut_error  
+                            );
+                          } else if (howMuch == 3) {  //0 przekroczone i doubleOut
+                            showErrorSnackbar(
+                                context,
+                                AppLocalizations.of(context)!
+                                    .game_screen_lowerThan0_doubleOut_error  
+                            );
                           }
                           if (match.isGameOver()) {
-                            //odpowiednie przekierowanie jeśli już ktoś wygrał (wtedy jego wynik w ostatniej rundzie to 0)
+                            //odpowiednie przekierowanie jeśli już ktoś wygrał
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

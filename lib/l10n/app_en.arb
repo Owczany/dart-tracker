@@ -9,7 +9,6 @@
     "newGame": "New Game",
     "newGameSettings": "Game Settings",
 
-
     "history": "History",
 
     "dartRules": "Dart Rules",
@@ -38,10 +37,13 @@
     "end_game_screen_quick_start": "Quick rematch",
 
     "game_screen_only_3_darts": "You have only 3 throws!",
-    "game_screen_mark_3_throws": "Mark 3 throws",
-    "game_screen_incorect_mult": "You can't multiply bullseye, remove incorrect mults",
-    "game_screen_too_many_points": "You have reached too many points last turn :(",
-    "game_screen_one_point": "You have reached exactly 1 point last turn, therefore it doesn't count :(",
+    "game_screen_mark_3_throws": "Mark 3 throws.",
+    "game_screen_incorect_mult": "You can't multiply 25 by 3, remove incorrect mults.",
+    "game_screen_lowerThan0_error": "You have reached less than 0 points last turn. Some throws weren't counted.",
+    "game_screen_doubleIn_error": "Throws before hitting double field weren't counted.",
+    "game_screen_doubleOut_error": "The last throw was not in double field, so it wasn't counted.",
+    "game_screen_lowerThan0_doubleOut_error": "2 or 3 last throws weren't counted.",
+    "game_screen_one_point_error": "You have reached exactly 1 point last turn, therefore it doesn't count :(",
     "game_screen_miss": "Miss",
     "game_screen_throw": "Throw",
     "game_screen_multiplicator": "Multiplicator",
@@ -69,9 +71,11 @@
     "settings_show_numbers": "Show field's values on the board",
     "settings_game_mode": "Game mode",
     "settings_easyMode": "Easy mode",
-    "settings_easyMode_hint": "To win you must achieve a score of 0 or lower",
+    "settings_easyMode_hint": "To win reach 0 points or less.",
     "settings_normalMode": "Normal Mode",
-    "settings_normalMode_hint": "To win you must achieve exactly a score of 0",
+    "settings_normalMode_hint": "To win you must achieve exactly a score of 0.",
+    "settings_proMode": "Pro mode",
+    "settings_proMode_hint": "To win reach exactly 0 points. First and last throws must hit into double field.",
     "settings_points_to_win": "How many points do you want to play to?",
     "settings_classic": "Classic",
     "settings_quick": "Quick",
@@ -82,5 +86,9 @@
     "settings_entering_error": "Invalid value. Enter a number greater than",
     "settings_theme_dark": "Dark",
     "settings_theme_light": "Light",
-    "settings_choose_theme": "Choose theme"
+    "settings_choose_theme": "Choose theme",
+    "settings_double_in": "Double In (First throw must hit into double field)",
+    "settings_double_out": "Double Out (Last throw must hit into double field)",
+    "settings_lower_than_0": "To win reach 0 points or less.",
+    "settings_exactly_0": "To win reach exactly 0 points."
 }

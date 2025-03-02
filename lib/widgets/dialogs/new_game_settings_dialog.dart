@@ -37,17 +37,23 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
                     DropdownMenuItem<int>(
                       value: 0,
                       child: Text(
-                          AppLocalizations.of(context)!.settings_easyMode),
+                        AppLocalizations.of(context)!.settings_easyMode,
+                        softWrap: true,
+                      ),
                     ),
                     DropdownMenuItem<int>(
                       value: 1,
                       child: Text(
-                          /*"(${AppLocalizations.of(context)!.settings_proMode})"*/ "Pro Mode"),
+                        AppLocalizations.of(context)!.settings_proMode,
+                        softWrap: true,
+                      ),
                     ),
                     DropdownMenuItem<int>(
                       value: 2,
-                      child:
-                          Text(AppLocalizations.of(context)!.settings_custom),
+                      child: Text(
+                        AppLocalizations.of(context)!.settings_custom,
+                        softWrap: true,
+                      ),
                     ),
                   ],
                   onChanged: (int? newValue) {
@@ -60,43 +66,11 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
                     }
                   },
                 );
-                /*Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Switch(
-                          value: gameSettingsNotifier.easyMode,
-                          onChanged: (bool value) {
-                            gameSettingsNotifier.toggleEasyMode();
-                          },
-                        ),
-                        Text(
-                          gameSettingsNotifier.easyMode
-                              ? AppLocalizations.of(context)!.settings_easyMode
-                              : AppLocalizations.of(context)!
-                                  .settings_normalMode,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        gameSettingsNotifier.easyMode
-                            ? AppLocalizations.of(context)!
-                                .settings_easyMode_hint
-                            : AppLocalizations.of(context)!
-                                .settings_normalMode_hint,
-                      ),
-                    ),
-                  ],
-                );*/
               },
             ),
             //ustawianie opcji gry custom
             Consumer<GameSettingsNotifier> (
-              builder: (context, gameSettingsNotifier, child) { 
+              builder: (context, gameSettingsNotifier, child) {
                 if (gameSettingsNotifier.gameMode == 2) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -109,7 +83,12 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
                               gameSettingsNotifier.toggleDoubleIn();
                             },
                           ),
-                          Text("Double In (First throw must be into double field)"),
+                          Expanded (
+                            child: Text(
+                              AppLocalizations.of(context)!.settings_double_in,
+                              softWrap: true,
+                            ),
+                          )
                         ]
                       ),
 
@@ -121,24 +100,55 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
                               gameSettingsNotifier.toggleDoubleOut();
                             },
                           ),
-                          //TODO: dodaj zawijanie tekstu
-                          Text("Double Out (Last throw must be into double firld)", ),
+                          Expanded(
+                            child: Text(
+                              AppLocalizations.of(context)!.settings_double_out, 
+                              softWrap: true,
+                            ),
+                          ),
                         ],
                       ),
 
-                      Row (
+                      Row(
                         children: [
-                          Checkbox(
-                            value: gameSettingsNotifier.lowwerThan0,
-                            onChanged: (bool? value) {
-                              gameSettingsNotifier.toggleLowwerThan0();
-                            },
+                          Transform.scale (
+                            scale: 0.75,
+                            child: Switch(
+                              value: gameSettingsNotifier.lowerThan0,
+                              onChanged: (bool? value) {
+                                gameSettingsNotifier.togglelowerThan0();
+                              },
+                            ),
                           ),
-                          Text("Lower Than 0"),
+                          
+                          if (gameSettingsNotifier.lowerThan0)
+                            Expanded (
+                              child: Text(
+                                AppLocalizations.of(context)!.settings_lower_than_0,
+                                softWrap: true,
+                              )
+                            )
+                          else
+                            Expanded (
+                              child: Text(
+                                AppLocalizations.of(context)!.settings_exactly_0,
+                                softWrap: true,
+                              )
+                            )
                         ]
                       )
                     ],
                   );
+                } else if (gameSettingsNotifier.gameMode == 0){
+                  return Text (
+                      AppLocalizations.of(context)!.settings_easyMode_hint,
+                      softWrap: true,
+                    );
+                } else if (gameSettingsNotifier.gameMode == 1) {
+                  return Text (
+                      AppLocalizations.of(context)!.settings_proMode_hint,
+                      softWrap: true,
+                    );
                 } else {
                   return const SizedBox.shrink();
                 }

@@ -181,7 +181,7 @@ class DartBoardPainter extends CustomPainter {
       );
 
       final multStyle = TextStyle(
-          color: theme.appBarTheme.backgroundColor,
+          color: const Color.fromARGB(207, 32, 27, 184),
           fontSize: boardRadius * 0.075,
           fontWeight: FontWeight.bold);
 

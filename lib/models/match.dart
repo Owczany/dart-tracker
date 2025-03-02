@@ -1,4 +1,3 @@
-import 'package:darttracker/models/game_mode.dart';
 import 'package:darttracker/models/pair.dart';
 import 'package:darttracker/models/player.dart';
 import 'package:darttracker/utils/score_calculator.dart';
@@ -14,7 +13,7 @@ class Match {
   final int gameMode;  //0 - easyMode, 1 - normalMode, 2 - customMode
   final bool doubleIn;
   final bool doubleOut;
-  final bool lowwerThan0;
+  final bool lowerThan0;
 
   Match({
     required this.players,
@@ -25,7 +24,7 @@ class Match {
     required this.gameMode,
     required this.doubleIn,
     required this.doubleOut,
-    required this.lowwerThan0,
+    required this.lowerThan0,
   }) : dateTime = dateTime ?? DateTime.now();
 
   void updatePlayerScore(int playerIndex, int score) {
@@ -46,10 +45,10 @@ class Match {
   bool isGameOver() {
     if (players[playerNumber].scores.isNotEmpty &&
         players[playerNumber].scores.length >= roundNumber &&
-        ((!lowwerThan0 &&
+        ((!lowerThan0 &&
             players[playerNumber].scores[roundNumber - 1] ==
                 0) || //warunek zwycięstwa gdy lowerThan0 = false
-          (lowwerThan0 &&
+          (lowerThan0 &&
             players[playerNumber].scores[roundNumber - 1] <=
                 0))) //warunek zwycięstwa gdy lowerThan0 = true
     {
@@ -74,17 +73,19 @@ class Match {
         gameMode: gameMode,
         doubleIn: doubleIn,
         doubleOut: doubleOut,
-        lowwerThan0: lowwerThan0
+        lowerThan0: lowerThan0
         );
   }
 
   /// Przypisuje punkty graczowi i zwraca informację, czy runda została uznana,
-  ///0 - zero zostało przekroczone, 
-  ///1 - osiągnięto jedynkę, 
-  ///2 - żadne z powyższych
+  /// -1 - wszystkie rzuty zostały uznane
+  ///0 - niektóre rzuty się nie liczą, przez lowerThan0 
+  ///1 - niektóre rzuty się nie liczą, przez doubleIn
+  ///2 - ostatni rzut się nie liczy przez doubleOut , 
+  ///3 - niektóre rzuty się nie liczą przez lowerThan0 oraz doubleOut
   int processThrows(List<Pair<int, int>> points) {
     points.removeWhere((e) => e.left == 0);
-    int message = 2;
+    int message = -1;
     int score;
     int getsPoints = 0;
 
@@ -100,6 +101,8 @@ class Match {
             points[i].right == 2) {
           players[playerNumber].getsIn = true;
           getsPoints += points[i].left * points[i].right;
+        } else {
+          message = 1;
         }
       }
     } else {
@@ -111,10 +114,11 @@ class Match {
     
     bool end = false;
     if (score < 0) {
-      if (!lowwerThan0) {
+      if (!lowerThan0) {
         while (score < 0) {
           score += points.last.left * points.last.right;
           points.removeLast();
+          message = 0;
         }
       } else {
         if (!doubleOut) {
@@ -124,6 +128,7 @@ class Match {
           while (score + (points.last.left * points.last.right) < 0) {
             score += points.last.left * points.last.right;
             points.removeLast();
+            message = 0;
           }
           if (points.last.right == 2) {
             updatePlayerScore(playerNumber, 0);
@@ -131,6 +136,9 @@ class Match {
           } else {
             score += points.last.left * points.last.right;
             points.removeLast();
+            message == 0
+                ? message = 3
+                : message = 2;
           }
         }
       }
@@ -147,15 +155,21 @@ class Match {
           } else {
             score += points.last.left * points.last.right;
             updatePlayerScore(playerNumber, score);
+            message == 0
+                ? message = 3
+                : message = 2;
           }
         }
       } else if (score == 1) {
         if (doubleOut) {
-          if (lowwerThan0) {
+          if (lowerThan0) {
             updatePlayerScore(playerNumber, score);
           } else {
             score += points.last.left * points.last.right;
             updatePlayerScore(playerNumber, score);
+            message == 0
+                ? message = 3
+                : message = 2;
             //TODO: osiągnięto jedynkę
           }
         } else {
@@ -193,13 +207,13 @@ class Match {
       'gameMode': gameMode,
       'doubleIn': doubleIn,
       'doubleOut': doubleOut,
-      'lowwerThan0': lowwerThan0,
+      'lowerThan0': lowerThan0,
     };
   }
 
   static Match fromJson(Map<String, dynamic> json) {
     // Print all parameters before returning the Match object
-    //TODO: usuń printy
+    /*
     print('players: ${json['players']}');
     print('playerNumber: ${json['playerNumber']}');
     print('roundNumber: ${json['roundNumber']}');
@@ -209,8 +223,8 @@ class Match {
     print('doubleIn: ${json['doubleIn']}');
     print('doubleIn: ${json['doubleIn']}');
     print('lowerThan0: ${json['lowerThan0']}');
+    */
 
-//TODO: dokończ zapisywanie meczu
     return Match(
       players: (json['players'] as List)
           .map((playerJson) => Player.fromJson(playerJson))
@@ -222,7 +236,7 @@ class Match {
       gameMode: json['gameMode'],
       doubleIn: json['doubleIn'],
       doubleOut: json['doubleOut'],
-      lowwerThan0: json['lowwerThan0'],
+      lowerThan0: json['lowerThan0'],
     );
   }
 

@@ -1,4 +1,3 @@
-import 'package:darttracker/models/game_mode.dart';
 import 'package:flutter/material.dart';
 
 class GameSettingsNotifier extends ChangeNotifier {
@@ -6,25 +5,25 @@ class GameSettingsNotifier extends ChangeNotifier {
   int _gameMode = 0;
   bool _doubleIn = false;
   bool _doubleOut = false;
-  bool _lowwerThan0 = true;
+  bool _lowerThan0 = true;
   
 
   int get gameStartingScore => _gameStartingScore;
   int get gameMode => _gameMode;
   bool get doubleIn => _doubleIn;
   bool get doubleOut => _doubleOut;
-  bool get lowwerThan0 => _lowwerThan0;
+  bool get lowerThan0 => _lowerThan0;
 
   void setGameStartingScore(int score) {
     _gameStartingScore = score;
     notifyListeners();
   }
 
-  void setAllGameMode(int gameMode, bool doubleIn, bool doubleOut, bool lowwerThan0) {
+  void setAllGameMode(int gameMode, bool doubleIn, bool doubleOut, bool lowerThan0) {
     _gameMode = gameMode;
     _doubleIn = doubleIn;
     _doubleOut = doubleOut;
-    _lowwerThan0 = lowwerThan0;
+    _lowerThan0 = lowerThan0;
     notifyListeners();
   }
   void toggleDoubleIn() {
@@ -35,8 +34,8 @@ class GameSettingsNotifier extends ChangeNotifier {
     _doubleOut = !_doubleOut;
     notifyListeners();
   }
-  void toggleLowwerThan0() {
-    _lowwerThan0 = !_lowwerThan0;
+  void togglelowerThan0() {
+    _lowerThan0 = !_lowerThan0;
     notifyListeners();
   }
 /*

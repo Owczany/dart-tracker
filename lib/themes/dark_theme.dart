@@ -24,5 +24,8 @@ class DarkTheme {
         foregroundColor: const Color(0xFFFFFFFF),
       ),
     ),
+    textTheme: const TextTheme(
+      bodyLarge: TextStyle(color: Color(0xFFFFD700)),
+    ),
   );
 }

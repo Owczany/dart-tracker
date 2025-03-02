@@ -1,5 +1,5 @@
 //TODO: dopisać zasady (M)
-//TODO: doubleOut, zapisywanie Game Mode (M)
+//TODO: zapisywanie Game Mode (M)
 
 //TODO: zmienić kolory tarczy na mniej sraczkwate (w zależności od motywu kolorystycznego)
 
