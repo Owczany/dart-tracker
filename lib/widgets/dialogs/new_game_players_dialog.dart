@@ -102,14 +102,14 @@ class NewGamePlayersDialogState extends State<NewGamePlayersDialog> {
           .map((field) => field.player!)
           .toList(),
       gameStartingScore: gameSettingsNotifier.gameStartingScore,
-      easyMode: gameSettingsNotifier.easyMode,
+      gameMode: gameSettingsNotifier.gameMode,
       doubleIn: gameSettingsNotifier.doubleIn,
       doubleOut: gameSettingsNotifier.doubleOut,
       lowwerThan0: gameSettingsNotifier.lowwerThan0,
     );
     //TODO: usuń print
     print(
-        'Players: ${match.players}, Player Number: ${match.playerNumber}, Date Time: ${match.dateTime}, Easy Mode: ${match.easyMode}, Round Number: ${match.roundNumber}, Game Starting Score: ${match.gameStartingScore}');
+        'Players: ${match.players}, Player Number: ${match.playerNumber}, Date Time: ${match.dateTime}, Game Mode: ${match.gameMode}, Round Number: ${match.roundNumber}, Game Starting Score: ${match.gameStartingScore}');
     Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => ScoreBoardScreen(match: match)));
   }

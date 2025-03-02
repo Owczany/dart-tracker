@@ -10,7 +10,7 @@ class Match {
   int roundNumber;
   final DateTime dateTime;
   final int gameStartingScore;
-  final bool easyMode;
+  final int gameMode;  //0 - easyMode, 1 - normalMode, 2 - customMode
   final bool doubleIn;
   final bool doubleOut;
   final bool lowwerThan0;
@@ -21,7 +21,7 @@ class Match {
     this.roundNumber = 1,
     DateTime? dateTime,
     required this.gameStartingScore,
-    required this.easyMode,
+    required this.gameMode,
     required this.doubleIn,
     required this.doubleOut,
     required this.lowwerThan0,
@@ -45,12 +45,12 @@ class Match {
   bool isGameOver() {
     if (players[playerNumber].scores.isNotEmpty &&
         players[playerNumber].scores.length >= roundNumber &&
-        ((!easyMode &&
+        ((!lowwerThan0 &&
                 players[playerNumber].scores[roundNumber - 1] ==
-                    0) || //warunek zwycięstwa w normalMode
-            (easyMode &&
+                    0) || //warunek zwycięstwa gdy lowerThan0 = false
+            (lowwerThan0 &&
                 players[playerNumber].scores[roundNumber - 1] <=
-                    0))) //warunek zwycięstwa w easyMode
+                    0))) //warunek zwycięstwa gdy lowerThan0 = true
     {
       return true;
     }
@@ -70,7 +70,7 @@ class Match {
     return Match(
         players: players,
         gameStartingScore: gameStartingScore,
-        easyMode: easyMode,
+        gameMode: gameMode,
         doubleIn: doubleIn,
         doubleOut: doubleOut,
         lowwerThan0: lowwerThan0
@@ -90,21 +90,21 @@ class Match {
         : score = players[playerNumber].scores[roundNumber - 2] -
             (points[0] + points[1] + points[2]);
 
-    //easyMode:
-    if (easyMode) {
+    //lowerThan0 Mode:
+    if (lowwerThan0) {
       if (score >= 0) {
         updatePlayerScore(playerNumber, score);
       } else {
         updatePlayerScore(playerNumber, 0);
       }
       howMuch = 2;
-      //normalMode:
+    //lowerThan0 Mode off:
     } else {
       //runda zaliczona
       if (score >= 0 && score != 1) {
         updatePlayerScore(playerNumber, score);
         howMuch = 2;
-        //runda niezaliczona
+      //runda niezaliczona
       } else {
         roundNumber == 1
             ? updatePlayerScore(playerNumber, gameStartingScore)
@@ -141,7 +141,10 @@ class Match {
       'roundNumber': roundNumber,
       'dateTime': dateTime.toIso8601String(),
       'gameStartingScore': gameStartingScore,
-      'easyMode': easyMode,
+      'gameMode': gameMode,
+      'doubleIn': doubleIn,
+      'doubleOut': doubleOut,
+      'lowwerThan0': lowwerThan0,
     };
   }
 
@@ -154,6 +157,7 @@ class Match {
     print('gameStartingScore: ${json['gameStartingScore']}');
     print('easyMode: ${json['easyMode']}');
 
+//TODO: dokończ zapisywanie meczu
     return Match(
       players: (json['players'] as List)
           .map((playerJson) => Player.fromJson(playerJson))
@@ -162,7 +166,10 @@ class Match {
       roundNumber: json['roundNumber'],
       dateTime: DateTime.parse(json['dateTime']),
       gameStartingScore: json['gameStartingScore'],
-      easyMode: json['easyMode'],
+      gameMode: json['gameMode'],
+      doubleIn: json['doubleIn'],
+      doubleOut: json['doubleOut'],
+      lowwerThan0: json['lowwerThan0'],
     );
   }
 

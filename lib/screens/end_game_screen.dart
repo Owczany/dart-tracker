@@ -54,7 +54,7 @@ class EndGameScreenState extends State<EndGameScreen> {
                               '${AppLocalizations.of(context)!.end_game_screen_saving}...',
                           onPressed: () async {
                             print(
-                                'Players: ${widget.match.players}, Player Number: ${widget.match.playerNumber}, Date Time: ${widget.match.dateTime}, Easy Mode: ${widget.match.easyMode}, Round Number: ${widget.match.roundNumber}, Game Starting Score: ${widget.match.gameStartingScore}');
+                                'Players: ${widget.match.players}, Player Number: ${widget.match.playerNumber}, Date Time: ${widget.match.dateTime}, Game Mode: ${widget.match.gameMode}, Round Number: ${widget.match.roundNumber}, Game Starting Score: ${widget.match.gameStartingScore}');
                             await Match.saveMatch(widget.match);
                             if (!mounted) return;
                             showSuccessSnackbar(

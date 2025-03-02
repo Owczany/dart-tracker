@@ -30,7 +30,37 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
             const SizedBox(height: 16),
             Consumer<GameSettingsNotifier>(
               builder: (context, gameSettingsNotifier, child) {
-                return Column(
+                return DropdownButton<int>(
+                  value: gameSettingsNotifier.gameMode,
+                  isExpanded: true,
+                  items: [
+                    DropdownMenuItem<int>(
+                      value: 0,
+                      child: Text(
+                          AppLocalizations.of(context)!.settings_easyMode),
+                    ),
+                    DropdownMenuItem<int>(
+                      value: 1,
+                      child: Text(
+                          /*"(${AppLocalizations.of(context)!.settings_proMode})"*/ "Pro Mode"),
+                    ),
+                    DropdownMenuItem<int>(
+                      value: 2,
+                      child:
+                          Text(AppLocalizations.of(context)!.settings_custom),
+                    ),
+                  ],
+                  onChanged: (int? newValue) {
+                    if (newValue == 0) {
+                      gameSettingsNotifier.setAllGameMode(0, false, false, true);
+                    } else if (newValue == 1) {
+                      gameSettingsNotifier.setAllGameMode(1, true, true, false);
+                    } else {
+                      gameSettingsNotifier.setAllGameMode(2, false, false, true);
+                    }
+                  },
+                );
+                /*Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,9 +91,59 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
                       ),
                     ),
                   ],
-                );
+                );*/
               },
             ),
+            //ustawianie opcji gry custom
+            Consumer<GameSettingsNotifier> (
+              builder: (context, gameSettingsNotifier, child) { 
+                if (gameSettingsNotifier.gameMode == 2) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row (
+                        children: [
+                          Checkbox(
+                            value: gameSettingsNotifier.doubleIn,
+                            onChanged: (bool? value) {
+                              gameSettingsNotifier.toggleDoubleIn();
+                            },
+                          ),
+                          Text("Double In"),
+                        ]
+                      ),
+
+                      Row (
+                        children: [
+                          Checkbox(
+                            value: gameSettingsNotifier.doubleOut,
+                            onChanged: (bool? value) {
+                              gameSettingsNotifier.toggleDoubleOut();
+                            },
+                          ),
+                          Text("Double Out"),
+                        ],
+                      ),
+
+                      Row (
+                        children: [
+                          Checkbox(
+                            value: gameSettingsNotifier.lowwerThan0,
+                            onChanged: (bool? value) {
+                              gameSettingsNotifier.toggleLowwerThan0();
+                            },
+                          ),
+                          Text("Lower Than 0"),
+                        ]
+                      )
+                    ],
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              }
+            ),
+            
             //ustawianie wyniku gry
             const SizedBox(height: 16),
             Consumer<GameSettingsNotifier>(
