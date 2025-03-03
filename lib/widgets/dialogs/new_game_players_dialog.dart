@@ -106,6 +106,7 @@ class NewGamePlayersDialogState extends State<NewGamePlayersDialog> {
       doubleIn: gameSettingsNotifier.doubleIn,
       doubleOut: gameSettingsNotifier.doubleOut,
       lowerThan0: gameSettingsNotifier.lowerThan0,
+      removeLastRound: gameSettingsNotifier.removeLastRound,
     );
     //TODO: usuń print
     print(

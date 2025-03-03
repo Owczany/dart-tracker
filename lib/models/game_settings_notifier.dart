@@ -6,6 +6,7 @@ class GameSettingsNotifier extends ChangeNotifier {
   bool _doubleIn = false;
   bool _doubleOut = false;
   bool _lowerThan0 = true;
+  bool _removeLastRound = true;
   
 
   int get gameStartingScore => _gameStartingScore;
@@ -13,17 +14,19 @@ class GameSettingsNotifier extends ChangeNotifier {
   bool get doubleIn => _doubleIn;
   bool get doubleOut => _doubleOut;
   bool get lowerThan0 => _lowerThan0;
+  bool get removeLastRound => _removeLastRound;
 
   void setGameStartingScore(int score) {
     _gameStartingScore = score;
     notifyListeners();
   }
 
-  void setAllGameMode(int gameMode, bool doubleIn, bool doubleOut, bool lowerThan0) {
+  void setAllGameMode(int gameMode, bool doubleIn, bool doubleOut, bool lowerThan0, bool removeLastRound) {
     _gameMode = gameMode;
     _doubleIn = doubleIn;
     _doubleOut = doubleOut;
     _lowerThan0 = lowerThan0;
+    _removeLastRound = removeLastRound;
     notifyListeners();
   }
   void toggleDoubleIn() {
@@ -34,9 +37,18 @@ class GameSettingsNotifier extends ChangeNotifier {
     _doubleOut = !_doubleOut;
     notifyListeners();
   }
-  void togglelowerThan0() {
+  void toggleLowerThan0() {
     _lowerThan0 = !_lowerThan0;
     notifyListeners();
+  }
+  void toggleRemoveLastRound() {
+    _removeLastRound = !_removeLastRound;
+    notifyListeners();
+  }
+  void validateSettings() {
+    if (lowerThan0 && !doubleOut) {
+      _removeLastRound = true;
+    }
   }
 /*
   void toggleEasyMode() {

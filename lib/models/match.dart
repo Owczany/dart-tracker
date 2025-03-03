@@ -14,6 +14,7 @@ class Match {
   final bool doubleIn;
   final bool doubleOut;
   final bool lowerThan0;
+  final bool removeLastRound; // true - przy przekroczeniu 0 lub nietrafieniu podwójnego pola cała runda jest niezaliczona, false - konkretne rzuty są niezaliczone
 
   Match({
     required this.players,
@@ -25,6 +26,7 @@ class Match {
     required this.doubleIn,
     required this.doubleOut,
     required this.lowerThan0,
+    required this.removeLastRound,
   }) : dateTime = dateTime ?? DateTime.now();
 
   void updatePlayerScore(int playerIndex, int score) {
@@ -73,7 +75,8 @@ class Match {
         gameMode: gameMode,
         doubleIn: doubleIn,
         doubleOut: doubleOut,
-        lowerThan0: lowerThan0
+        lowerThan0: lowerThan0,
+        removeLastRound: removeLastRound
         );
   }
 
@@ -111,72 +114,120 @@ class Match {
       }
     }
     score = beforeScore - getsPoints;
-    
-    bool end = false;
-    if (score < 0) {
-      if (!lowerThan0) {
-        while (score < 0) {
-          score += points.last.left * points.last.right;
-          points.removeLast();
-          message = 0;
-        }
-      } else {
-        if (!doubleOut) {
+
+    //klasyczna wersja z usuwaniem całej rundy
+    if (removeLastRound){
+      if (lowerThan0 && !doubleOut) {
+        if (score <= 0) {
           updatePlayerScore(playerNumber, 0);
-          end = true;
         } else {
-          while (score + (points.last.left * points.last.right) < 0) {
+          updatePlayerScore(playerNumber, score);
+        }
+      } else if (!lowerThan0 && doubleOut) {
+        if (score < 0) {
+          updatePlayerScore(playerNumber, beforeScore);
+          message;//TODO: runda się nie liczy przez przekroczenie 0
+        } else if (score == 0) {
+          if (points.last.right == 2) {
+            updatePlayerScore(playerNumber, 0);
+          } else {
+            updatePlayerScore(playerNumber, beforeScore);
+            message;//TODO: runda się nie liczy przez doubleOut
+          }
+        } else if (score == 1) {
+          updatePlayerScore(playerNumber, beforeScore);
+          message;//TODO: runda się nie liczy przez doubleOut
+        } else {
+          updatePlayerScore(playerNumber, score);
+        }
+      } else if (!lowerThan0 && !doubleOut) {
+        if (score < 0) {
+          updatePlayerScore(playerNumber, beforeScore);
+          message;//TODO: runda się nie liczy przez przekroczenie 0
+        } else {
+          updatePlayerScore(playerNumber, score);
+        }
+      } else if (lowerThan0 && doubleOut) {
+        if (score <= 0) {
+          if (points.last.right == 2) {
+            updatePlayerScore(playerNumber, 0);
+          } else {
+            updatePlayerScore(playerNumber, beforeScore);
+            message;//TODO: runda się nie liczy przez doubleOut
+          }
+        } else {
+          updatePlayerScore(playerNumber, score);
+        }
+      }
+    } else {  //usuwane są tylko niepoprawne rzuty
+      //TODO: zrób z tego ficzer (tylko rzuty przekraczające 0 są unieważniane, a nie cała kolejka)
+      bool end = false;
+      if (score < 0) {
+        if (!lowerThan0) {
+          while (score < 0) {
             score += points.last.left * points.last.right;
             points.removeLast();
             message = 0;
           }
-          if (points.last.right == 2) {
+        } else {
+          if (!doubleOut) {
             updatePlayerScore(playerNumber, 0);
             end = true;
           } else {
-            score += points.last.left * points.last.right;
-            points.removeLast();
-            message == 0
-                ? message = 3
-                : message = 2;
+            /*
+            while (score + (points.last.left * points.last.right) < 0) {
+              score += points.last.left * points.last.right;
+              points.removeLast();
+              message = 0;
+            }
+            */
+            if (points.last.right == 2) {
+              updatePlayerScore(playerNumber, 0);
+              end = true;
+            } else {
+              score += points.last.left * points.last.right;
+              points.removeLast();
+              message == 0
+                  ? message = 3
+                  : message = 2;
+            }
           }
         }
       }
-    }
-    if (points.isEmpty) {
-      updatePlayerScore(playerNumber, score);
-      end = true;
-    }
-    if (!end) {
-      if (score == 0) {
-        if (doubleOut) {
-          if (points.last.right == 2) {
-            updatePlayerScore(playerNumber, score);
-          } else {
-            score += points.last.left * points.last.right;
-            updatePlayerScore(playerNumber, score);
-            message == 0
-                ? message = 3
-                : message = 2;
+      if (points.isEmpty) {
+        updatePlayerScore(playerNumber, score);
+        end = true;
+      }
+      if (!end) {
+        if (score == 0) {
+          if (doubleOut) {
+            if (points.last.right == 2) {
+              updatePlayerScore(playerNumber, score);
+            } else {
+              score += points.last.left * points.last.right;
+              updatePlayerScore(playerNumber, score);
+              message == 0
+                  ? message = 3
+                  : message = 2;
+            }
           }
-        }
-      } else if (score == 1) {
-        if (doubleOut) {
-          if (lowerThan0) {
-            updatePlayerScore(playerNumber, score);
+        } else if (score == 1) {
+          if (doubleOut) {
+            if (lowerThan0) {
+              updatePlayerScore(playerNumber, score);
+            } else {
+              score += points.last.left * points.last.right;
+              updatePlayerScore(playerNumber, score);
+              message == 0
+                  ? message = 3
+                  : message = 2;
+            }
           } else {
-            score += points.last.left * points.last.right;
             updatePlayerScore(playerNumber, score);
-            message == 0
-                ? message = 3
-                : message = 2;
-            //TODO: osiągnięto jedynkę
           }
-        } else {
-          updatePlayerScore(playerNumber, score);
+        } else if (score > 1) {
+            updatePlayerScore(playerNumber, score);
         }
-      } else if (score > 1) {
-          updatePlayerScore(playerNumber, score);
       }
     }
 
@@ -208,6 +259,7 @@ class Match {
       'doubleIn': doubleIn,
       'doubleOut': doubleOut,
       'lowerThan0': lowerThan0,
+      'removeLastRound': removeLastRound,
     };
   }
 
@@ -237,6 +289,7 @@ class Match {
       doubleIn: json['doubleIn'],
       doubleOut: json['doubleOut'],
       lowerThan0: json['lowerThan0'],
+      removeLastRound: json['removeLastRound'],
     );
   }
 

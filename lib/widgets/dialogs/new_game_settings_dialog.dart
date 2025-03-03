@@ -58,11 +58,11 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
                   ],
                   onChanged: (int? newValue) {
                     if (newValue == 0) {
-                      gameSettingsNotifier.setAllGameMode(0, false, false, true);
+                      gameSettingsNotifier.setAllGameMode(0, false, false, true, true);
                     } else if (newValue == 1) {
-                      gameSettingsNotifier.setAllGameMode(1, true, true, false);
+                      gameSettingsNotifier.setAllGameMode(1, true, true, false, true);
                     } else {
-                      gameSettingsNotifier.setAllGameMode(2, false, false, true);
+                      gameSettingsNotifier.setAllGameMode(2, false, false, true, true);
                     }
                   },
                 );
@@ -98,6 +98,7 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
                             value: gameSettingsNotifier.doubleOut,
                             onChanged: (bool? value) {
                               gameSettingsNotifier.toggleDoubleOut();
+                              gameSettingsNotifier.validateSettings();
                             },
                           ),
                           Expanded(
@@ -116,7 +117,8 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
                             child: Switch(
                               value: gameSettingsNotifier.lowerThan0,
                               onChanged: (bool? value) {
-                                gameSettingsNotifier.togglelowerThan0();
+                                gameSettingsNotifier.toggleLowerThan0();
+                              gameSettingsNotifier.validateSettings();
                               },
                             ),
                           ),
@@ -136,7 +138,36 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
                               )
                             )
                         ]
-                      )
+                      ),
+                      if (gameSettingsNotifier.doubleOut || !gameSettingsNotifier.lowerThan0)
+                        Row(
+                          children: [
+                            Transform.scale (
+                              scale: 0.75,
+                              child: Switch(
+                                value: gameSettingsNotifier.removeLastRound,
+                                onChanged: (bool? value) {
+                                  gameSettingsNotifier.toggleRemoveLastRound();
+                                },
+                              ),
+                            ),
+                            
+                            if (gameSettingsNotifier.removeLastRound)
+                              Expanded (
+                                child: Text(
+                                  AppLocalizations.of(context)!.settings_remove_last_round,
+                                  softWrap: true,
+                                )
+                              )
+                            else
+                              Expanded (
+                                child: Text(
+                                  AppLocalizations.of(context)!.settings_remove_incorect_throws,
+                                  softWrap: true,
+                                )
+                              )
+                          ]
+                        )
                     ],
                   );
                 } else if (gameSettingsNotifier.gameMode == 0){

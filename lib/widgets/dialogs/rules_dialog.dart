@@ -21,9 +21,13 @@ class RulesDialogState extends State<RulesDialog> {
       content: const SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            Text('1. Zasada 1: Opis zasady 1.'),
-            Text('2. Zasada 2: Opis zasady 2.'),
+            Text(
+              '1. Celem gry jest zredukowanie początkowej liczby punktów (501, 301 lub niestandardowej) do zera. Rzucając w tarczę, trafiona wartość jest odejmowana od początkowego wyniku. Możesz wybrać, czy gra ma się zakończyć, gdy osiągniesz dokładnie 0, czy wystarczy że je przekroczysz (zdobywając np. -5 punktów)',
+              softWrap: true,
+            ),
+            Text('2. Tarcza ma 20 sekcji, z numerami od 1 do 20. Oprócz tego są też obszary podwójne (x2) oraz potrójne (x3). Trafienie takiego obszaru mnoży wartość danej sekcji przez trafiony mnożnik. Sam środek tarczy nazywa się Bulleye i jest warty 25x2 punktów.'),
             Text('3. Zasada 3: Opis zasady 3.'),
+
             // Dodaj więcej zasad według potrzeby
           ],
         ),

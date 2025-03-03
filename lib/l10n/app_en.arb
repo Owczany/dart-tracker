@@ -90,5 +90,7 @@
     "settings_double_in": "Double In (First throw must hit into double field)",
     "settings_double_out": "Double Out (Last throw must hit into double field)",
     "settings_lower_than_0": "To win reach 0 points or less.",
-    "settings_exactly_0": "To win reach exactly 0 points."
+    "settings_exactly_0": "To win reach exactly 0 points.",
+    "settings_remove_last_round": "If the throw is incorrect, the entire round isn't counted.",
+    "settings_remove_incorect_throws": "If the throw is incorrect, only this throw isn't counted."
 }

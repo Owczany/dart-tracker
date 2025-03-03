@@ -90,5 +90,7 @@
     "settings_double_in": "Double In (Pierwszy rzut musi trafić w podwójne pole.)",
     "settings_double_out": "Double Out (Ostatni rzut musi trafić w podwójne pole.)",
     "settings_lower_than_0": "Żeby wygrać należy zdobyć 0 punktów lub mniej.",
-    "settings_exactly_0": "Żeby wygrać należy zdobyć dokładnie 0 punktów."
+    "settings_exactly_0": "Żeby wygrać należy zdobyć dokładnie 0 punktów.",
+    "settings_remove_last_round": "Przy niepoprawnym rzucie cała runda jest niezaliczona",
+    "settings_remove_incorect_throws": "Przy niepoprawnym rzucie, niezaliczony jest tylko ten rzut."
 }
