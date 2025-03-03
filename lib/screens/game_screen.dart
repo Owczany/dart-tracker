@@ -240,26 +240,44 @@ class GameScreenState extends State<GameScreen> {
                         if (points.length == 3) {
                           
                           //komunikaty, gdy rzut nie został zaliczony
-                          int howMuch = match.processThrows(points);
-                          if (howMuch == 0) {         //0 przekroczone
+                          int message = match.processThrows(points);
+                          if (message == 10) {              //0 przekroczone, usunięta cała runda
+                            showErrorSnackbar(
+                              context,
+                              AppLocalizations.of(context)!
+                                  .game_screen_lowerThan0_error2
+                            );
+                          } else if (message == 12) {       //doubleOut, usunięta cała runda
+                            showErrorSnackbar(
+                              context,
+                              AppLocalizations.of(context)!
+                                  .game_screen_doubleOut_error2
+                            );/*
+                          } else if (message == 13) {       //0 przekroczone i doubleOut, usunięta cała runda (nieużywane)
+                            showErrorSnackbar(
+                              context,
+                              AppLocalizations.of(context)!
+                                  .game_screen_lowerThan0_doubleOut_error2
+                            );*/
+                          } else if (message == 0) {         //0 przekroczone, usunięte tylko niepoprawne rzuty
                             showErrorSnackbar(
                               context,
                               AppLocalizations.of(context)!
                                   .game_screen_lowerThan0_error
                             );
-                          } else if (howMuch == 1) {  //doubleIn
+                          } else if (message == 1) {          //doubleIn, usunięte tylko niepoprawne rzuty
                             showErrorSnackbar(
                                 context,
                                 AppLocalizations.of(context)!
                                     .game_screen_doubleIn_error 
                             );
-                          } else if (howMuch == 2) {  //doubleOut
+                          } else if (message == 2) {          //doubleOut, usunięte tylko niepoprawne rzuty
                             showErrorSnackbar(
                                 context,
                                 AppLocalizations.of(context)!
                                     .game_screen_doubleOut_error  
                             );
-                          } else if (howMuch == 3) {  //0 przekroczone i doubleOut
+                          } else if (message == 3) {          //0 przekroczone i doubleOut, usunięte tylko niepoprawne rzuty
                             showErrorSnackbar(
                                 context,
                                 AppLocalizations.of(context)!

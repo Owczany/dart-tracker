@@ -86,6 +86,9 @@ class Match {
   ///1 - niektóre rzuty się nie liczą, przez doubleIn
   ///2 - ostatni rzut się nie liczy przez doubleOut , 
   ///3 - niektóre rzuty się nie liczą przez lowerThan0 oraz doubleOut
+  ///10 - runda się nie liczy przez lowerThan0
+  ///12 - runda się nie liczy przez doubleOut
+  ///13 - runda się nie liczy przez lowerThan0 oraz doubleOut -> nieużywane wsm
   int processThrows(List<Pair<int, int>> points) {
     points.removeWhere((e) => e.left == 0);
     int message = -1;
@@ -126,24 +129,24 @@ class Match {
       } else if (!lowerThan0 && doubleOut) {
         if (score < 0) {
           updatePlayerScore(playerNumber, beforeScore);
-          message;//TODO: runda się nie liczy przez przekroczenie 0
+          message = 10;
         } else if (score == 0) {
           if (points.last.right == 2) {
             updatePlayerScore(playerNumber, 0);
           } else {
             updatePlayerScore(playerNumber, beforeScore);
-            message;//TODO: runda się nie liczy przez doubleOut
+            message = 12;
           }
         } else if (score == 1) {
           updatePlayerScore(playerNumber, beforeScore);
-          message;//TODO: runda się nie liczy przez doubleOut
+          message = 12;
         } else {
           updatePlayerScore(playerNumber, score);
         }
       } else if (!lowerThan0 && !doubleOut) {
         if (score < 0) {
           updatePlayerScore(playerNumber, beforeScore);
-          message;//TODO: runda się nie liczy przez przekroczenie 0
+          message = 10;
         } else {
           updatePlayerScore(playerNumber, score);
         }
@@ -153,7 +156,7 @@ class Match {
             updatePlayerScore(playerNumber, 0);
           } else {
             updatePlayerScore(playerNumber, beforeScore);
-            message;//TODO: runda się nie liczy przez doubleOut
+            message = 12;
           }
         } else {
           updatePlayerScore(playerNumber, score);
