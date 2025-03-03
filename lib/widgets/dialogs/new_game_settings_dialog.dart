@@ -28,6 +28,18 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
           children: <Widget>[
             //ustawianie trybu gry
             const SizedBox(height: 16),
+
+            Center(
+              child: Text(
+                '${AppLocalizations.of(context)!.settings_game_mode}:',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: 4),
+
             Consumer<GameSettingsNotifier>(
               builder: (context, gameSettingsNotifier, child) {
                 return DropdownButton<int>(
@@ -188,6 +200,17 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
             
             //ustawianie wyniku gry
             const SizedBox(height: 16),
+            Center(
+              child: Text (
+                '${AppLocalizations.of(context)!.settings_score}:',
+                style: const TextStyle (
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+            const SizedBox(height: 4),
+
             Consumer<GameSettingsNotifier>(
               builder: (context, gameSettingsNotifier, child) {
                 return DropdownButton<int>(

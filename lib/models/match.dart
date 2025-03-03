@@ -163,7 +163,6 @@ class Match {
         }
       }
     } else {  //usuwane są tylko niepoprawne rzuty
-      //TODO: zrób z tego ficzer (tylko rzuty przekraczające 0 są unieważniane, a nie cała kolejka)
       bool end = false;
       if (score < 0) {
         if (!lowerThan0) {

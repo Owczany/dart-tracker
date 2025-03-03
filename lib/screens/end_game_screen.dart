@@ -1,6 +1,7 @@
 import 'package:darttracker/models/match.dart';
 import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:darttracker/utils/app_bar_util.dart';
+import 'package:darttracker/utils/name_game_mode_bar.dart';
 import 'package:darttracker/widgets/components/our_wide_button.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:darttracker/widgets/components/snackbars.dart';
@@ -34,6 +35,7 @@ class EndGameScreenState extends State<EndGameScreen> {
           children: [
             Column(
               children: [
+                nameGameModeBar(false, theme, context, widget.match),
                 Expanded(
                   //tabelka wyników
                   child: Center(

@@ -2,6 +2,7 @@ import 'package:darttracker/models/game_settings_notifier.dart';
 import 'package:darttracker/models/match.dart';
 import 'package:darttracker/models/pair.dart';
 import 'package:darttracker/utils/app_bar_util.dart';
+import 'package:darttracker/utils/name_game_mode_bar.dart';
 import 'package:darttracker/widgets/components/our_wide_button.dart';
 import 'package:darttracker/screens/end_game_screen.dart';
 import 'package:darttracker/screens/score_board_screen.dart';
@@ -74,47 +75,7 @@ class GameScreenState extends State<GameScreen> {
           child: Column(
             children: [
               // pasek z nazwą gracza i trybem gry
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 16, left: 16, right: 16, bottom: 0,
-                ),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  decoration: BoxDecoration(
-                    color: theme.appBarTheme.backgroundColor,
-                    borderRadius: BorderRadius.circular(30), // Owalne rogi
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          '${AppLocalizations.of(context)!.player}: ${match.players[match.playerNumber].name}',
-                          overflow: TextOverflow.ellipsis, // obcinanie za długich nazw użytkowników
-                          style: const TextStyle (fontSize: 16)
-                        ),
-                      ),
-                      Text(
-                        '${AppLocalizations.of(context)!.settings_game_mode}: ${
-                          match.gameMode == 0 
-                              ? AppLocalizations.of(context)!.settings_easyMode 
-                              : match.gameMode == 1 
-                                ? AppLocalizations.of(context)!.settings_proMode
-                                : AppLocalizations.of(context)!.settings_custom}',
-                        style: const TextStyle (fontSize: 16),
-                        textAlign: TextAlign.end,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              nameGameModeBar(true, theme, context, match),
 
               // Dodanie list rozwijalnych
               if (!dartboardNotifier.boardVersion)

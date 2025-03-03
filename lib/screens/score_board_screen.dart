@@ -1,4 +1,5 @@
 import 'package:darttracker/utils/app_bar_util.dart';
+import 'package:darttracker/utils/name_game_mode_bar.dart';
 import 'package:darttracker/widgets/components/our_wide_button.dart';
 import 'package:darttracker/screens/game_screen.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
@@ -23,6 +24,7 @@ class ScoreBoardScreen extends StatelessWidget {
           children: [
             Column(
               children: [
+                nameGameModeBar(false, theme, context, match),
                 Expanded(
                   //tabelka wyników
                   child: Center(

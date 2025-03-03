@@ -108,7 +108,6 @@ class NewGamePlayersDialogState extends State<NewGamePlayersDialog> {
       lowerThan0: gameSettingsNotifier.lowerThan0,
       removeLastRound: gameSettingsNotifier.removeLastRound,
     );
-    //TODO: usuń print
     print(
         'Players: ${match.players}, Player Number: ${match.playerNumber}, Date Time: ${match.dateTime}, Game Mode: ${match.gameMode}, doubleIn: ${match.doubleIn}, doubleOut: ${match.doubleOut}, lowerThan0: ${match.lowerThan0}, Round Number: ${match.roundNumber}, Game Starting Score: ${match.gameStartingScore}');
     Navigator.of(context).pushReplacement(MaterialPageRoute(
