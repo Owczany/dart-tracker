@@ -31,6 +31,9 @@
     "players": "Graczy",
     "round": "Runda",
 
+    "double_in": "Double In",
+    "double_out": "Double Out",
+
     "end_game_screen_won": "wygrał",
     "end_game_screen_saving": "Zapisz mecz",
     "end_game_screen_saved": "Mecz został zapisany!",
@@ -90,10 +93,21 @@
     "settings_theme_dark": "Ciemny",
     "settings_theme_light": "Jasny",
     "settings_choose_theme": "Wybierz motyw",
-    "settings_double_in": "Double In (Pierwszy rzut musi trafić w podwójne pole.)",
-    "settings_double_out": "Double Out (Ostatni rzut musi trafić w podwójne pole.)",
     "settings_lower_than_0": "Żeby wygrać należy zdobyć 0 punktów lub mniej.",
     "settings_exactly_0": "Żeby wygrać należy zdobyć dokładnie 0 punktów.",
-    "settings_remove_last_round": "Przy niepoprawnym rzucie cała runda jest niezaliczona",
-    "settings_remove_incorect_throws": "Przy niepoprawnym rzucie, niezaliczony jest tylko ten rzut."
+    "settings_remove_last_round": "Przy Niepoprawnym rzucie cała runda jest niezaliczona",
+    "settings_remove_incorect_throws": "Przy Niepoprawnym rzucie, niezaliczony jest tylko ten rzut.",
+
+    "rules_game_goal": "Celem gry jest zredukowanie początkowej liczby punktów (501, 301 lub innej) do zera lub niżej (zależnie od wybranego trybu). Rzucając w tarczę, trafiona wartość jest odejmowana od początkowego wyniku. Gra jest podzielona na rundy, w których gracze kolejno wykonują rzuty. Każdy gracz w swojej turze ma do wykonania trzy rzuty.",
+    "rules_dartboard_description": "Tarcza ma 20 sekcji wartych od 1 do 20 punktów (czarne i żółte pola). Oprócz nich są też zielono-czerwone obszary podwójne (x2) - większy okrąg oraz potrójne (x3) - mniejszy okrąg. Trafienie takiego obszaru mnoży wartość danej sekcji przez trafiony mnożnik. Sam środek tarczy nazywa się Bullseye i jest warty 25 (zielony mały okrąg) lub 25x2 (czerwony środek). Widoczność wartości pól można włączyć/wyłączyć podczas gry.",
+    "rules_game_modes": "Tryby gry",
+    "rules_easyMode_description": "Wszystkie rzuty się liczą. Żeby wygrać należy zredukować wynik począrtkowy do 0 lub je przekroczyć. Np. Runda jest wygrana, gdy mając 42 punkty zostało trafione 20x3.",
+    "rules_proMode_description": "Należy osiągnąć dokładnie 0 punktów. Dodatkowo obowiązują reguły Double In oraz Double Out. Przy przekroczeniu zera, lub gdy ostatni rzut nie trafił podwójnego pola, runda jest niezaliczona.",
+    "rules_customMode_description": "Gracz może sam wybrać reguły gry.",
+    "rules_available_game_rules": "Dostępne reguły gry",
+    "rules_doubleIn_description": "Punkty zaczynają się odejmować dopiero po pierwszym trafieniu w podwójne pole. Poprzednie rzuty / rundy są niezaliczone.",
+    "rules_doubleOut_description": "Ostatni rzut musi trafić w podwójne pole. Przy włączeniu tej reguły rzut, który mógłby wygrać, ale nie trafił w podwójne pole jest nazywany Niepoprawnym i naliczana jest Kara. (Rzuty chybione są pomijane.)",
+    "rules_lowerThan0_description": "Można ustawić, czy gra ma się kończyć poprzez osiągnięcie dokładnie 0 punktów, czy 0 lub mniej (tak jak w trybie Łatwym). Przy wybraniu pierwszej opcji jeżeli gracz przekroczył wartość 0 w swoim rzucie, rzut ten jest uznawany za Niepoprawny i naliczona jest Kara.",
+    "rules_penalty": "Kara",
+    "rules_penalty_description": "Oznacza niezaliczenie całej ostatniej rundy, lub tylko Niepoprawnych rzutów. (W zależności od wybranej opcji.)"
 }

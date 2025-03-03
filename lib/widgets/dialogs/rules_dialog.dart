@@ -18,17 +18,111 @@ class RulesDialogState extends State<RulesDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(AppLocalizations.of(context)!.game_rules),
-      content: const SingleChildScrollView(
+      content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
             Text(
-              '1. Celem gry jest zredukowanie początkowej liczby punktów (501, 301 lub niestandardowej) do zera. Rzucając w tarczę, trafiona wartość jest odejmowana od początkowego wyniku. Możesz wybrać, czy gra ma się zakończyć, gdy osiągniesz dokładnie 0, czy wystarczy że je przekroczysz (zdobywając np. -5 punktów)',
+              '1. ${AppLocalizations.of(context)!.rules_game_goal}\n',
               softWrap: true,
             ),
-            Text('2. Tarcza ma 20 sekcji, z numerami od 1 do 20. Oprócz tego są też obszary podwójne (x2) oraz potrójne (x3). Trafienie takiego obszaru mnoży wartość danej sekcji przez trafiony mnożnik. Sam środek tarczy nazywa się Bulleye i jest warty 25x2 punktów.'),
-            Text('3. Zasada 3: Opis zasady 3.'),
+            Text(
+              '2. ${AppLocalizations.of(context)!.rules_dartboard_description}\n',
+              softWrap: true,
+            ),
+            Text(
+              '${AppLocalizations.of(context)!.rules_game_modes}:\n',
+              softWrap: true,
+              style: const TextStyle (
+                fontSize: 16,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            Text(
+              AppLocalizations.of(context)!.settings_easyMode,
+              softWrap: true,
+              style: const TextStyle (
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            Text(
+              '${AppLocalizations.of(context)!.rules_easyMode_description}\n',
+              softWrap: true,
+            ),
+            Text(
+              AppLocalizations.of(context)!.settings_proMode,
+              softWrap: true,
+              style: TextStyle (
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            Text(
+              '${AppLocalizations.of(context)!.rules_proMode_description}\n',
+              softWrap: true,
+            ),
+            Text(
+              AppLocalizations.of(context)!.settings_custom,
+              softWrap: true,
+              style: TextStyle (
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            Text(
+              '${AppLocalizations.of(context)!.rules_customMode_description}\n',
+              softWrap: true,
+            ),
+            Text(
+              '${AppLocalizations.of(context)!.rules_available_game_rules}:\n',
+              softWrap: true,
+              style: const TextStyle (
+                fontSize: 16,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            Text(
+              AppLocalizations.of(context)!.double_in,
+              softWrap: true,
+              style: TextStyle (
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            Text(
+              '${AppLocalizations.of(context)!.rules_doubleIn_description}\n',
+              softWrap: true,
+            ),
+            Text(
+              AppLocalizations.of(context)!.double_out,
+              softWrap: true,
+              style: const TextStyle (
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            Text(
+              '${AppLocalizations.of(context)!.rules_doubleOut_description}\n',
+              softWrap: true,
+            ),
+            const Text(
+              '0?',
+              softWrap: true,
+              style: TextStyle (
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            Text(
+              '${AppLocalizations.of(context)!.rules_lowerThan0_description}\n',
+              softWrap: true,
+            ),
+            Text(
+              AppLocalizations.of(context)!.rules_penalty,
+              softWrap: true,
+              style: const TextStyle (
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            Text(
+              '${AppLocalizations.of(context)!.rules_penalty_description}\n',
+              softWrap: true,
+            ),
 
-            // Dodaj więcej zasad według potrzeby
           ],
         ),
       ),

@@ -1,5 +1,3 @@
-//TODO: dokończyć zasady i opis trybów gry (M)
-
 //TODO: zapisywanie Game Mode
 //TODO: zmienić kolory tarczy na mniej sraczkwate (w zależności od motywu kolorystycznego)
 

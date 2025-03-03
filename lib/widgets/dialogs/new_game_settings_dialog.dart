@@ -85,7 +85,7 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
                           ),
                           Expanded (
                             child: Text(
-                              AppLocalizations.of(context)!.settings_double_in,
+                              AppLocalizations.of(context)!.double_in, // (Pierwszy rzut musi trafić w podwójne pole.) (First throw must hit into double field)
                               softWrap: true,
                             ),
                           )
@@ -103,7 +103,7 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
                           ),
                           Expanded(
                             child: Text(
-                              AppLocalizations.of(context)!.settings_double_out, 
+                              AppLocalizations.of(context)!.double_out, // (Ostatni rzut musi trafić w podwójne pole.)  (Last throw must hit into double field)
                               softWrap: true,
                             ),
                           ),

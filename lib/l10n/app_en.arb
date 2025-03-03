@@ -31,6 +31,9 @@
     "players": "Players",
     "round": "Round",
 
+    "double_in": "Double In",
+    "double_out": "Double Out",
+
     "end_game_screen_won": "won",
     "end_game_screen_saving": "Save the game",
     "end_game_screen_saved": "Game saved successfully!",
@@ -90,10 +93,21 @@
     "settings_theme_dark": "Dark",
     "settings_theme_light": "Light",
     "settings_choose_theme": "Choose theme",
-    "settings_double_in": "Double In (First throw must hit into double field)",
-    "settings_double_out": "Double Out (Last throw must hit into double field)",
     "settings_lower_than_0": "To win reach 0 points or less.",
     "settings_exactly_0": "To win reach exactly 0 points.",
-    "settings_remove_last_round": "If the throw is incorrect, the entire round isn't counted.",
-    "settings_remove_incorect_throws": "If the throw is incorrect, only this throw isn't counted."
+    "settings_remove_last_round": "If the throw is Incorrect, the entire round isn't counted.",
+    "settings_remove_incorect_throws": "If the throw is Incorrect, only this throw isn't counted.",
+
+    "rules_game_goal": "The goal of the game is to reduce the starting number of points (501, 301 or other) to zero or lower (depending on the selected mode). When throwing at the target, the number hit is subtracted from the starting score. The game is divided into rounds, in which players take turns throwing. Each player has three throws to make on their turn.",
+    "rules_dartboard_description": "The board has 20 sections worth 1 to 20 points (black and yellow fields). In addition to them, there are also green-red double (x2) areas - a larger circle and triple (x3) - a smaller circle. Hitting such an area multiplies the value of the given section by the hit multiplier. The very center of the shield is called the Bullseye and is worth 25 (green small circle) or 25x2 (red center). The visibility of the field values ​​can be turned on/off during the game.",
+    "rules_game_modes": "Game modes",
+    "rules_easyMode_description": "All throws count. To win you have to reduce the starting score to 0 or lower. For example, the round is won when, with 42 points, 20x3 is hit.",
+    "rules_proMode_description": "You must score exactly 0 points. Additionally, the Double In and Double Out rules apply. If you exceed zero, or if the last throw doesn't hit a double field, the round isn't counted.",
+    "rules_customMode_description": "The player can choose the rules of the game himself.",
+    "rules_available_game_rules": "Available game rules",
+    "rules_doubleIn_description": "Points start to be subtracted only after the first hit in a double field. Previous throws/rounds aren't counted.",
+    "rules_doubleOut_description": "The last throw must hit a double field. When this rule is ON, a throw that could have won but didn't hit a double is called an Incorrect and a Penalty is assessed. (Miss throws are ignored.)",
+    "rules_lowerThan0_description": "You can set whether the game ends at exactly 0 points, or else 0 or less (like in Easy mode). If the first option is ON, if a player has got 0 on his throw, that throw is considered Incorrect and a Penalty is assessed.",
+    "rules_penalty": "Penalty",
+    "rules_penalty_description": "This means than last round isn't counted, or only the Incorrect throws aren't. (Depending on whitch is choosen.)"
 }
