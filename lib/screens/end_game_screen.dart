@@ -28,7 +28,9 @@ class EndGameScreenState extends State<EndGameScreen> {
       appBar: AppBarInGameUtil.createAppBarInGame(
           '${widget.match.players[widget.match.playerNumber].name} ${AppLocalizations.of(context)!.end_game_screen_won}!',
           theme,
-          context),
+          context,
+          true),
+          
       body: Container(
         color: theme.scaffoldBackgroundColor,
         child: Stack(

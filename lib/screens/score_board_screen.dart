@@ -16,7 +16,11 @@ class ScoreBoardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBarInGameUtil.createAppBarInGame(AppLocalizations.of(context)!.score_board_screen_scores_after_each_round, theme, context),
+      appBar: AppBarInGameUtil.createAppBarInGame(
+        AppLocalizations.of(context)!.score_board_screen_scores_after_each_round, 
+        theme,
+        context, 
+        false),
       
       body: Container (
         color: theme.scaffoldBackgroundColor,

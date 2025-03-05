@@ -6,14 +6,18 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppBarInGameUtil {
   /// Metoda do potwierdzenia wyjścia z meczu
-  static void _onBackPressed(BuildContext context) {
+  static void _onBackPressed(BuildContext context, bool endOfGame) {
     bool confirm = false;
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(AppLocalizations.of(context)!.app_bar_leaving),
-          content: Text(AppLocalizations.of(context)!.app_bar_lost_data),
+          content: Text(
+            endOfGame ?
+              AppLocalizations.of(context)!.app_bar_leaving_end_game
+              : AppLocalizations.of(context)!.app_bar_lost_data
+            ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -39,7 +43,7 @@ class AppBarInGameUtil {
 
   /// zwraca AppBar z tytułem, przyciskiem zmiany motywu i przyciskiem ustawień; w ustawieniach nie ma możliwości zmiany wyniku gry
   static AppBar createAppBarInGame(
-      String title, ThemeData theme, BuildContext context) {
+      String title, ThemeData theme, BuildContext context, bool endOfGame) {
     return AppBar(
       title: Text(title),
       centerTitle: true,
@@ -52,7 +56,7 @@ class AppBarInGameUtil {
           if (currentScreen == 'GameScreen' ||
               currentScreen == 'EndGameScreen' ||
               currentScreen == 'ScoreBoardScreen') {
-            _onBackPressed(context);
+            _onBackPressed(context, endOfGame);
           } else {
             Navigator.pop(context);
           }

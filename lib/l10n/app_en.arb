@@ -59,6 +59,7 @@
     "score_board_screen_total": "Goal",
 
     "app_bar_leaving": "Are you sure you want to leave this match?",
+    "app_bar_leaving_end_game": "If you didn't saved, your score will be lost",
     "app_bar_lost_data": "All scores will be lost.",
 
     "match_history": "Match History",

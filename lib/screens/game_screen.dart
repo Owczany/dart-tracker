@@ -69,7 +69,9 @@ class GameScreenState extends State<GameScreen> {
         appBar: AppBarInGameUtil.createAppBarInGame(
             '${AppLocalizations.of(context)!.round} ${match.roundNumber}',
             theme,
-            context),
+            context,
+            false),
+            
         body: Container(
           color: theme.scaffoldBackgroundColor,
           child: Column(

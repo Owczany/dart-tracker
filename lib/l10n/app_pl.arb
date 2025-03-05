@@ -59,6 +59,7 @@
     "score_board_screen_total": "Cel",
 
     "app_bar_leaving": "Jesteś pewny/-a, że chcesz opuścić mecz?",
+    "app_bar_leaving_end_game": "Jeżeli nie zapisałeś/-aś, wynik zostanie utracony",
     "app_bar_lost_data": "Wszystkie wyniki zostaną utracone.",
 
     "match_history": "Historia meczów",

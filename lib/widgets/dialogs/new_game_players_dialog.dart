@@ -111,7 +111,8 @@ class NewGamePlayersDialogState extends State<NewGamePlayersDialog> {
     print(
         'Players: ${match.players}, Player Number: ${match.playerNumber}, Date Time: ${match.dateTime}, Game Mode: ${match.gameMode}, doubleIn: ${match.doubleIn}, doubleOut: ${match.doubleOut}, lowerThan0: ${match.lowerThan0}, Round Number: ${match.roundNumber}, Game Starting Score: ${match.gameStartingScore}');
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => ScoreBoardScreen(match: match)));
+        builder: (context) => ScoreBoardScreen(match: match),
+        settings: const RouteSettings(name: 'ScoreBoardScreen')),);
   }
 
   @override
