@@ -3,12 +3,17 @@ import 'dart:convert';
 import 'package:darttracker/models/match.dart';
 
 class Storage {
-  static Future<void> saveMatch(Match match) async {
+  static Future<bool> saveMatch(Match match) async {
     final prefs = await SharedPreferences.getInstance();
     final matches = prefs.getStringList('matches') ?? [];
-    print(match.toJson());
-    matches.add(jsonEncode(match.toJson()));
-    await prefs.setStringList('matches', matches);
+    final matchJson = jsonEncode(match.toJson());
+
+    if (!matches.contains(matchJson)) {
+      matches.add(matchJson);
+      await prefs.setStringList('matches', matches);
+      return true;
+    }
+    return false;
   }
 
   static Future<List<Match>> loadMatches() async {

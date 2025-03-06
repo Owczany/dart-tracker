@@ -49,7 +49,7 @@
     "score_board_screen_next_player": "Następny gracz",
 
     "app_bar_leaving": "Jesteś pewny/-a, że chcesz opuścić mecz?",
-    "app_bar_lost_data": "Wszystkie wyniki zostaną utracone.",
+    "app_bar_lost_data": "Jeśli nie zapisałeś gry, to wszystkie wyniki zostaną utracone!",
 
     "match_history": "Historia meczów",
     "history_loading_error": "Błąd podczas wczytywania meczów",
@@ -80,5 +80,6 @@
     "settings_entering_error": "Niepoprawna wartość. Wpisz liczbę większą niż",
     "settings_theme_dark": "Ciemny",
     "settings_theme_light": "Jasny",
-    "settings_choose_theme": "Wybierz motyw"
+    "settings_choose_theme": "Wybierz motyw",
+    "end_game_screen_already_saved": "Ten mecz już jest zapisany!"
 }

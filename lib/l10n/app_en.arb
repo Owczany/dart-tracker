@@ -50,7 +50,7 @@
     "score_board_screen_next_player": "Next player",
 
     "app_bar_leaving": "Are you sure you want to leave this match?",
-    "app_bar_lost_data": "All scores will be lost.",
+    "app_bar_lost_data": "If you haven't saved your game, all scores will be lost!",
 
     "match_history": "Match History",
     "history_loading_error": "Error loading matches",
@@ -81,5 +81,7 @@
     "settings_entering_error": "Invalid value. Enter a number greater than",
     "settings_theme_dark": "Dark",
     "settings_theme_light": "Light",
-    "settings_choose_theme": "Choose theme"
+    "settings_choose_theme": "Choose theme",
+    "end_game_screen_already_saved": "This game has already been saved!"
+
 }

@@ -55,12 +55,19 @@ class EndGameScreenState extends State<EndGameScreen> {
                           onPressed: () async {
                             print(
                                 'Players: ${widget.match.players}, Player Number: ${widget.match.playerNumber}, Date Time: ${widget.match.dateTime}, Easy Mode: ${widget.match.easyMode}, Round Number: ${widget.match.roundNumber}, Game Starting Score: ${widget.match.gameStartingScore}');
-                            await Match.saveMatch(widget.match);
+                            bool success = await Match.saveMatch(widget.match);
                             if (!mounted) return;
-                            showSuccessSnackbar(
-                                context,
-                                AppLocalizations.of(context)!
-                                    .end_game_screen_saved);
+                            if (success) {
+                              showSuccessSnackbar(
+                                  context,
+                                  AppLocalizations.of(context)!
+                                      .end_game_screen_saved);
+                            } else {
+                              showErrorSnackbar(
+                                  context,
+                                  AppLocalizations.of(context)!
+                                      .end_game_screen_already_saved);
+                            }
                           },
                           color: Colors.orange,
                         ),
