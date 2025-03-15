@@ -27,7 +27,8 @@ class EndGameScreenState extends State<EndGameScreen> {
       appBar: AppBarInGameUtil.createAppBarInGame(
           '${widget.match.players[widget.match.playerNumber].name} ${AppLocalizations.of(context)!.end_game_screen_won}!',
           theme,
-          context),
+          context,
+      true),
       body: Container(
         color: theme.scaffoldBackgroundColor,
         child: Stack(
@@ -54,7 +55,7 @@ class EndGameScreenState extends State<EndGameScreen> {
                               '${AppLocalizations.of(context)!.end_game_screen_saving}...',
                           onPressed: () async {
                             print(
-                                'Players: ${widget.match.players}, Player Number: ${widget.match.playerNumber}, Date Time: ${widget.match.dateTime}, Easy Mode: ${widget.match.easyMode}, Round Number: ${widget.match.roundNumber}, Game Starting Score: ${widget.match.gameStartingScore}');
+                                'Players: ${widget.match.players}, Player Number: ${widget.match.playerNumber}, Date Time: ${widget.match.dateTime}, Game mode: ${widget.match.gameMode}, Round Number: ${widget.match.roundNumber}, Game Starting Score: ${widget.match.gameStartingScore}');
                             bool success = await Match.saveMatch(widget.match);
                             if (!mounted) return;
                             if (success) {

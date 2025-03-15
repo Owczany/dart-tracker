@@ -38,6 +38,7 @@
     "end_game_screen_saving": "Zapisz mecz",
     "end_game_screen_saved": "Mecz został zapisany!",
     "end_game_screen_quick_start": "Szybki rewanż",
+    "end_game_screen_already_saved": "Ta gra została już zapisana!",
 
     "game_screen_only_3_darts": "Masz tylko 3 rzuty!",
     "game_screen_mark_3_throws": "Zaznacz 3 rzuty.",

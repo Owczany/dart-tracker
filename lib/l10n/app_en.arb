@@ -38,6 +38,7 @@
     "end_game_screen_saving": "Save the game",
     "end_game_screen_saved": "Game saved successfully!",
     "end_game_screen_quick_start": "Quick rematch",
+    "end_game_screen_already_saved": "This game is already saved!",
 
     "game_screen_only_3_darts": "You have only 3 throws!",
     "game_screen_mark_3_throws": "Mark 3 throws.",
