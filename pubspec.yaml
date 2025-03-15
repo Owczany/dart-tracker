@@ -39,6 +39,8 @@ dependencies:
     flutter_localizations:
         sdk: flutter
     intl: any
+    flutter_launcher_icons: ^0.14.3
+    flutter_native_splash: ^2.4.4
 
 dev_dependencies:
     flutter_test:
@@ -60,6 +62,8 @@ flutter:
     # included with your application, so that you can use the icons in
     # the material Icons class.
     uses-material-design: true
+    assets:
+        - assets/
     generate:
         true
 
@@ -93,3 +97,22 @@ flutter:
         #
         # For details regarding fonts from package dependencies,
         # see https://flutter.dev/to/font-from-package
+
+#przy każdej zmianie puścić w terminalu
+#  flutter pub get
+#  flutter pub run flutter_launcher_icons
+
+flutter_launcher_icons:
+    android: "launcher_icon"
+    ios: true
+    image_path: "assets/logo.png"
+    adaptive_icon_foreground: "assets/logo.png"
+    adaptive_icon_background: "#c8ad90"
+
+#po każdej zmianie puścić w terminalu dart run flutter_native_splash:create
+flutter_native_splash:
+    color: "#c8ad90"
+    color_dark: "#c8ad90"
+    image: "assets/logo.png"
+    android: true
+    ios: true
