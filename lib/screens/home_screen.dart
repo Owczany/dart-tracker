@@ -42,11 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            Consumer<DartboardNotifier>(
-              builder: (context, dartboardNotifier, child) {
-                return const Dartboard(isMainMenu: true);
-              },
-            ),
+            const Dartboard(isMainMenu: true),
             const SizedBox(height: 30),
             Center(
               child: OurThinButton(

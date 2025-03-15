@@ -19,7 +19,7 @@ class Dartboard extends StatelessWidget {
           painter: DartBoardPainter(
             //background: isMainMenu ? false : dartboardNotifier.boardVersion,
             theme: theme,
-            showNumbers: dartboardNotifier.showNumbers,
+            showNumbers: isMainMenu ? false : dartboardNotifier.showNumbers,
           ),
         ),
       ),

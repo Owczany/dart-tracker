@@ -1,7 +1,6 @@
 import 'package:darttracker/models/match.dart';
 import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:darttracker/utils/app_bar_util.dart';
-import 'package:darttracker/utils/name_game_mode_bar.dart';
 import 'package:darttracker/widgets/components/our_wide_button.dart';
 import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:darttracker/widgets/components/snackbars.dart';
@@ -28,16 +27,13 @@ class EndGameScreenState extends State<EndGameScreen> {
       appBar: AppBarInGameUtil.createAppBarInGame(
           '${widget.match.players[widget.match.playerNumber].name} ${AppLocalizations.of(context)!.end_game_screen_won}!',
           theme,
-          context,
-          true),
-          
+          context),
       body: Container(
         color: theme.scaffoldBackgroundColor,
         child: Stack(
           children: [
             Column(
               children: [
-                nameGameModeBar(false, theme, context, widget.match),
                 Expanded(
                   //tabelka wyników
                   child: Center(
@@ -58,13 +54,20 @@ class EndGameScreenState extends State<EndGameScreen> {
                               '${AppLocalizations.of(context)!.end_game_screen_saving}...',
                           onPressed: () async {
                             print(
-                                'Players: ${widget.match.players}, Player Number: ${widget.match.playerNumber}, Date Time: ${widget.match.dateTime}, Game Mode: ${widget.match.gameMode}, Round Number: ${widget.match.roundNumber}, Game Starting Score: ${widget.match.gameStartingScore}');
-                            await Match.saveMatch(widget.match);
+                                'Players: ${widget.match.players}, Player Number: ${widget.match.playerNumber}, Date Time: ${widget.match.dateTime}, Easy Mode: ${widget.match.easyMode}, Round Number: ${widget.match.roundNumber}, Game Starting Score: ${widget.match.gameStartingScore}');
+                            bool success = await Match.saveMatch(widget.match);
                             if (!mounted) return;
-                            showSuccessSnackbar(
-                                context,
-                                AppLocalizations.of(context)!
-                                    .end_game_screen_saved);
+                            if (success) {
+                              showSuccessSnackbar(
+                                  context,
+                                  AppLocalizations.of(context)!
+                                      .end_game_screen_saved);
+                            } else {
+                              showErrorSnackbar(
+                                  context,
+                                  AppLocalizations.of(context)!
+                                      .end_game_screen_already_saved);
+                            }
                           },
                           color: Colors.orange,
                         ),

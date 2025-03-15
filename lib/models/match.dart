@@ -295,8 +295,8 @@ class Match {
     );
   }
 
-  static Future<void> saveMatch(Match match) async {
-    await Storage.saveMatch(match);
+  static Future<bool> saveMatch(Match match) async {
+    return await Storage.saveMatch(match);
   }
 
   static Future<List<Match>> loadMatches() async {
