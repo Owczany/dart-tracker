@@ -1,5 +1,3 @@
-//TODO: zmienić kolory tarczy na mniej sraczkwate (w zależności od motywu kolorystycznego)
-
 import 'package:darttracker/app.dart';
 import 'package:flutter/material.dart';
 

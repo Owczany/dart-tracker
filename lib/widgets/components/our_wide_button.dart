@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// Elevated button z ustawionymi na sztywno parametrami wyglądu
+/// Szeroki przycisk
 class OurWideButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;

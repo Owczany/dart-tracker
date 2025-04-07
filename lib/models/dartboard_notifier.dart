@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Klasa zarządzająca stanem dartboard
 class DartboardNotifier extends ChangeNotifier {
   bool _showNumbers = false;
   bool _boardVersion = true;

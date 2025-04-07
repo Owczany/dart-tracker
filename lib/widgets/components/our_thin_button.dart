@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// Elevated button z ustawionymi na sztywno parametrami wyglądu
+/// Cieńki przycisk
 class OurThinButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;

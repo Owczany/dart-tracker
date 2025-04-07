@@ -1,16 +1,13 @@
 import 'package:darttracker/widgets/dialogs/history_dialog.dart';
-import 'package:darttracker/widgets/dialogs/new_game_players_dialog.dart';
 import 'package:darttracker/widgets/adapters/dartboard.dart';
 import 'package:darttracker/widgets/dialogs/new_game_settings_dialog.dart';
 import 'package:darttracker/widgets/dialogs/rules_dialog.dart';
 import 'package:darttracker/widgets/dialogs/settings_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../themes/theme_notifier.dart';
 import '../widgets/components/our_thin_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../models/dartboard_notifier.dart';
 
+/// Ekran główny aplikacji
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 

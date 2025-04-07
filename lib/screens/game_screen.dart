@@ -3,18 +3,18 @@ import 'package:darttracker/models/match.dart';
 import 'package:darttracker/models/pair.dart';
 import 'package:darttracker/utils/app_bar_util.dart';
 import 'package:darttracker/utils/name_game_mode_bar.dart';
+import 'package:darttracker/widgets/adapters/dartboard.dart';
+import 'package:darttracker/widgets/adapters/touch_points_painter.dart';
 import 'package:darttracker/widgets/components/our_wide_button.dart';
 import 'package:darttracker/screens/end_game_screen.dart';
 import 'package:darttracker/screens/score_board_screen.dart';
 import 'package:darttracker/widgets/components/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../widgets/adapters/touch_points_painter.dart';
-import '../widgets/adapters/dartboard.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:darttracker/models/dartboard_notifier.dart';
 
-/// To jest ekran gry, gdzie gracz wklepuje swoje rzuty
+/// Ekran gry do zaznaczania rzutów na tarczy
 class GameScreen extends StatefulWidget {
   final Match match;
 
@@ -26,7 +26,7 @@ class GameScreen extends StatefulWidget {
 
 class GameScreenState extends State<GameScreen> {
   late Match match;
-  final List<Offset> throws = []; // Przechowuje współrzędne wyklikanych rzutów
+  final List<Offset> throws = []; // Przechowuje współrzędne zaznaczonych rzutów
   List<int> typedThrows = [
     0,
     0,
@@ -39,7 +39,7 @@ class GameScreenState extends State<GameScreen> {
   ]; // Przechowuje mnożniki rzutów wybranych z list rozwijalnych
   final GlobalKey dartboardKey = GlobalKey();
 
-  //Kontroler do utrzymywania powiększenia przy klikniękciu rzutu
+  // Kontroler do utrzymywania powiększenia przy zaznaczeniu rzutu
   final TransformationController _transformController =
       TransformationController();
 
@@ -49,7 +49,7 @@ class GameScreenState extends State<GameScreen> {
     match = widget.match;
   }
 
-  /// metoda do wyliczania punktów na podstawie współrzędnych rzutu
+  /// Metoda do wyliczania punktów na podstawie współrzędnych rzutu
   Pair<int, int> calculateThrow(Offset throw_, BuildContext context) {
     final RenderBox box =
         dartboardKey.currentContext!.findRenderObject() as RenderBox;
@@ -67,16 +67,16 @@ class GameScreenState extends State<GameScreen> {
 
     return Scaffold(
         appBar: AppBarInGameUtil.createAppBarInGame(
-            '${AppLocalizations.of(context)!.round} ${match.roundNumber}',
-            theme,
-            context,
-            false),
+            title: '${AppLocalizations.of(context)!.round} ${match.roundNumber}',
+            theme: theme, 
+            context: context,
+            endOfGame: false),
             
         body: Container(
           color: theme.scaffoldBackgroundColor,
           child: Column(
             children: [
-              // pasek z nazwą gracza i trybem gry
+              // Pasek z nazwą gracza i trybem gry
               nameGameModeBar(true, theme, context, match),
 
               // Dodanie list rozwijalnych
@@ -92,23 +92,22 @@ class GameScreenState extends State<GameScreen> {
 
               Expanded(
                 child: InteractiveViewer(
-                    //powiększanie tarczy
-                    
+                    // Powiększanie tarczy
                     transformationController: _transformController,
                     boundaryMargin:
-                        const EdgeInsets.all(20), // Margines do przewijania
+                        const EdgeInsets.all(20),
                     minScale: 1,
                     maxScale: 3.0,
                     child: Stack(children: [
-                      //rysowanie tarczy
+                      // Rysowanie tarczy
                       Dartboard(key: dartboardKey),
 
-                      // reagowanie na kliknięcia przy tarczy dotykowej
+                      // Reagowanie na kliknięcia przy tarczy dotykowej
                       if (dartboardNotifier.boardVersion)
                         GestureDetector(
                           onTapDown: (details) {
 
-                            //ograniczenie na max 3 rzuty
+                            // Ograniczenie na max 3 rzuty
                             if (throws.length == 3) {
                               showErrorSnackbar(
                                   context,
@@ -124,7 +123,7 @@ class GameScreenState extends State<GameScreen> {
                           child: CustomPaint(
                             painter: TouchPointsPainter(touchPositions: throws),
                             child:
-                                Container(), //potrzebny, żeby był znany rozmiar obszaru do klikania
+                                Container(), // Potrzebny, żeby był znany rozmiar obszaru dotykowego
                           ),
                         ),
                     ])),
@@ -137,7 +136,7 @@ class GameScreenState extends State<GameScreen> {
                       ? MainAxisAlignment.spaceEvenly
                       : MainAxisAlignment.center,
                   children: [
-                    //przycisk usunięcia ostatniego rzutu
+                    // Przycisk usunięcia ostatniego rzutu
                     if (dartboardNotifier.boardVersion)
                       OurWideButton(
                         text: AppLocalizations.of(context)!.cancel,
@@ -153,7 +152,7 @@ class GameScreenState extends State<GameScreen> {
                         minimumSize: const Size(150, 70),
                       ),
 
-                    // nawigacja do tabelki wyników
+                    // Nawigacja do tabeli wyników
                     OurWideButton(
                       text: AppLocalizations.of(context)!.confirm,
                       onPressed: () {
@@ -167,7 +166,7 @@ class GameScreenState extends State<GameScreen> {
                                     .game_screen_mark_3_throws);
                           } else {
                             for (Offset throw_ in throws) {
-                              //sprawdzanie warunku doubleIn
+                              // Sprawdzanie warunku doubleIn
                               if (gameSettingsNotifier.doubleIn &&
                                   !match.players[match.playerNumber].getsIn)
                               {
@@ -199,56 +198,59 @@ class GameScreenState extends State<GameScreen> {
                           }
                         }
 
-                        //sprawdzenie, czy ilość rzutów się zgadza
+                        // Sprawdzenie, czy ilość rzutów się zgadza
                         if (points.length == 3) {
                           
-                          //komunikaty, gdy rzut nie został zaliczony
-                          int message = match.processThrows(points);
-                          if (message == 10) {              //0 przekroczone, usunięta cała runda
-                            showErrorSnackbar(
-                              context,
-                              AppLocalizations.of(context)!
-                                  .game_screen_lowerThan0_error2
-                            );
-                          } else if (message == 12) {       //doubleOut, usunięta cała runda
-                            showErrorSnackbar(
-                              context,
-                              AppLocalizations.of(context)!
-                                  .game_screen_doubleOut_error2
-                            );/*
-                          } else if (message == 13) {       //0 przekroczone i doubleOut, usunięta cała runda (nieużywane)
-                            showErrorSnackbar(
-                              context,
-                              AppLocalizations.of(context)!
-                                  .game_screen_lowerThan0_doubleOut_error2
-                            );*/
-                          } else if (message == 0) {         //0 przekroczone, usunięte tylko niepoprawne rzuty
-                            showErrorSnackbar(
-                              context,
-                              AppLocalizations.of(context)!
-                                  .game_screen_lowerThan0_error
-                            );
-                          } else if (message == 1) {          //doubleIn, usunięte tylko niepoprawne rzuty
-                            showErrorSnackbar(
+                          // Komunikaty, gdy rzut nie został zaliczony
+                          RoundResult message = match.processThrows(points);
+                          switch (message) {
+                            case RoundResult.allThrowsAccepted:
+                            break;
+                            case RoundResult.roundInvalidLowerThan0: // 0 przekroczone, usunięta cała runda
+                              showErrorSnackbar(
                                 context,
                                 AppLocalizations.of(context)!
-                                    .game_screen_doubleIn_error 
-                            );
-                          } else if (message == 2) {          //doubleOut, usunięte tylko niepoprawne rzuty
-                            showErrorSnackbar(
+                                  .game_screen_lowerThan0_error2,
+                              );
+                            break;
+                            case RoundResult.roundInvalidDoubleOut: // doubleOut, usunięta cała runda
+                              showErrorSnackbar(
                                 context,
                                 AppLocalizations.of(context)!
-                                    .game_screen_doubleOut_error  
-                            );
-                          } else if (message == 3) {          //0 przekroczone i doubleOut, usunięte tylko niepoprawne rzuty
-                            showErrorSnackbar(
+                                  .game_screen_doubleOut_error2,
+                              );
+                            break;
+                            case RoundResult.someThrowsInvalidLowerThan0: // 0 przekroczone, usunięte tylko niepoprawne rzuty
+                              showErrorSnackbar(
                                 context,
                                 AppLocalizations.of(context)!
-                                    .game_screen_lowerThan0_doubleOut_error  
-                            );
+                                  .game_screen_lowerThan0_error,
+                              );
+                            break;
+                            case RoundResult.someThrowsInvalidDoubleIn: // doubleIn, usunięte tylko niepoprawne rzuty
+                              showErrorSnackbar(
+                                context,
+                                AppLocalizations.of(context)!
+                                  .game_screen_doubleIn_error,
+                              );
+                            break;
+                            case RoundResult.lastThrowInvalidDoubleOut: // doubleOut, usunięty tylko ostatni rzut
+                              showErrorSnackbar(
+                                context,
+                                AppLocalizations.of(context)!
+                                  .game_screen_doubleOut_error,
+                              );
+                            break;
+                            case RoundResult.someThrowsInvalidLowerThan0AndDoubleOut: // 0 przekroczone i doubleOut, usunięte tylko niepoprawne rzuty
+                              showErrorSnackbar(
+                                context,
+                                AppLocalizations.of(context)!
+                                  .game_screen_lowerThan0_doubleOut_error,
+                              );
+                            break;
                           }
                           if (match.isGameOver()) {
-                            //odpowiednie przekierowanie jeśli już ktoś wygrał
+                            // Odpowiednie przekierowanie jeśli już ktoś wygrał
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
@@ -286,6 +288,7 @@ class GameScreenState extends State<GameScreen> {
   }
 }
 
+/// Zwraca listę rozwijalną możliwych wartości rzutu
 List<DropdownMenuItem<int>> _getDropdownItems(BuildContext context) {
   List<int> values = [
     0,
@@ -322,6 +325,7 @@ List<DropdownMenuItem<int>> _getDropdownItems(BuildContext context) {
   return items;
 }
 
+/// Zwraca listę rozwijalną możliwych mnożników
 List<DropdownMenuItem<int>> _getDropDownMults() {
   List<int> values = [1, 2, 3];
   List<DropdownMenuItem<int>> items = [];

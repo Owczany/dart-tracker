@@ -4,6 +4,18 @@ import 'package:darttracker/utils/score_calculator.dart';
 import 'package:darttracker/utils/storage.dart';
 import 'package:flutter/material.dart';
 
+/// Możliwe komunikaty przy próbie zakończenia rundy, jeżeli liczba rzutów się zgadza
+enum RoundResult {
+    allThrowsAccepted, // - wszystkie rzuty zostały uznane
+    someThrowsInvalidLowerThan0, // - niektóre rzuty się nie liczą, przez lowerThan0
+    someThrowsInvalidDoubleIn, // - niektóre rzuty się nie liczą, przez doubleIn
+    lastThrowInvalidDoubleOut, // - ostatni rzut się nie liczy przez doubleOut
+    someThrowsInvalidLowerThan0AndDoubleOut, // - niektóre rzuty się nie liczą przez lowerThan0 oraz doubleOut
+    roundInvalidLowerThan0, // - runda się nie liczy przez lowerThan0
+    roundInvalidDoubleOut, // - runda się nie liczy przez doubleOut
+  }
+
+///Klasa zarządzająca stanem pojedynczego meczu
 class Match {
   final List<Player> players;
   int playerNumber;
@@ -29,12 +41,14 @@ class Match {
     required this.removeLastRound,
   }) : dateTime = dateTime ?? DateTime.now();
 
+  ///Dopisuje danemu graczowi punkty za ostatnią rundę
   void updatePlayerScore(int playerIndex, int score) {
     if (playerIndex >= 0 && playerIndex < players.length) {
       players[playerIndex].scores.add(score);
     }
   }
 
+  ///Ustawia playerNumber na numer następnego gracza w kolejce
   void nextPlayer() {
     if (playerNumber == players.length - 1) {
       playerNumber = 0;
@@ -44,27 +58,35 @@ class Match {
     }
   }
 
+  ///Sprawdza, czy aktualny gracz wygrał w obecnj turze
   bool isGameOver() {
     if (players[playerNumber].scores.isNotEmpty &&
         players[playerNumber].scores.length >= roundNumber &&
+        (lowerThan0 
+            ? players[playerNumber].scores[roundNumber - 1] <= 0
+            : players[playerNumber].scores[roundNumber - 1] == 0))
+        /*
         ((!lowerThan0 &&
             players[playerNumber].scores[roundNumber - 1] ==
                 0) || //warunek zwycięstwa gdy lowerThan0 = false
           (lowerThan0 &&
             players[playerNumber].scores[roundNumber - 1] <=
                 0))) //warunek zwycięstwa gdy lowerThan0 = true
+        */
     {
       return true;
     }
     return false;
   }
 
+  ///Zwraca listę graczy posortowaną według ich wyników w ostatniej turze
   List<Player> getSortedPlayers() {
     List<Player> sortedPlayers = List.from(players);
     sortedPlayers.sort((a, b) => a.scores.last.compareTo(b.scores.last));
     return sortedPlayers;
   }
 
+  ///Iniciuje nową grę z ustawieniami właśnie zakończonej
   Match quickStart() {
     for (var player in players) {
       player.resetScores();
@@ -79,19 +101,12 @@ class Match {
         removeLastRound: removeLastRound
         );
   }
-
-  /// Przypisuje punkty graczowi i zwraca informację, czy runda została uznana,
-  /// -1 - wszystkie rzuty zostały uznane
-  ///0 - niektóre rzuty się nie liczą, przez lowerThan0 
-  ///1 - niektóre rzuty się nie liczą, przez doubleIn
-  ///2 - ostatni rzut się nie liczy przez doubleOut , 
-  ///3 - niektóre rzuty się nie liczą przez lowerThan0 oraz doubleOut
-  ///10 - runda się nie liczy przez lowerThan0
-  ///12 - runda się nie liczy przez doubleOut
-  ///13 - runda się nie liczy przez lowerThan0 oraz doubleOut -> nieużywane wsm
-  int processThrows(List<Pair<int, int>> points) {
+  /// Przypisuje punkty graczowi i zwraca informację, czy runda została uznana.
+  /// Podlicza punkty zdobyte w obecnej rundzie na podstawi listy par(wartość rzutu, mnożnik rzutu)
+  /// biorąc pod uwagę ustawienia trudności rozgrywki
+  RoundResult processThrows(List<Pair<int, int>> points) {
     points.removeWhere((e) => e.left == 0);
-    int message = -1;
+    RoundResult message = RoundResult.allThrowsAccepted;
     int score;
     int getsPoints = 0;
 
@@ -108,7 +123,7 @@ class Match {
           players[playerNumber].getsIn = true;
           getsPoints += points[i].left * points[i].right;
         } else {
-          message = 1;
+          message = RoundResult.someThrowsInvalidDoubleIn;
         }
       }
     } else {
@@ -129,24 +144,24 @@ class Match {
       } else if (!lowerThan0 && doubleOut) {
         if (score < 0) {
           updatePlayerScore(playerNumber, beforeScore);
-          message = 10;
+          message = RoundResult.roundInvalidLowerThan0;
         } else if (score == 0) {
           if (points.last.right == 2) {
             updatePlayerScore(playerNumber, 0);
           } else {
             updatePlayerScore(playerNumber, beforeScore);
-            message = 12;
+            message = RoundResult.roundInvalidDoubleOut;
           }
         } else if (score == 1) {
           updatePlayerScore(playerNumber, beforeScore);
-          message = 12;
+          message = RoundResult.roundInvalidDoubleOut;
         } else {
           updatePlayerScore(playerNumber, score);
         }
       } else if (!lowerThan0 && !doubleOut) {
         if (score < 0) {
           updatePlayerScore(playerNumber, beforeScore);
-          message = 10;
+          message = RoundResult.roundInvalidLowerThan0;
         } else {
           updatePlayerScore(playerNumber, score);
         }
@@ -156,7 +171,7 @@ class Match {
             updatePlayerScore(playerNumber, 0);
           } else {
             updatePlayerScore(playerNumber, beforeScore);
-            message = 12;
+            message = RoundResult.roundInvalidDoubleOut;
           }
         } else {
           updatePlayerScore(playerNumber, score);
@@ -169,7 +184,7 @@ class Match {
           while (score < 0) {
             score += points.last.left * points.last.right;
             points.removeLast();
-            message = 0;
+            message = RoundResult.someThrowsInvalidLowerThan0;
           }
         } else {
           if (!doubleOut) {
@@ -189,9 +204,9 @@ class Match {
             } else {
               score += points.last.left * points.last.right;
               points.removeLast();
-              message == 0
-                  ? message = 3
-                  : message = 2;
+              message == RoundResult.someThrowsInvalidLowerThan0
+                  ? message = RoundResult.someThrowsInvalidLowerThan0AndDoubleOut
+                  : message = RoundResult.lastThrowInvalidDoubleOut;
             }
           }
         }
@@ -208,9 +223,9 @@ class Match {
             } else {
               score += points.last.left * points.last.right;
               updatePlayerScore(playerNumber, score);
-              message == 0
-                  ? message = 3
-                  : message = 2;
+              message == RoundResult.someThrowsInvalidLowerThan0
+                  ? message = RoundResult.someThrowsInvalidLowerThan0AndDoubleOut
+                  : message = RoundResult.lastThrowInvalidDoubleOut;
             }
           }
         } else if (score == 1) {
@@ -220,9 +235,9 @@ class Match {
             } else {
               score += points.last.left * points.last.right;
               updatePlayerScore(playerNumber, score);
-              message == 0
-                  ? message = 3
-                  : message = 2;
+              message == RoundResult.someThrowsInvalidLowerThan0
+                  ? message = RoundResult.someThrowsInvalidLowerThan0AndDoubleOut
+                  : message = RoundResult.lastThrowInvalidDoubleOut;
             }
           } else {
             updatePlayerScore(playerNumber, score);
@@ -233,7 +248,7 @@ class Match {
       }
     }
 
-    //przypisanie wyników pozostałym graczom przy wygranej obecnego
+    // Przypisanie wyników pozostałym graczom przy wygranej obecnego
     if (isGameOver()) {
       for (int i = playerNumber + 1; i < players.length; i++) {
         if (players[i].scores.length >= roundNumber - 1) {
@@ -250,6 +265,7 @@ class Match {
     return message;
   }
 
+  /// Konwerteruje obiekt Match do formatu JSON
   Map<String, dynamic> toJson() {
     return {
       'players': players.map((player) => player.toJson()).toList(),
@@ -265,6 +281,7 @@ class Match {
     };
   }
 
+  /// Konwerteruje obiekt Match z formatu JSON
   static Match fromJson(Map<String, dynamic> json) {
     // Print all parameters before returning the Match object
     /*
@@ -295,14 +312,17 @@ class Match {
     );
   }
 
+  /// Zapisuje mecz do historii
   static Future<bool> saveMatch(Match match) async {
     return await Storage.saveMatch(match);
   }
 
+  /// Odczytuje wszystkie zapisane mecze
   static Future<List<Match>> loadMatches() async {
     return await Storage.loadMatches();
   }
 
+  /// Oblicza wartość pojedynczego rzutu i jego mnożnik
   Pair<int, int> calculateThrow(Offset throw_, Size size) {
     return ScoreCalculator.calculateThrow(throw_, size);
   }

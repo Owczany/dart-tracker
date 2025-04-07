@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
+/// Generuje okno dialogowe do wpisywania nazw graczy
 class NewGamePlayersDialog extends StatefulWidget {
   const NewGamePlayersDialog({super.key});
 
@@ -108,8 +109,10 @@ class NewGamePlayersDialogState extends State<NewGamePlayersDialog> {
       lowerThan0: gameSettingsNotifier.lowerThan0,
       removeLastRound: gameSettingsNotifier.removeLastRound,
     );
+    /*
     print(
         'Players: ${match.players}, Player Number: ${match.playerNumber}, Date Time: ${match.dateTime}, Game Mode: ${match.gameMode}, doubleIn: ${match.doubleIn}, doubleOut: ${match.doubleOut}, lowerThan0: ${match.lowerThan0}, Round Number: ${match.roundNumber}, Game Starting Score: ${match.gameStartingScore}');
+    */
     Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => ScoreBoardScreen(match: match),
         settings: const RouteSettings(name: 'ScoreBoardScreen')),);
@@ -194,6 +197,7 @@ class NewGamePlayersDialogState extends State<NewGamePlayersDialog> {
   }
 }
 
+/// Generuje okno dialogowe do wpisywania nazw graczy
 void showNewGamePlayersDialog(BuildContext context) {
   showDialog(
     context: context,

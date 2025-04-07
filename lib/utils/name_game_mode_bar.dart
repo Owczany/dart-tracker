@@ -2,6 +2,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:darttracker/models/match.dart';
 
+/// Zwraca górny pasek z informacją o trybie gry i nazwą gracza
 Widget nameGameModeBar(bool name, ThemeData theme, BuildContext context, Match match) {
   return Padding(
     padding: const EdgeInsets.only(
@@ -11,7 +12,7 @@ Widget nameGameModeBar(bool name, ThemeData theme, BuildContext context, Match m
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: theme.appBarTheme.backgroundColor,
-        borderRadius: BorderRadius.circular(30), // Owalne rogi
+        borderRadius: BorderRadius.circular(30),
         boxShadow: const [
           BoxShadow(
             color: Colors.black12,
@@ -27,7 +28,7 @@ Widget nameGameModeBar(bool name, ThemeData theme, BuildContext context, Match m
             Expanded(
               child: Text(
                 '${AppLocalizations.of(context)!.player}: ${match.players[match.playerNumber].name}',
-                overflow: TextOverflow.ellipsis, // obcinanie za długich nazw użytkowników
+                overflow: TextOverflow.ellipsis, // obcinanie zbyt długich nazw użytkowników
                 style: const TextStyle (fontSize: 16)
               ),
             ),

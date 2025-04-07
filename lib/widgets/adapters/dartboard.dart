@@ -1,8 +1,9 @@
 import 'dart:math';
+import 'package:darttracker/models/dartboard_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../models/dartboard_notifier.dart';
 
+/// Tarcza do gry dartboard
 class Dartboard extends StatelessWidget {
   final bool isMainMenu;
   const Dartboard({super.key, this.isMainMenu = false});
@@ -38,9 +39,6 @@ class DartBoardPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Kolory
-    // const Color bullseyeColor = Color;
-
     // Środek i promień tarczy
     final Offset center = Offset(0.5 * size.width, 0.5 * size.height);
     final double boardRadius = min(size.width, size.height) / 2;
@@ -54,17 +52,6 @@ class DartBoardPainter extends CustomPainter {
         center: center, radius: innerRadius - 0.5 * sectorWidth);
     final outerRect = Rect.fromCircle(
         center: center, radius: boardRadius - 0.5 * sectorWidth);
-
-    // Paints
-    ///warunkowe kolorowanie tła tarczy
-    /*
-    if (background) {
-      final Paint backgroundPaint = Paint()
-        ..color = theme.appBarTheme.backgroundColor!;
-      canvas.drawRect(
-          Rect.fromLTWH(0, 0, size.width, size.height), backgroundPaint);
-    }
-    */
 
     final Paint backGroundColor = Paint()..color = Colors.white;
 
@@ -84,7 +71,7 @@ class DartBoardPainter extends CustomPainter {
       ..strokeWidth = 2.0;
 
     const numberOfSegments = 20;
-    const startAngle = 1 / numberOfSegments * pi; //to to samo
+    const startAngle = 1 / numberOfSegments * pi;
     const sweepAngle = 2 * pi / 20;
 
     // Tło tarczy

@@ -1,7 +1,5 @@
-import 'package:darttracker/themes/theme_notifier.dart';
 import 'package:darttracker/widgets/dialogs/settings_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppBarInGameUtil {
@@ -41,9 +39,9 @@ class AppBarInGameUtil {
     });
   }
 
-  /// zwraca AppBar z tytułem, przyciskiem zmiany motywu i przyciskiem ustawień; w ustawieniach nie ma możliwości zmiany wyniku gry
-  static AppBar createAppBarInGame(
-      String title, ThemeData theme, BuildContext context, bool endOfGame) {
+  /// Zwraca AppBar z tytułem, przyciskiem zmiany motywu i przyciskiem ustawień; w tych ustawieniach m.in. nie ma możliwości zmiany wyniku gry
+  static AppBar createAppBarInGame({
+      required String title, required ThemeData theme, required BuildContext context, required bool endOfGame}) {
     return AppBar(
       title: Text(title),
       centerTitle: true,
@@ -51,7 +49,7 @@ class AppBarInGameUtil {
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),
         onPressed: () {
-          //wyświetlanie potwierdzenia wyjścia, gdy jesteśmy w trakcie rozgrywki
+          // Wyświetlanie potwierdzenia wyjścia, gdy jesteśmy w trakcie rozgrywki
           String? currentScreen = ModalRoute.of(context)?.settings.name;
           if (currentScreen == 'GameScreen' ||
               currentScreen == 'EndGameScreen' ||

@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../components/our_only_number_text_field.dart';
 
+/// Generuje okno dialogowe do ustawień nowego meczu
 class NewGameSettingsDialog extends StatefulWidget {
   const NewGameSettingsDialog({super.key});
 
@@ -70,11 +71,11 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
                   ],
                   onChanged: (int? newValue) {
                     if (newValue == 0) {
-                      gameSettingsNotifier.setAllGameMode(0, false, false, true, true);
+                      gameSettingsNotifier.setAllGameMode(gameMode: 0, doubleIn: false, doubleOut: false, lowerThan0: true, removeLastRound: true);
                     } else if (newValue == 1) {
-                      gameSettingsNotifier.setAllGameMode(1, true, true, false, true);
+                      gameSettingsNotifier.setAllGameMode(gameMode: 1, doubleIn: true, doubleOut: true, lowerThan0: false, removeLastRound: true);
                     } else {
-                      gameSettingsNotifier.setAllGameMode(2, false, false, true, true);
+                      gameSettingsNotifier.setAllGameMode(gameMode: 2, doubleIn: false, doubleOut: false, lowerThan0: true, removeLastRound: true);
                     }
                   },
                 );
@@ -198,7 +199,7 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
               }
             ),
             
-            //ustawianie wyniku gry
+            // Ustawianie wyniku gry
             const SizedBox(height: 16),
             Center(
               child: Text (
@@ -244,7 +245,7 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
                   onChanged: (int? newValue) {
                     if (newValue != null) {
                       if (newValue == -1) {
-                        // Pokaż dialog do wpisania swojego wyniku gry
+                        // Pokaż dialog do wpisania własnego początkowego wyniku gry
                         _showCustomScoreDialog(context, gameSettingsNotifier);
                       } else {
                         gameSettingsNotifier.setGameStartingScore(newValue);
@@ -274,6 +275,7 @@ class _NewGameSettingsDialogState extends State<NewGameSettingsDialog> {
   }
 }
 
+/// Generuje dialog do wpisania własnego początkowego wyniku gry
 void _showCustomScoreDialog(
     BuildContext context, GameSettingsNotifier gameSettingsNotifier) {
   showDialog(
@@ -338,6 +340,7 @@ void _showCustomScoreDialog(
   );
 }
 
+/// Generuje okno dialogowe do ustawień nowego meczu
 void showNewGameSettingsDialog(BuildContext context) {
   showDialog(
     context: context,
