@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:darttracker/models/match.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+/// Ekran punktacji wyświetlany pomięrzy turami
 class ScoreBoardScreen extends StatelessWidget {
   final Match match;
 
@@ -17,10 +18,10 @@ class ScoreBoardScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBarInGameUtil.createAppBarInGame(
-        AppLocalizations.of(context)!.score_board_screen_scores_after_each_round, 
-        theme,
-        context, 
-        false),
+        title: AppLocalizations.of(context)!.score_board_screen_scores_after_each_round, 
+        theme: theme,
+        context: context, 
+        endOfGame: false),
       
       body: Container (
         color: theme.scaffoldBackgroundColor,
@@ -36,13 +37,13 @@ class ScoreBoardScreen extends StatelessWidget {
                   ),
                 ),
 
-                //przycisk przejścia do następnej tury
+                // Przycisk przejścia do następnej tury
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: OurWideButton(
                     text: '${AppLocalizations.of(context)!.score_board_screen_next_player}: ${match.players[match.playerNumber].name}',
                     onPressed: () {
-                      //przekierowanie spowrotem do game_screen
+                      // Przekierowanie z powrotem do game_screen
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

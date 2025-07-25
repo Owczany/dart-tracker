@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+/// Funkcja pokazująca czerwony pasek powiadomień dla użytkownika
 void showErrorSnackbar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).clearSnackBars();
   final snackBar = SnackBar(
@@ -29,6 +30,7 @@ void showErrorSnackbar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
+/// Funkcja pokazująca zielony pasek powiadomień dla użytkownika
 void showSuccessSnackbar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).clearSnackBars();
   final snackBar = SnackBar(

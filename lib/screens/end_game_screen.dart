@@ -6,8 +6,8 @@ import 'package:darttracker/widgets/adapters/score_board.dart';
 import 'package:darttracker/widgets/components/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-//import '../utils/locate_provider.dart';
 
+/// Ekran końca gry
 class EndGameScreen extends StatefulWidget {
   final Match match;
   final bool hideButtons;
@@ -20,15 +20,25 @@ class EndGameScreen extends StatefulWidget {
 }
 
 class EndGameScreenState extends State<EndGameScreen> {
+  late Match match;
+  late bool hideButtons;
+
+  @override
+  void initState() {
+    super.initState();
+    match = widget.match;
+    hideButtons = widget.hideButtons;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBarInGameUtil.createAppBarInGame(
-          '${widget.match.players[widget.match.playerNumber].name} ${AppLocalizations.of(context)!.end_game_screen_won}!',
-          theme,
-          context,
-      true),
+          title: '${match.players[match.playerNumber].name} ${AppLocalizations.of(context)!.end_game_screen_won}!',
+          theme: theme,
+          context: context,
+          endOfGame: true),
       body: Container(
         color: theme.scaffoldBackgroundColor,
         child: Stack(
@@ -36,9 +46,9 @@ class EndGameScreenState extends State<EndGameScreen> {
             Column(
               children: [
                 Expanded(
-                  //tabelka wyników
+                  // Tabela wyników
                   child: Center(
-                    child: ScoreBoard(match: widget.match, endOfGame: true),
+                    child: ScoreBoard(match: match, endOfGame: true),
                   ),
                 ),
                 Padding(
@@ -46,17 +56,18 @@ class EndGameScreenState extends State<EndGameScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      //przycisk powrotu do HomeScreen
-                      if (!widget.hideButtons) ...[
-                        const SizedBox(height: 16), // Odstęp między przyciskami
-                        //przycisk zapisu gry do pamięci
+                      if (!hideButtons) ...[
+                        const SizedBox(height: 16),
+                        // Przycisk zapisu gry do pamięci
                         OurWideButton(
                           text:
                               '${AppLocalizations.of(context)!.end_game_screen_saving}...',
                           onPressed: () async {
+                            /*
                             print(
-                                'Players: ${widget.match.players}, Player Number: ${widget.match.playerNumber}, Date Time: ${widget.match.dateTime}, Game mode: ${widget.match.gameMode}, Round Number: ${widget.match.roundNumber}, Game Starting Score: ${widget.match.gameStartingScore}');
-                            bool success = await Match.saveMatch(widget.match);
+                                'Players: ${match.players}, Player Number: ${match.playerNumber}, Date Time: ${match.dateTime}, Game mode: ${match.gameMode}, Round Number: ${match.roundNumber}, Game Starting Score: ${match.gameStartingScore}');
+                            */
+                            bool success = await Match.saveMatch(match);
                             if (!mounted) return;
                             if (success) {
                               showSuccessSnackbar(
@@ -72,14 +83,14 @@ class EndGameScreenState extends State<EndGameScreen> {
                           },
                           color: Colors.orange,
                         ),
-                        const SizedBox(height: 16), // Odstęp między przyciskami
+                        const SizedBox(height: 16),
 
-                        //przycisk nowej szybkiej gry
+                        // Przycisk nowej szybkiej gry
                         OurWideButton(
                           text: AppLocalizations.of(context)!
                               .end_game_screen_quick_start,
                           onPressed: () {
-                            final newMatch = widget.match.quickStart();
+                            final newMatch = match.quickStart();
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
@@ -104,18 +115,4 @@ class EndGameScreenState extends State<EndGameScreen> {
       ),
     );
   }
-/* niepotrebne już
-  void showSnackBar(String text) {
-    final snackBar = SnackBar(
-      content: Text(text),
-      action: SnackBarAction(
-        label: 'OK',
-        onPressed: () {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        },
-      ),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-*/
 }

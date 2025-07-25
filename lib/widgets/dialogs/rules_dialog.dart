@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+/// Generuje okno dialogowe z informacją o zasadach gdy i opisem ustawień meczu
 class RulesDialog extends StatefulWidget {
   const RulesDialog({super.key});
 
@@ -21,106 +22,59 @@ class RulesDialogState extends State<RulesDialog> {
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            Text(
-              '1. ${AppLocalizations.of(context)!.rules_game_goal}\n',
-              softWrap: true,
+            _onlyWrapText(
+              '1. ${AppLocalizations.of(context)!.rules_game_goal}\n'
             ),
-            Text(
-              '2. ${AppLocalizations.of(context)!.rules_dartboard_description}\n',
-              softWrap: true,
+            _onlyWrapText(
+              '2. ${AppLocalizations.of(context)!.rules_dartboard_description}\n'
             ),
-            Text(
-              '${AppLocalizations.of(context)!.rules_game_modes}:\n',
-              softWrap: true,
-              style: const TextStyle (
-                fontSize: 16,
-                fontWeight: FontWeight.bold
-              ),
+            _boldBigText(
+              '${AppLocalizations.of(context)!.rules_game_modes}:\n'
             ),
-            Text(
-              AppLocalizations.of(context)!.settings_easyMode,
-              softWrap: true,
-              style: const TextStyle (
-                fontWeight: FontWeight.bold
-              ),
+            _boldText(
+              AppLocalizations.of(context)!.settings_easyMode
             ),
-            Text(
-              '${AppLocalizations.of(context)!.rules_easyMode_description}\n',
-              softWrap: true,
+            _onlyWrapText(
+              '${AppLocalizations.of(context)!.rules_easyMode_description}\n'
             ),
-            Text(
-              AppLocalizations.of(context)!.settings_proMode,
-              softWrap: true,
-              style: TextStyle (
-                fontWeight: FontWeight.bold
-              ),
+            _boldText(
+              AppLocalizations.of(context)!.settings_proMode
             ),
-            Text(
-              '${AppLocalizations.of(context)!.rules_proMode_description}\n',
-              softWrap: true,
+            _onlyWrapText(
+              '${AppLocalizations.of(context)!.rules_proMode_description}\n'
             ),
-            Text(
-              AppLocalizations.of(context)!.settings_custom,
-              softWrap: true,
-              style: TextStyle (
-                fontWeight: FontWeight.bold
-              ),
+            _boldText(
+              AppLocalizations.of(context)!.settings_custom
             ),
-            Text(
-              '${AppLocalizations.of(context)!.rules_customMode_description}\n',
-              softWrap: true,
+            _onlyWrapText(
+              '${AppLocalizations.of(context)!.rules_customMode_description}\n'
             ),
-            Text(
-              '${AppLocalizations.of(context)!.rules_available_game_rules}:\n',
-              softWrap: true,
-              style: const TextStyle (
-                fontSize: 16,
-                fontWeight: FontWeight.bold
-              ),
+            _boldBigText(
+              '${AppLocalizations.of(context)!.rules_available_game_rules}:\n'
             ),
-            Text(
-              AppLocalizations.of(context)!.double_in,
-              softWrap: true,
-              style: TextStyle (
-                fontWeight: FontWeight.bold
-              ),
+            _boldText(
+              AppLocalizations.of(context)!.double_in
             ),
-            Text(
-              '${AppLocalizations.of(context)!.rules_doubleIn_description}\n',
-              softWrap: true,
+            _onlyWrapText(
+              '${AppLocalizations.of(context)!.rules_doubleIn_description}\n'
             ),
-            Text(
-              AppLocalizations.of(context)!.double_out,
-              softWrap: true,
-              style: const TextStyle (
-                fontWeight: FontWeight.bold
-              ),
+            _boldText(
+              AppLocalizations.of(context)!.double_out
             ),
-            Text(
-              '${AppLocalizations.of(context)!.rules_doubleOut_description}\n',
-              softWrap: true,
+            _onlyWrapText(
+              '${AppLocalizations.of(context)!.rules_doubleOut_description}\n'
             ),
-            const Text(
-              '0?',
-              softWrap: true,
-              style: TextStyle (
-                fontWeight: FontWeight.bold
-              ),
+            _boldText(
+              '0?'
             ),
-            Text(
-              '${AppLocalizations.of(context)!.rules_lowerThan0_description}\n',
-              softWrap: true,
+            _onlyWrapText(
+              '${AppLocalizations.of(context)!.rules_lowerThan0_description}\n'
             ),
-            Text(
-              AppLocalizations.of(context)!.rules_penalty,
-              softWrap: true,
-              style: const TextStyle (
-                fontWeight: FontWeight.bold
-              ),
+            _boldText(
+              AppLocalizations.of(context)!.rules_penalty
             ),
-            Text(
-              '${AppLocalizations.of(context)!.rules_penalty_description}\n',
-              softWrap: true,
+            _onlyWrapText(
+              '${AppLocalizations.of(context)!.rules_penalty_description}\n'
             ),
 
           ],
@@ -135,9 +89,37 @@ class RulesDialogState extends State<RulesDialog> {
         ),
       ],
     );
+
+  }
+  
+  Text _onlyWrapText(String text) {
+    return Text(
+      text,
+      softWrap: true,
+    );
+  }
+  Text _boldText(String text) {
+    return Text(
+      text,
+      softWrap: true,
+      style: const TextStyle (
+        fontWeight: FontWeight.bold
+      ),
+    );
+  }
+  Text _boldBigText(String text) {
+    return Text(
+      text,
+      softWrap: true,
+      style: const TextStyle (
+        fontSize: 16,
+        fontWeight: FontWeight.bold
+      ),
+    );
   }
 }
 
+/// Generuje okno dialogowe z informacją o zasadach gry i opisem ustawień meczu
 void showRulesDialog(BuildContext context) {
   showDialog(
     context: context,

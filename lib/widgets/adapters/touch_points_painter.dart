@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Zaznacza miejsce dotknięcia tarczy
+/// Klasa służąca do zaznaczania rzutów na tarczy
 class TouchPointsPainter extends CustomPainter {
   final List<Offset> touchPositions;
 

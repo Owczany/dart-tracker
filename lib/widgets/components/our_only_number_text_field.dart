@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// Pole tekstowe do wpisania tylko liczb
 class OurOnlyNumberTextField extends StatelessWidget {
-  final controller;
+  final TextEditingController controller;
   final String text;
 
   const OurOnlyNumberTextField ({

@@ -3,9 +3,10 @@ import 'package:darttracker/models/player.dart';
 import 'package:darttracker/models/match.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+/// Generuje tabelę wyników
 class ScoreBoard extends StatelessWidget {
   final Match match;
-  final bool endOfGame; // endOfGame: true - kolorowanie i sortowanie wygranych po ostatniej rundzie
+  final bool endOfGame; // true - kolorowanie i sortowanie wygranych po ostatniej rundzie
 
   const ScoreBoard({super.key, required this.match, this.endOfGame = false});
 
@@ -13,10 +14,10 @@ class ScoreBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     const double rowHeight = 52.0;
     final double tableHeight = rowHeight * (match.players.length + 1) +
-        4; // ramka ma 2 piksele, więc trza tu dodać 4
+        4;
     return Padding(
       padding:
-          const EdgeInsets.all(30.0), // Dodanie odstępów od krawędzi ekranu
+          const EdgeInsets.all(30.0),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(

@@ -1,6 +1,7 @@
 import 'package:darttracker/models/player.dart';
 import 'package:flutter/material.dart';
 
+///Klasa reprezentująca pole do wpisania nazwy nowego gracza
 class PlayerField {
   final TextEditingController controller;
   final FocusNode focusNode;

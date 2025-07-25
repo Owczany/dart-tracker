@@ -4,6 +4,7 @@ import 'package:darttracker/models/match.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+/// Generuje okno dialogowe z historią gier
 class HistoryDialog extends StatefulWidget {
   const HistoryDialog({super.key});
 
@@ -74,6 +75,7 @@ class HistoryDialogState extends State<HistoryDialog> {
   }
 }
 
+/// Generuje okno dialogowe z historią zapisanych gier
 void showHistoryDialog(BuildContext context) {
   showDialog(
     context: context,

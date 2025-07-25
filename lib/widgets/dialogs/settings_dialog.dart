@@ -1,14 +1,12 @@
 import 'package:darttracker/utils/locate_provider.dart';
-import 'package:darttracker/widgets/components/our_only_number_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:darttracker/models/dartboard_notifier.dart';
-import 'package:darttracker/models/game_settings_notifier.dart';
 import 'package:darttracker/themes/theme_notifier.dart';
-import 'package:darttracker/themes/light_theme.dart';
 import 'package:darttracker/themes/dark_theme.dart';
 
+/// Wyświetla menu ustawień aplikacji i rozgrywki
 class SettingsDialog extends StatefulWidget {
   final bool isMainMenu;
   const SettingsDialog({super.key, required this.isMainMenu});
@@ -37,7 +35,7 @@ class SettingsDialogState extends State<SettingsDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            // ustawianie języka
+            // Ustawianie języka
             Text(AppLocalizations.of(context)!.settings_choose_language,
                 style: tittleStyle),
             const SizedBox(height: 8),
@@ -62,7 +60,7 @@ class SettingsDialogState extends State<SettingsDialog> {
             }),
             const SizedBox(height: 16),
 
-            // ustawianie motywu
+            // Ustawianie motywu
             Text(AppLocalizations.of(context)!.settings_choose_theme,
                 style: tittleStyle),
             const SizedBox(height: 8),
@@ -115,7 +113,7 @@ class SettingsDialogState extends State<SettingsDialog> {
               ),
               const SizedBox(height: 16),
 
-              // wyświetlanie numerów na tarczy
+              // Wyświetlanie numerów na tarczy
               Text(AppLocalizations.of(context)!.settings_show_numbers,
                   style: tittleStyle),
               const SizedBox(height: 8),
@@ -157,7 +155,7 @@ class SettingsDialogState extends State<SettingsDialog> {
 }
 
 
-/// Funkcja wyświetlająca dialog ustawień (zmiana wyniku gry jest ukryta, jeżeli changableScore = false)
+/// Wyświetla dialog ustawień (zmiana wyniku gry jest ukryta, jeżeli changableScore = false)
 void showSettingsDialog(BuildContext context, {bool isMainMenu = true}) {
   showDialog(
     context: context,
