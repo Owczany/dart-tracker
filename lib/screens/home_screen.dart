@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Darts Tracker'),
+        title: const Text('Dart Tracker'),
         centerTitle: true,
         backgroundColor: theme.appBarTheme.backgroundColor,
         actions: [

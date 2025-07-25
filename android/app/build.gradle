@@ -5,6 +5,10 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+def keystorePropertiesFile = rootProject.file("key.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     namespace = "com.mpitsol.darttracker"
     compileSdk = 34 // Upewnij się, że ta wartość jest poprawna
@@ -25,16 +29,22 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 21 // Upewnij się, że ta wartość jest poprawna
-        targetSdk = 34 // Upewnij się, że ta wartość jest poprawna
+        targetSdk = 35 // Upewnij się, że ta wartość jest poprawna
         versionCode = 1 // Upewnij się, że ta wartość jest poprawna
         versionName = "1.0" // Upewnij się, że ta wartość jest poprawna
     }
 
+    signingConfigs {
+        release {
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+        }
+    }
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }
