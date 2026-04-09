@@ -1,0 +1,2 @@
+D:/apki/dart-tracker/android/app/.cxx/RelWithDebInfo/1651s4k6/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/apki/dart-tracker/android/app/.cxx/RelWithDebInfo/1651s4k6/arm64-v8a/CMakeFiles/rebuild_cache.dir
