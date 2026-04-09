@@ -7,13 +7,14 @@ plugins {
 
 def keystorePropertiesFile = rootProject.file("key.properties")
 def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
 
 android {
     namespace = "com.mpitsol.darttracker"
-    compileSdk = 34 // Upewnij się, że ta wartość jest poprawna
-    ndkVersion = "25.1.8937393" // Upewnij się, że ta wartość jest poprawna
-    7075529
+    compileSdk = 34
+    ndkVersion = "28.0.13004108"
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -35,20 +36,39 @@ android {
     }
 
     signingConfigs {
-        release {
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
+        if (keystorePropertiesFile.exists()) {
+            release {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
         }
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            // Fallback to debug signing when release keystore is not configured,
+            // so CI/local verification builds can still run.
+            signingConfig = signingConfigs.findByName("release") ?: signingConfigs.debug
         }
     }
 }
 
 flutter {
     source = "../.."
+}
+
+def isWindows = System.getProperty("os.name").toLowerCase().contains("windows")
+
+tasks.register("check16KbPages", Exec) {
+    workingDir rootDir.parentFile
+    if (isWindows) {
+        commandLine "powershell", "-ExecutionPolicy", "Bypass", "-File", "scripts/check-android-16kb.ps1"
+    } else {
+        commandLine "pwsh", "-File", "scripts/check-android-16kb.ps1"
+    }
+}
+
+tasks.matching { it.name == "assembleRelease" }.configureEach {
+    finalizedBy(tasks.named("check16KbPages"))
 }
